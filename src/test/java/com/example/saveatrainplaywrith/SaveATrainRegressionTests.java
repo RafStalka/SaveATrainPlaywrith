@@ -312,12 +312,42 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     }
 
     @Test
-    public void languageAndCurrency_FunctionalityChecking() {
+    public void currency_ListSizeChecking() {
         page.navigate(homeSAT);
+        page.locator("#language-currency a").click();
+        // Find the parent element containing the list of currency elements
+        Locator parentElement = page.locator("id=currency");
 
-        // Click on current language box
-        page.click(".current-language-box");
-        //page.pause();
+        // Find all currency elements within the parent element and convert to an array
+        ElementHandle[] currencyElements = parentElement.locator("option").all().stream()
+                .map(Locator::elementHandle)
+                .toArray(ElementHandle[]::new);
+
+        // Check the size of the list
+        int listSize = currencyElements.length;
+        System.out.println("Number of help tab elements: " + listSize);
+
+        Assertions.assertEquals(7, listSize, "Number of available currencies is wrong.");
+
+    }
+
+    @Test
+    public void language_ListSizeChecking() {
+        page.navigate(homeSAT);
+        page.locator("#language-currency a").click();
+        // Find the parent element containing the list of language elements
+        Locator parentElement = page.locator("id=language");
+
+        // Find all currency elements within the parent element and convert to an array
+        ElementHandle[] languageElements = parentElement.locator("option").all().stream()
+                .map(Locator::elementHandle)
+                .toArray(ElementHandle[]::new);
+
+        // Check the size of the list
+        int listSize = languageElements.length;
+        System.out.println("Number of help tab elements: " + listSize);
+
+        Assertions.assertEquals(10, listSize, "Number of available languages is wrong.");
 
     }
 }
