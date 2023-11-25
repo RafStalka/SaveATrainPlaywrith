@@ -5,12 +5,26 @@ import com.microsoft.playwright.ElementHandle;
 import com.microsoft.playwright.Frame;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.options.SelectOption;
+import constans.AppConstants;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import pages.MainPage;
+import pages.PassengersDetailsPage;
+import pages.ResultsPage;
+import pages.SummaryPage;
 
 public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
+    @BeforeEach
+    public void setUp() {
+        // Assuming 'page' is initialized in your base class
+        mainPage = new MainPage(page);
+        passengersDetailsPage = new PassengersDetailsPage(page);
+        resultsPage = new ResultsPage(page);
+        summaryPage = new SummaryPage(page);
+    }
     Faker faker = new Faker();
     String firstName = faker.name().firstName();
     String lastName = faker.name().lastName();
@@ -25,7 +39,7 @@ public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
     @CsvSource({"Berlin Central Station, Hamburg Central Station",
             "Amsterdam Central Station, Antwerp Central Station"})
     public void e2e_SAT_NSI_test(String origin, String destination) {
-        page.navigate(homeSAT);
+        page.navigate(AppConstants.SAT_HOME_PAGE);
 
         page.click(".input-control-container > .origin");
         page.type(".input-control-container > .origin", origin);
@@ -112,8 +126,8 @@ public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
         // Click on the submit-button element
         page.click(".submit-button > .ng-star-inserted");
 
-        // Sleep for 7 seconds
-        page.waitForTimeout(7000);
+        // Sleep for 15 seconds
+        page.waitForTimeout(15000);
 
         // Switch to frame by index
         Frame frame1 = page.frames().get(1);
@@ -192,7 +206,7 @@ public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
 
     @Test
     public void e2e_SAT_TI_test() {
-        page.navigate(homeSAT);
+        page.navigate(AppConstants.SAT_HOME_PAGE);
 
         page.click(".input-control-container > .origin");
         page.type(".input-control-container > .origin", "Rome Termini");
