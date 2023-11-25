@@ -6,11 +6,25 @@ import com.microsoft.playwright.Frame;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.SelectOption;
+import constans.AppConstants;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pages.MainPage;
+import pages.PassengersDetailsPage;
+import pages.ResultsPage;
+import pages.SummaryPage;
 
 public class SaveATrain_e2e_ACP_Tests extends PlaywrightTestBase {
-    String departureDateDay = "25";
+    @BeforeEach
+    public void setUp() {
+        // Assuming 'page' is initialized in base class
+        mainPage = new MainPage(page);
+        passengersDetailsPage = new PassengersDetailsPage(page);
+        resultsPage = new ResultsPage(page);
+        summaryPage = new SummaryPage(page);
+    }
+    String departureDateDay = "27";
     String returnDateDay = "28";
     Faker faker = new Faker();
     String firstName = faker.name().firstName();
@@ -30,7 +44,7 @@ public class SaveATrain_e2e_ACP_Tests extends PlaywrightTestBase {
 
     @Test
     public void e2e_SAT_ACPForSpain_test() {
-        page.navigate(homeSAT);
+        page.navigate(AppConstants.SAT_HOME_PAGE);
 
         page.click(".input-control-container > .origin");
         page.type(".input-control-container > .origin", "Madrid");
@@ -222,7 +236,7 @@ public class SaveATrain_e2e_ACP_Tests extends PlaywrightTestBase {
 
     @Test
     public void e2e_SAT_ACPRoundTrip_ForSpain_test() {
-        page.navigate(homeSAT);
+        page.navigate(AppConstants.SAT_HOME_PAGE);
 
         page.click(".input-control-container > .origin");
         page.type(".input-control-container > .origin", "Madrid");
@@ -483,7 +497,7 @@ public class SaveATrain_e2e_ACP_Tests extends PlaywrightTestBase {
 
     @Test
     public void e2e_SAT_ACPForSweden_test() {
-        page.navigate(homeSAT);
+        page.navigate(AppConstants.SAT_HOME_PAGE);
 
         page.click(".input-control-container > .origin");
         page.type(".input-control-container > .origin", "Malmo Central Station");

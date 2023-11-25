@@ -2,12 +2,96 @@ package com.example.saveatrainplaywrith;
 
 import com.microsoft.playwright.ElementHandle;
 import com.microsoft.playwright.Locator;
+import constans.AppConstants;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import pages.*;
 
 public class SaveATrainRegressionTests extends PlaywrightTestBase {
+    @BeforeEach
+    public void setUp() {
+        // Assuming 'page' is initialized in your base class
+        mainPage = new MainPage(page);
+        passengersDetailsPage = new PassengersDetailsPage(page);
+        resultsPage = new ResultsPage(page);
+        summaryPage = new SummaryPage(page);
+        aboutUsPage = new AboutUsPage(page);
+        contactUsPage = new ContactUsPage(page);
+        railSearchApiProductPage = new RailSearchApiProductPage(page);
+        railBookApiProductPage = new RailBookApiProductPage(page);
+        railForwardApiPage = new RailForwardApiPage(page);
+        railAgentDashboardProductPage = new RailAgentDashboardProductPage(page);
+    }
+
+    @Test
+    public void mainPageTitleTest() {
+        String actualTitle = mainPage.getMainPageTitle();
+        Assertions.assertEquals("Train Ticket Booking and Reservation | Save A Train", actualTitle);
+    }
+
+    @Test
+    public void mainPageURLTest() {
+        String actualURL = mainPage.getMainPageURL();
+        Assertions.assertEquals(AppConstants.SAT_HOME_PAGE, actualURL);
+    }
+
+    @Test
+    public void aboutUs_TabChecking() {
+        // User should see rail search api product introduction page
+        String titleAboutUsPage = aboutUsPage.getAboutUsPageTitle();
+        Assertions.assertEquals("About Us | Save A Train", titleAboutUsPage);
+    }
+
+    @Test
+    public void contactUs_TabChecking() {
+        // User should see contact us page
+        String contactUsTitle = contactUsPage.getContactUsPageTitle();
+        Assertions.assertEquals("Contact Us | Save A Train", contactUsTitle);
+    }
+
+    @Test
+    public void railSearchApi_ProductChecking() {
+        // User should see rail search api product introduction page
+        String railSearchApiTitle = railSearchApiProductPage.getRailSearchApiPageTitle();
+        Assertions.assertEquals("Rail Search Api | Save A Train", railSearchApiTitle);
+    }
+
+    @Test
+    public void railBookApi_ProductChecking() {
+        // User should see rail search api product introduction page
+        String railBookApiTitle = railBookApiProductPage.getRailBookApiPageTitle();
+        Assertions.assertEquals("Rail Book Api | Save A Train", railBookApiTitle);
+    }
+
+    @Test
+    public void railForwardApi_ProductChecking() {
+        // User should see rail search api product introduction page
+        String railForwardApiTitle = railForwardApiPage.getRailForwardApiPageTitle();
+        Assertions.assertEquals("Rails Forward Api | Save A Train", railForwardApiTitle);
+    }
+
+    @Test
+    public void railAgentDashboard_ProductChecking() {
+        // User should see rail search api product introduction page
+        String railAgentDashboardProductTitle = railAgentDashboardProductPage.getRailAgentDashboardProductPageTitle();
+        Assertions.assertEquals("Rail Agent Dashboard | Save A Train", railAgentDashboardProductTitle);
+    }
+
+    @Test
+    public void whiteLabel_ProductChecking() {
+        page.navigate(AppConstants.SAT_HOME_PAGE);
+
+        // User clicks on products tab
+        page.click("id=products");
+        // User clicks on rail book api
+        page.click("id=white-label");
+        // User should see rail search api product introduction page
+        String title = page.title();
+        Assertions.assertEquals("White Label | Save A Train", title);
+    }
 
     @ParameterizedTest
     @CsvSource({"Berlin Central Station, Hamburg Central Station",
@@ -16,7 +100,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
             "Malmo Central Station, Stockholm Central Station",
             "Madrid, Leon"})
     public void checking_CorrectnessOfSearchData(String origin, String destination) {
-        page.navigate(homeSAT);
+        page.navigate(AppConstants.SAT_HOME_PAGE);
 
         page.click(".input-control-container > .origin");
         page.type(".input-control-container > .origin", origin);
@@ -60,7 +144,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
 
     @Test
     public void _changingDestinationWithOrigin_FunctionalityButton() {
-        page.navigate(homeSAT);
+        page.navigate(AppConstants.SAT_HOME_PAGE);
 
         page.click(".input-control-container > .origin");
         page.type(".input-control-container > .origin", "Berlin Central Station");
@@ -99,7 +183,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
 
     @Test
     public void checkingProductsTabListSize() {
-        page.navigate(homeSAT);
+        page.navigate(AppConstants.SAT_HOME_PAGE);
 
         // Find the parent element containing the list of <li> elements
         Locator parentElement = page.locator("#products-dropdown");
@@ -117,73 +201,8 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     }
 
     @Test
-    public void railSearchApi_ProductChecking() {
-        page.navigate(homeSAT);
-
-        // User clicks on products tab
-        page.click("id=products");
-        // User clicks on rail search api
-        page.click("id=rail-search-api");
-        // User should see rail search api product introduction page
-        String title = page.title();
-        Assertions.assertEquals("Rail Search Api | Save A Train", title);
-    }
-
-    @Test
-    public void railBookApi_ProductChecking() {
-        page.navigate(homeSAT);
-
-        // User clicks on products tab
-        page.click("id=products");
-        // User clicks on rail book api
-        page.click("id=rails-book-api");
-        // User should see rail search api product introduction page
-        String title = page.title();
-        Assertions.assertEquals("Rail Book Api | Save A Train", title);
-    }
-
-    @Test
-    public void railForwardApi_ProductChecking() {
-        page.navigate(homeSAT);
-
-        // User clicks on products tab
-        page.click("id=products");
-        // User clicks on rail book api
-        page.click("id=rail-forward-api");
-        // User should see rail search api product introduction page
-        String title = page.title();
-        Assertions.assertEquals("Rails Forward Api | Save A Train", title);
-    }
-
-    @Test
-    public void railAgentDashboard_ProductChecking() {
-        page.navigate(homeSAT);
-
-        // User clicks on products tab
-        page.click("id=products");
-        // User clicks on rail book api
-        page.click("id=rail-agent-dashboard");
-        // User should see rail search api product introduction page
-        String title = page.title();
-        Assertions.assertEquals("Rail Agent Dashboard | Save A Train", title);
-    }
-
-    @Test
-    public void whiteLabel_ProductChecking() {
-        page.navigate(homeSAT);
-
-        // User clicks on products tab
-        page.click("id=products");
-        // User clicks on rail book api
-        page.click("id=white-label");
-        // User should see rail search api product introduction page
-        String title = page.title();
-        Assertions.assertEquals("White Label | Save A Train", title);
-    }
-
-    @Test
     public void railAffiliate_ProductChecking() {
-        page.navigate(homeSAT);
+        page.navigate(AppConstants.SAT_HOME_PAGE);
 
         // User clicks on products tab
         page.click("id=products");
@@ -196,7 +215,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
 
     @Test
     public void eurailPass_ProductChecking() {
-        page.navigate(homeSAT);
+        page.navigate(AppConstants.SAT_HOME_PAGE);
 
         // User clicks on products tab
         page.click("id=products");
@@ -208,36 +227,14 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     }
 
     @Test
-    public void aboutUs_TabChecking() {
-        page.navigate(homeSAT);
-
-        // User clicks on about us tab
-        page.click("id=about-us");
-        // User should see rail search api product introduction page
-        String title = page.title();
-        Assertions.assertEquals("About Us | Save A Train", title);
-    }
-
-    @Test
     public void redirection_BlogTab() {
-        page.navigate(homeSAT);
+        page.navigate(AppConstants.SAT_HOME_PAGE);
 
-    }
-
-    @Test
-    public void contactUs_TabChecking() {
-        page.navigate(homeSAT);
-
-        // User clicks on about us tab
-        page.click("id=contact-us");
-        // User should see rail search api product introduction page
-        String title = page.title();
-        Assertions.assertEquals("Contact Us | Save A Train", title);
     }
 
     @Test
     public void checkingHelpTabListSize() {
-        page.navigate(homeSAT);
+        page.navigate(AppConstants.SAT_HOME_PAGE);
 
         // Find the parent element containing the list of <li> elements
         Locator parentElement = page.locator("#help-dropdown");
@@ -256,7 +253,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
 
     @Test
     public void manageBookings_HelpTabChecking() {
-        page.navigate(homeSAT);
+        page.navigate(AppConstants.SAT_HOME_PAGE);
 
         // User clicks on help tab
         page.click("id=help-dropdown");
@@ -269,7 +266,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
 
     @Test
     public void FAQ_HelpTabChecking() {
-        page.navigate(homeSAT);
+        page.navigate(AppConstants.SAT_HOME_PAGE);
 
         // User clicks on help tab
         page.click("id=help-dropdown");
@@ -282,7 +279,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
 
     @Test
     public void readMore_ButtonChecking() {
-        page.navigate(homeSAT);
+        page.navigate(AppConstants.SAT_HOME_PAGE);
 
         // Click on Read more button
         page.click(".services-body-desktop > .more-button");
@@ -293,7 +290,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
 
     @Test
     public void privacyPolicy_ButtonChecking() {
-        page.navigate(homeSAT);
+        page.navigate(AppConstants.SAT_HOME_PAGE);
         // Click on Privacy Policy button
         page.click("a:nth-of-type(1) > p");
         // Checking title
@@ -303,7 +300,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
 
     @Test
     public void termsAndConditions_ButtonChecking() {
-        page.navigate(homeSAT);
+        page.navigate(AppConstants.SAT_HOME_PAGE);
         // Click on Terms and Conditions button
         page.click("a:nth-of-type(2) > p");
         // Checking title
@@ -313,7 +310,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
 
     @Test
     public void currency_ListSizeChecking() {
-        page.navigate(homeSAT);
+        page.navigate(AppConstants.SAT_HOME_PAGE);
         page.locator("#language-currency a").click();
         // Find the parent element containing the list of currency elements
         Locator parentElement = page.locator("id=currency");
@@ -333,7 +330,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
 
     @Test
     public void language_ListSizeChecking() {
-        page.navigate(homeSAT);
+        page.navigate(AppConstants.SAT_HOME_PAGE);
         page.locator("#language-currency a").click();
         // Find the parent element containing the list of language elements
         Locator parentElement = page.locator("id=language");

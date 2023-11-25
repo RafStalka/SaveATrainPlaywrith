@@ -5,10 +5,24 @@ import com.microsoft.playwright.ElementHandle;
 import com.microsoft.playwright.Frame;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.options.SelectOption;
+import constans.AppConstants;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pages.MainPage;
+import pages.PassengersDetailsPage;
+import pages.ResultsPage;
+import pages.SummaryPage;
 
 public class SaveATrain_e2e_Eurail_Tests extends PlaywrightTestBase {
+    @BeforeEach
+    public void setUp() {
+        // Assuming 'page' is initialized in your base class
+        mainPage = new MainPage(page);
+        passengersDetailsPage = new PassengersDetailsPage(page);
+        resultsPage = new ResultsPage(page);
+        summaryPage = new SummaryPage(page);
+    }
     Faker faker = new Faker();
     String firstName = faker.name().firstName();
     String lastName = faker.name().lastName();
@@ -21,7 +35,7 @@ public class SaveATrain_e2e_Eurail_Tests extends PlaywrightTestBase {
 
     @Test
     public void e2e_SAT_EURAIL_test() {
-        page.navigate(homeSAT);
+        page.navigate(AppConstants.SAT_HOME_PAGE);
 
         // Click on the search button
         page.click(".search-btn");
@@ -127,6 +141,9 @@ public class SaveATrain_e2e_Eurail_Tests extends PlaywrightTestBase {
 
         // Click on pay button
         page.locator(".adyen-checkout__button__content").click();
+
+        // Sleep for 15 seconds
+        page.waitForTimeout(15000);
 
         // Find the h3 element and get its text
         String actualHeaderText = page.locator("css=h3").textContent();
