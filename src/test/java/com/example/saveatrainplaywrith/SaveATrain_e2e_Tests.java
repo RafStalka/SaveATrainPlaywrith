@@ -6,8 +6,12 @@ import com.microsoft.playwright.Frame;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.options.SelectOption;
 import constans.AppConstants;
+import io.qameta.allure.Description;
+import io.qameta.allure.Owner;
+import io.qameta.allure.Severity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -15,6 +19,8 @@ import pages.MainPage;
 import pages.PassengersDetailsPage;
 import pages.ResultsPage;
 import pages.SummaryPage;
+
+import static io.qameta.allure.SeverityLevel.CRITICAL;
 
 public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
     @BeforeEach
@@ -27,140 +33,44 @@ public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
     }
     Faker faker = new Faker();
     String firstName = faker.name().firstName();
+    String firstNameSecondAdultPassenger = faker.name().firstName();
+    String firstNameYouthPassenger = faker.name().firstName();
     String lastName = faker.name().lastName();
-    String passportNumber = faker.number().digits(28);
-    String city = faker.address().cityName();
-    String street = faker.address().streetName();
-    String postalCode = faker.address().zipCode();
-    String phoneNumber = "48" + faker.number().numberBetween(111111111, 999999999);
+    String lastNameSecondAdultPassenger = faker.name().lastName();
+    String lastNameYouthPassenger = faker.name().lastName();
     String email = "test_" + faker.name().firstName() + "@gmail.com";
 
     @ParameterizedTest
+    @DisplayName("NSI provider.")
+    @Description("Test checking e2e path on NSI provider.")
+    @Severity(CRITICAL)
+    @Owner("Save A Train")
     @CsvSource({"Berlin Central Station, Hamburg Central Station",
             "Amsterdam Central Station, Antwerp Central Station"})
     public void e2e_SAT_NSI_test(String origin, String destination) {
-        page.navigate(AppConstants.SAT_HOME_PAGE);
+        mainPage.complementingTheOriginStations(origin);
+        mainPage.complementingTheDestinationStations(destination);
+        mainPage.departureDate();
+        mainPage.findMyTicketButtonClick();
 
-        page.click(".input-control-container > .origin");
-        page.type(".input-control-container > .origin", origin);
-
-        // Wait for auto-suggest and select the first option
-        page.waitForSelector(".origin .ng-star-inserted:nth-child(1)");
-        page.click(".origin .ng-star-inserted:nth-child(1)");
-
-        // Release the action-box
-        page.hover(".action-box");
-
-        // Find the destination input, click, and type "Hamburg Central Station"
-        page.click(".destination:nth-child(1)");
-        page.type(".destination:nth-child(1)", destination);
-
-        // Wait for auto-suggest and select the first option
-        page.waitForSelector(".destination .ng-star-inserted:nth-child(1)");
-        page.click(".destination .ng-star-inserted:nth-child(1)");
-
-        // Click on the search button
-        page.click(".search-btn");
-
-        // Click on the departure date input
-        page.click(".departure-date > .form-control");
-
-        // Click on the desired date
-        page.click(".ng-star-inserted:nth-child(5) > .owl-dt-day-4 > .owl-dt-calendar-cell-content");
-
-        // Click on the find my tickets button
-        page.click("button[name='button']");
-
-        // Selects a train
-        page.click("id=result-1");
+        resultsPage.selectFirstResult();
 
         // On this moment we can check checkboxes functionality
         //page.check("lokator"); - zaznaczenie checkboxa
         //page.uncheck("lokator"); - odznaczenie checkboxa
 
-
-        // Then proceeds booking
-        page.click(".proceed-btn");
-
-        // Click on the passenger-prefix element
-        page.click("#passenger-prefix");
-
-        // Select the second option in the dropdown
-        Locator genderDropdown = page.locator("#passenger-prefix");
-        genderDropdown.selectOption(new SelectOption().setIndex(1));
-
-        // Click on the passenger-fname element
-        page.click("#passenger-fname");
-
-        // Type "Test" into the passenger-fname input
-        page.fill("#passenger-fname", firstName);
-
-        // Type "Tester" into the passenger-lname input
-        page.fill("#passenger-lname", lastName);
-
-        // Click on the passenger-date element
-        page.click("#passenger-date");
-
-        // Type the date into the passenger-date input
-        page.fill("#passenger-date", "06/09/1985");
-
-        // Click on the input-control element
-        page.click(".input-control");
-
-        // Find and hover over the items-list element
-        Locator itemsList = page.locator(".items-list > .ng-star-inserted:first-of-type");
-        itemsList.click();
-
-        // Select "Aisle" from the dropdown
-        Locator passengerTypeDropdown = page.locator(".outbound-seat-select > .form-control");
-        if (passengerTypeDropdown.isVisible()) {
-            passengerTypeDropdown.selectOption(new SelectOption().setIndex(1));
-        }
-
-        // Click on the ng-pristine element
-        page.click(".ng-pristine");
-
-        // Enter an email in the contact-info-input form control
-        page.fill(".contact-info-input > .form-control", email);
-
-        // Click on the submit-button element
-        page.click(".submit-button > .ng-star-inserted");
+        passengersDetailsPage.passengerPrefixDropdown("Mr");
+        passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
+        passengersDetailsPage.enterbirthDate("06/09/1985");
+        passengersDetailsPage.choosePassengerCountry();
+        passengersDetailsPage.chooseAislePlace();
+        passengersDetailsPage.enterEmeil(email);
+        passengersDetailsPage.passangersDataSubmitButtonClick();
 
         // Sleep for 15 seconds
         page.waitForTimeout(15000);
 
-        // Switch to frame by index
-        Frame frame1 = page.frames().get(1);
-
-        // Locate the card number input field within frame1
-        Locator cardNumberInput = frame1.locator("id=encryptedCardNumber").first();
-
-        // Click the card number input field and enter the card number
-        cardNumberInput.click();
-        cardNumberInput.type("5577 0000 5577 0004");
-
-        // Switch back to the main frame
-        page.mainFrame();
-
-        Frame frame2 = page.frames().get(2);
-        Locator expiryDateInput = frame2.locator("id=encryptedExpiryDate").first();
-        expiryDateInput.type("03/30");
-
-        // Switch back to the main frame
-        page.locator("html").click();
-
-        Frame frame3 = page.frames().get(3);
-        Locator cvcCodeInput = frame3.locator("id=encryptedSecurityCode").first();
-        cvcCodeInput.type("737");
-
-        // Switch back to the main frame
-        page.locator("html").click();
-
-        page.locator(".adyen-checkout__input--text").click();
-        page.locator(".adyen-checkout__input--text").fill("Customer");
-
-        // Click on pay button
-        page.locator(".adyen-checkout__button__content").click();
+        summaryPage.completingAdyenForm();
 
         // Find the h3 element and get its text
         String actualHeaderText = page.locator("css=h3").textContent();
@@ -204,121 +114,79 @@ public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
 
     }
 
-    @Test
-    public void e2e_SAT_TI_test() {
-        page.navigate(AppConstants.SAT_HOME_PAGE);
+    @ParameterizedTest
+    @DisplayName("NSI provider 2xAdult and 1xYouth passenger.")
+    @Description("Test checking e2e path on NSI provider with different types of passenger.")
+    @Severity(CRITICAL)
+    @Owner("Save A Train")
+    @CsvSource({"Berlin Central Station, Hamburg Central Station"})
+    public void e2e_SAT_NSI_twoAdultsAndOneYouth_test(String origin, String destination) {
+        mainPage.complementingTheOriginStations(origin);
+        mainPage.complementingTheDestinationStations(destination);
+        mainPage.departureDate();
+        mainPage.addOneAdultPassenger();
+        mainPage.addOneYouthPassengerIn_17_YearsAge("17");
+        mainPage.findMyTicketButtonClick();
 
-        page.click(".input-control-container > .origin");
-        page.type(".input-control-container > .origin", "Rome Termini");
+        resultsPage.selectFirstResult();
 
-        // Wait for auto-suggest and select the first option
-        page.waitForSelector(".origin .ng-star-inserted:nth-child(1)");
-        page.click(".origin .ng-star-inserted:nth-child(1)");
+        passengersDetailsPage.passengerPrefixDropdown("Mr");
+        passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
+        passengersDetailsPage.enterbirthDate("12/07/1985");
+        passengersDetailsPage.choosePassengerCountry();
 
-        // Release the action-box
-        page.hover(".action-box");
+        passengersDetailsPage.secondPassengerPrefixDropdown("Mrs");
+        passengersDetailsPage.enter_SecondAdultPassenger_FirstAndLastName(firstNameSecondAdultPassenger, lastNameSecondAdultPassenger);
+        passengersDetailsPage.enter_SecondAdultPassenger_birthDate("22/09/1987");
+        passengersDetailsPage.choose_SecondAdultPassenger_Country();
 
-        // Find the destination input, click, and type "Hamburg Central Station"
-        page.click(".destination:nth-child(1)");
-        page.type(".destination:nth-child(1)", "Florence All Stations");
+        passengersDetailsPage.thirdPassengerPrefixDropdown("Mr");
+        passengersDetailsPage.enter_YouthPassenger_FirstAndLastName(firstNameYouthPassenger, lastNameYouthPassenger);
+        passengersDetailsPage.enter_YouthPassenger_birthDate("01/01/2007");
+        passengersDetailsPage.choose_YouthPassenger_Country();
 
-        // Wait for auto-suggest and select the first option
-        page.waitForSelector(".destination .ng-star-inserted:nth-child(1)");
-        page.click(".destination .ng-star-inserted:nth-child(1)");
+        passengersDetailsPage.chooseAislePlace();
 
-        // Click on the search button
-        page.click(".search-btn");
+        passengersDetailsPage.enterEmeil(email);
 
-        // Click on the departure date input
-        page.click(".departure-date > .form-control");
+        passengersDetailsPage.passangersDataSubmitButtonClick();
 
-        // Click on the desired date
-        page.click(".ng-star-inserted:nth-child(5) > .owl-dt-day-4 > .owl-dt-calendar-cell-content");
+        // Sleep for 15 seconds
+        page.waitForTimeout(15000);
 
-        // Click on the find my tickets button
-        page.click("button[name='button']");
+        summaryPage.completingAdyenForm();
+    }
 
-        // Selects a train
-        page.click("id=result-1");
+    @ParameterizedTest
+    @DisplayName("TI provider.")
+    @Description("Test checking e2e path on TI provider.")
+    @Severity(CRITICAL)
+    @Owner("Save A Train")
+    @CsvSource({"Rome Termini, Florence All Stations",
+            "Milan Central Station, Rimini Central Station"})
+    public void e2e_SAT_TI_test(String origin, String destination) {
+        mainPage.complementingTheOriginStations(origin);
+        mainPage.complementingTheDestinationStations(destination);
+        mainPage.departureDate();
+        mainPage.findMyTicketButtonClick();
+
+        resultsPage.selectFirstResult();
 
         // On this moment we can check checkboxes functionality
         //page.check("lokator"); - zaznaczenie checkboxa
         //page.uncheck("lokator"); - odznaczenie checkboxa
 
-
-        // Then proceeds booking
-        page.click(".proceed-btn");
-
-        // Click on the passenger-prefix element
-        page.click("#passenger-prefix");
-
-        // Select the second option in the dropdown
-        Locator genderDropdown = page.locator("#passenger-prefix");
-        genderDropdown.selectOption(new SelectOption().setIndex(1));
-
-        // Click on the passenger-fname element
-        page.click("#passenger-fname");
-
-        // Type "Test" into the passenger-fname input
-        page.fill("#passenger-fname", firstName);
-
-        // Type "Tester" into the passenger-lname input
-        page.fill("#passenger-lname", lastName);
-
-        // Click on the passenger-date element
-        page.click("#passenger-date");
-
-        // Type the date into the passenger-date input
-        page.fill("#passenger-date", "06/09/1985");
-
-        // Click on the input-control element
-        page.click(".input-control");
-
-        // Find and hover over the items-list element
-        Locator itemsList = page.locator(".items-list > .ng-star-inserted:first-of-type");
-        itemsList.click();
-
-        // Enter an email in the contact-info-input form control
-        page.fill(".contact-info-input > .form-control", email);
-
-        // Click on the submit-button element
-        page.click(".submit-button > .ng-star-inserted");
+        passengersDetailsPage.passengerPrefixDropdown("Mr");
+        passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
+        passengersDetailsPage.enterbirthDate("06/09/1985");
+        passengersDetailsPage.choosePassengerCountry();
+        passengersDetailsPage.enterEmeil(email);
+        passengersDetailsPage.passangersDataSubmitButtonClick();
 
         // Sleep for 7 seconds
         page.waitForTimeout(7000);
 
-        // Switch to frame by index
-        Frame frame1 = page.frames().get(1);
-
-        // Locate the card number input field within frame1
-        Locator cardNumberInput = frame1.locator("id=encryptedCardNumber").first();
-
-        // Click the card number input field and enter the card number
-        cardNumberInput.click();
-        cardNumberInput.type("5577 0000 5577 0004");
-
-        // Switch back to the main frame
-        page.mainFrame();
-
-        Frame frame2 = page.frames().get(2);
-        Locator expiryDateInput = frame2.locator("id=encryptedExpiryDate").first();
-        expiryDateInput.type("03/30");
-
-        // Switch back to the main frame
-        page.locator("html").click();
-
-        Frame frame3 = page.frames().get(3);
-        Locator cvcCodeInput = frame3.locator("id=encryptedSecurityCode").first();
-        cvcCodeInput.type("737");
-
-        // Switch back to the main frame
-        page.locator("html").click();
-
-        page.locator(".adyen-checkout__input--text").click();
-        page.locator(".adyen-checkout__input--text").fill("Customer");
-
-        // Click on pay button
-        page.locator(".adyen-checkout__button__content").click();
+        summaryPage.completingAdyenForm();
 
         // Find the h3 element and get its text
         String actualHeaderText = page.locator("css=h3").textContent();
