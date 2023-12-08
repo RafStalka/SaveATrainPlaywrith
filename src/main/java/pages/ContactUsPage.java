@@ -3,6 +3,9 @@ package pages;
 import com.microsoft.playwright.Page;
 import constans.AppConstants;
 
+/**
+ * The ContactUsPage class represents a page that allows users to navigate to the contact us page.
+ */
 public class ContactUsPage {
     private final Page page;
 
