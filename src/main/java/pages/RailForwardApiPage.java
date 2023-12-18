@@ -3,22 +3,37 @@ package pages;
 import com.microsoft.playwright.Page;
 import constans.AppConstants;
 
+/**
+ * This class represents a Rail Forward API page.
+ */
 public class RailForwardApiPage {
 
-    public Page page;
+    public static final String ID_PRODUCTS = "id=products";
+    public static final String ID_RAIL_FORWARD_API = "id=rail-forward-api";
 
-    public RailForwardApiPage(Page page) {
+    private final Page page;
+
+    public RailForwardApiPage(final Page page) {
         this.page = page;
     }
 
     public String getRailForwardApiPageTitle() {
-        page.navigate(AppConstants.SAT_HOME_PAGE);
-        // User clicks on products tab
-        page.click("id=products");
-        // User clicks on rail book api
-        page.click("id=rail-forward-api");
-        String title =  page.title();
+        navigateToRailForwardApiPage();
+        final String title = page.title();
         System.out.println("page title: " + title);
         return title;
+    }
+
+    public String getRailForwardApiPageURL() {
+        navigateToRailForwardApiPage();
+        final String url = page.url();
+        System.out.println("page url : " + url);
+        return url;
+    }
+
+    private void navigateToRailForwardApiPage() {
+        page.navigate(AppConstants.SAT_HOME_PAGE);
+        page.click(ID_PRODUCTS);
+        page.click(ID_RAIL_FORWARD_API);
     }
 }
