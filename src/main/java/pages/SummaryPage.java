@@ -7,6 +7,14 @@ import com.microsoft.playwright.Page;
 import java.util.concurrent.TimeoutException;
 
 public class SummaryPage {
+    private static final String ADYEN_CARD_NUMBER = "id=encryptedCardNumber";
+    private static final String ADYEN_EXPIRY_DATE = "id=encryptedExpiryDate";
+    private static final String ADYEN_FORM_SC = "id=encryptedSecurityCode";
+    private static final String ADYEN_CHECKOUT = ".adyen-checkout__input--text";
+    private static final String ADYEN_BUTTON_CONTENT = ".adyen-checkout__button__content";
+
+    private static final String SUCCESS_URL = "css=.success-url > p:nth-child(3)";
+    private static final String SUMMARY_PAGE_EMAIL = "css=.order-email > .property-value";
     private final Page page;
 
     public SummaryPage(Page page) {
@@ -14,15 +22,15 @@ public class SummaryPage {
     }
 
     public void completingAdyenForm() {
-        enterPaymentDetailsInFrame(1, "id=encryptedCardNumber", "5577 0000 5577 0004");
-        enterPaymentDetailsInFrame(2, "id=encryptedExpiryDate", "03/30");
-        enterPaymentDetailsInFrame(3, "id=encryptedSecurityCode", "737");
+        enterPaymentDetailsInFrame(1, ADYEN_CARD_NUMBER, "5577 0000 5577 0004");
+        enterPaymentDetailsInFrame(2, ADYEN_EXPIRY_DATE, "03/30");
+        enterPaymentDetailsInFrame(3, ADYEN_FORM_SC, "737");
 
-        page.locator(".adyen-checkout__input--text").click();
-        page.locator(".adyen-checkout__input--text").fill("Customer");
+        page.locator(ADYEN_CHECKOUT).click();
+        page.locator(ADYEN_CHECKOUT).fill("Customer");
 
         // Click on pay button
-        page.locator(".adyen-checkout__button__content").click();
+        page.locator(ADYEN_BUTTON_CONTENT).click();
 
         // Sleep for 30 seconds
         page.waitForTimeout(45000);
@@ -47,19 +55,19 @@ public class SummaryPage {
     }
 
     public String getConfirmationCode() {
-        return getTextContent("css=.success-url > p:nth-child(3)");
+        return getTextContent(SUCCESS_URL);
     }
 
     public String getSummaryPageEmail() {
-        return getTextContent("css=.order-email > .property-value");
+        return getTextContent(SUMMARY_PAGE_EMAIL);
     }
 
     public String getDepartureStation_SummaryPage() {
-        return getTextContent("css=.trip-route > span:nth-child(3)");
+        return getTextContent("css=.trip-route > span:nth-child(1)");
     }
 
     public String getArrivalStation_SummaryPage() {
-        return getTextContent("css=.trip-route > span:nth-child(1)");
+        return getTextContent("css=.trip-route > span:nth-child(3)");
     }
 
     public String getDepartureDate_SummaryPage() {

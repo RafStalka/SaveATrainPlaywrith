@@ -5,9 +5,8 @@ import com.microsoft.playwright.Page;
 public class ResultsPage {
     private static final String RESULT_1_ID_SELECTOR = "id=result-1";
     private static final String PROCEED_BUTTON_SELECTOR = ".proceed-btn";
-    private static final String RESULT_1_SELECTOR = "#result-1";
-    private static final String DEPARTURE_STATION_XPATH = "xpath=//*[@id='result-01']/div/div[1]/div[2]/div[1]/div[2]/div/div[2]/p[2]";
-    private static final String ARRIVAL_STATION_XPATH = "xpath=//*[@id='result-01']/div/div[1]/div[2]/div[1]/div[2]/div/div[3]/p[2]";
+    private static final String DEPARTURE_STATION_ID = "id=departure-transfer-station-name-1-1";
+    private static final String ARRIVAL_STATION_ID = "id=arrival-transfer-station-name-1-1";
     private static final String PRICE_1_ID_SELECTOR = "id=price-1";
     private static final String DEPARTURE_DATE_1_ID_SELECTOR = "id=departure-d-1";
     private static final String DEPARTURE_TIME_1_ID_SELECTOR = "id=departure-t-1";
@@ -32,7 +31,7 @@ public class ResultsPage {
     }
 
     public void selectSecondSideConnection() {
-        page.locator(RESULT_1_SELECTOR).getByText(SELECT_TEXT).click();
+        page.locator(RESULT_1_ID_SELECTOR).getByText(SELECT_TEXT).click();
     }
 
     public void proceedSecondSideConnection() {
@@ -40,11 +39,11 @@ public class ResultsPage {
     }
 
     public String getDepartureStation_ResultPage() {
-        return getTextContent(DEPARTURE_STATION_XPATH);
+        return getTextContent(DEPARTURE_STATION_ID);
     }
 
     public String getArrivalStation_ResultPage() {
-        return getTextContent(ARRIVAL_STATION_XPATH);
+        return getTextContent(ARRIVAL_STATION_ID);
     }
 
     public String getPriceFirstResult_ResultPage() {
