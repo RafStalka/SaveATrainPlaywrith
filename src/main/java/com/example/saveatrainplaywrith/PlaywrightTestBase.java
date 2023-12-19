@@ -7,6 +7,8 @@ import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestWatcher;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import pages.*;
 
 import java.io.IOException;
@@ -16,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
+@Execution(ExecutionMode.CONCURRENT)
 @ExtendWith(PlaywrightTestBase.SaveArtifactsOnTestFailed.class)
 public class PlaywrightTestBase {
 
@@ -26,6 +29,14 @@ public class PlaywrightTestBase {
     protected RailBookApiProductPage railBookApiProductPage;
     protected RailForwardApiPage railForwardApiPage;
     protected RailAgentDashboardProductPage railAgentDashboardProductPage;
+    protected WhiteLabelProductPage whiteLabelProductPage;
+    protected RailAffiliateProductPage railAffiliateProductPage;
+    protected EurailProductPage eurailProductPage;
+    protected ManageBookingsHelpTabPage manageBookingsHelpTabPage;
+    protected FAQHelpTabPage faqHelpTabPage;
+    protected TermsAndConditionsPage termsAndConditionsPage;
+    protected PrivacyPolicyPage privacyPolicyPage;
+    protected ProductsPage productsPage;
     protected ResultsPage resultsPage;
     protected PassengersDetailsPage passengersDetailsPage;
     protected SummaryPage summaryPage;
