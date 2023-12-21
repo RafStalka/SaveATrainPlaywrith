@@ -1,18 +1,12 @@
 package com.example.saveatrainplaywrith;
 
 import com.github.javafaker.Faker;
-import com.microsoft.playwright.ElementHandle;
-import com.microsoft.playwright.Frame;
-import com.microsoft.playwright.Locator;
-import com.microsoft.playwright.options.SelectOption;
-import constans.AppConstants;
 import io.qameta.allure.Description;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import pages.MainPage;
@@ -22,6 +16,10 @@ import pages.SummaryPage;
 
 import static io.qameta.allure.SeverityLevel.CRITICAL;
 
+/**
+ * The SaveATrain_e2e_Tests class represents a set of end-to-end tests for the Save A Train application.
+ * It extends the PlaywrightTestBase class.
+ */
 public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
     @BeforeEach
     public void setUp() {

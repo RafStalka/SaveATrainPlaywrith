@@ -1,7 +1,5 @@
 package com.example.saveatrainplaywrith;
 
-import com.microsoft.playwright.ElementHandle;
-import com.microsoft.playwright.Locator;
 import constans.AppConstants;
 import io.qameta.allure.Description;
 import io.qameta.allure.Owner;
@@ -17,6 +15,10 @@ import pages.*;
 import static io.qameta.allure.SeverityLevel.CRITICAL;
 import static io.qameta.allure.SeverityLevel.NORMAL;
 
+/**
+ * This class contains regression tests for the Save A Train application. It extends the PlaywrightTestBase class.
+ * The regression tests cover various functionalities and UI elements of the application.
+ */
 public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @BeforeEach
     public void setUp() {
