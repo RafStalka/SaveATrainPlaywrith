@@ -53,20 +53,17 @@ public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
         mainPage.departureDate();
         mainPage.findMyTicketButtonClick();
 
-        resultsPage.selectFirstResult();
+        resultsPage.selectFirstOption();
 
-        // On this moment we can check checkboxes functionality
-        //page.check("lokator"); - zaznaczenie checkboxa
-        //page.uncheck("lokator"); - odznaczenie checkboxa
+        resultsPage.proceed();
 
-        passengersDetailsPage.passengerPrefixDropdown("Mr");
+        //passengersDetailsPage.passengerPrefixDropdown("Mr");
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
         passengersDetailsPage.enterbirthDate("06/09/1985");
         passengersDetailsPage.choosePassengerCountry();
-        passengersDetailsPage.chooseAislePlace();
-        passengersDetailsPage.enterEmeil(email);
-        passengersDetailsPage.passangersDataSubmitButtonClick();
-
+        //passengersDetailsPage.chooseAislePlace();
+        //passengersDetailsPage.enterEmeil(email);
+        //passengersDetailsPage.passangersDataSubmitButtonClick();
         // Sleep for 15 seconds
         page.waitForTimeout(15000);
 
@@ -75,42 +72,8 @@ public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
         // Find the h3 element and get its text
         String actualHeaderText = page.locator("css=h3").textContent();
 
-        // Locate the element from which you want to extract text
-        ElementHandle ticketElement = page.querySelector(".tickets-order-data");
-
-        if (ticketElement != null) {
-            // Use the textContent method to get the text from the element
-            String elementText = ticketElement.textContent();
-
-            // Print the text to the console
-            System.out.println(elementText);
-        } else {
-            System.err.println("Element not found");
-        }
-
-        // Locate the element from which you want to extract text
-        ElementHandle orderElement = page.querySelector(".common-order-data");
-
-        if (orderElement != null) {
-            // Use the textContent method to get the text from the element
-            String elementText = orderElement.textContent();
-
-            // Print the text to the console
-            System.out.println(elementText);
-        } else {
-            System.err.println("Element not found");
-        }
-
         // Use Assertions for the assertion
         Assertions.assertEquals("Thank you for purchase!", actualHeaderText);
-
-
-        // trip rout //p[@class='trip-route']
-        // passenger info //span[@class='property-value']
-        // price //span[@class='property-value price-value']
-        // seat reserve fee //span[@class='property-value outbound-seat-fee-value']
-        // final price //span[@class='property-value total-discounted-price-value']
-        // order data //div[@class='common-order-data']
 
     }
 
@@ -128,9 +91,9 @@ public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
         mainPage.addOneYouthPassengerIn_17_YearsAge("17");
         mainPage.findMyTicketButtonClick();
 
-        resultsPage.selectFirstResult();
+        //resultsPage.selectFirstResult();
 
-        passengersDetailsPage.passengerPrefixDropdown("Mr");
+        //passengersDetailsPage.passengerPrefixDropdown("Mr");
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
         passengersDetailsPage.enterbirthDate("12/07/1985");
         passengersDetailsPage.choosePassengerCountry();
@@ -145,11 +108,11 @@ public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
         passengersDetailsPage.enter_YouthPassenger_birthDate("01/01/2007");
         passengersDetailsPage.choose_YouthPassenger_Country();
 
-        passengersDetailsPage.chooseAislePlace();
+        //passengersDetailsPage.chooseAislePlace();
 
-        passengersDetailsPage.enterEmeil(email);
+        //passengersDetailsPage.enterEmeil(email);
 
-        passengersDetailsPage.passangersDataSubmitButtonClick();
+        //passengersDetailsPage.passangersDataSubmitButtonClick();
 
         // Sleep for 15 seconds
         page.waitForTimeout(15000);
@@ -170,18 +133,15 @@ public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
         mainPage.departureDate();
         mainPage.findMyTicketButtonClick();
 
-        resultsPage.selectFirstResult();
+        //resultsPage.selectFirstResult();
 
-        // On this moment we can check checkboxes functionality
-        //page.check("lokator"); - zaznaczenie checkboxa
-        //page.uncheck("lokator"); - odznaczenie checkboxa
 
-        passengersDetailsPage.passengerPrefixDropdown("Mr");
+        //passengersDetailsPage.passengerPrefixDropdown("Mr");
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
         passengersDetailsPage.enterbirthDate("06/09/1985");
         passengersDetailsPage.choosePassengerCountry();
-        passengersDetailsPage.enterEmeil(email);
-        passengersDetailsPage.passangersDataSubmitButtonClick();
+        //passengersDetailsPage.enterEmeil(email);
+        //passengersDetailsPage.passangersDataSubmitButtonClick();
 
         // Sleep for 7 seconds
         page.waitForTimeout(7000);
@@ -190,19 +150,6 @@ public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
 
         // Find the h3 element and get its text
         String actualHeaderText = page.locator("css=h3").textContent();
-
-        // Locate the element from which you want to extract text
-        ElementHandle element = page.querySelector(".common-order-data");
-
-        if (element != null) {
-            // Use the textContent method to get the text from the element
-            String elementText = element.textContent();
-
-            // Print the text to the console
-            System.out.println(elementText);
-        } else {
-            System.err.println("Element not found");
-        }
 
         // Use Assertions for the assertion
         Assertions.assertEquals("Thank you for purchase!", actualHeaderText);

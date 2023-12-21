@@ -2,9 +2,7 @@ package com.example.saveatrainplaywrith;
 
 import com.github.javafaker.Faker;
 import com.microsoft.playwright.ElementHandle;
-import com.microsoft.playwright.Frame;
 import com.microsoft.playwright.Locator;
-import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.SelectOption;
 import constans.AppConstants;
 import io.qameta.allure.Description;
@@ -20,7 +18,6 @@ import pages.ResultsPage;
 import pages.SummaryPage;
 
 import static io.qameta.allure.SeverityLevel.CRITICAL;
-import static io.qameta.allure.SeverityLevel.MINOR;
 
 public class SaveATrain_e2e_ACP_Tests extends PlaywrightTestBase {
 
@@ -32,8 +29,6 @@ public class SaveATrain_e2e_ACP_Tests extends PlaywrightTestBase {
         resultsPage = new ResultsPage(page);
         summaryPage = new SummaryPage(page);
     }
-    String departureDateDay = "7";
-    String returnDateDay = "7";
     Faker faker = new Faker();
     String firstName = faker.name().firstName();
     String firstNameSecondPassenger = faker.name().firstName();
@@ -61,57 +56,27 @@ public class SaveATrain_e2e_ACP_Tests extends PlaywrightTestBase {
         mainPage.departureDate();
         mainPage.findMyTicketButtonClick();
 
-        resultsPage.selectFirstResult();
+        //resultsPage.selectFirstResult();
 
-        // On this moment we can check checkboxes functionality
-        //page.check("lokator"); - zaznaczenie checkboxa
-        //page.uncheck("lokator"); - odznaczenie checkboxa
-
-        passengersDetailsPage.passengerPrefixDropdown("Mr");
+        //passengersDetailsPage.passengerPrefixDropdown("Mr");
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
         passengersDetailsPage.enterbirthDate("06/09/1985");
         passengersDetailsPage.choosePassengerCountry();
         passengersDetailsPage.choosePassengerNationality();
         passengersDetailsPage.choosePassengerBirthCountry();
         passengersDetailsPage.enterPassportNumber(passportNumber);
-        passengersDetailsPage.chooseAislePlace();
+        //passengersDetailsPage.chooseAislePlace();
         passengersDetailsPage.enterCity(city);
         passengersDetailsPage.enterStreet(street);
         passengersDetailsPage.enterPostalCode(postalCode);
         passengersDetailsPage.enterMobilePhone(phoneNumber);
-        passengersDetailsPage.enterEmeil(email);
-        passengersDetailsPage.passangersDataSubmitButtonClick();
+        //passengersDetailsPage.enterEmeil(email);
+        //passengersDetailsPage.passangersDataSubmitButtonClick();
 
         summaryPage.completingAdyenForm();
 
         // Find the h3 element and get its text
         String actualHeaderText = page.locator("css=h3").textContent();
-
-        // Locate the element from which you want to extract text
-        ElementHandle ticketElement = page.querySelector(".tickets-order-data");
-
-        if (ticketElement != null) {
-            // Use the textContent method to get the text from the element
-            String elementText = ticketElement.textContent();
-
-            // Print the text to the console
-            System.out.println(elementText);
-        } else {
-            System.err.println("Element not found");
-        }
-
-        // Locate the element from which you want to extract text
-        ElementHandle orderElement = page.querySelector(".common-order-data");
-
-        if (orderElement != null) {
-            // Use the textContent method to get the text from the element
-            String elementText = orderElement.textContent();
-
-            // Print the text to the console
-            System.out.println(elementText);
-        } else {
-            System.err.println("Element not found");
-        }
 
         // Use Assertions for the assertion
         Assertions.assertEquals("Thank you for purchase!", actualHeaderText);
@@ -132,14 +97,11 @@ public class SaveATrain_e2e_ACP_Tests extends PlaywrightTestBase {
         mainPage.addOneYouthPassengerIn_17_YearsAge("17");
         mainPage.findMyTicketButtonClick();
 
-        resultsPage.selectFirstResult();
+        //resultsPage.selectFirstResult();
         resultsPage.selectSecondSideConnection();
 
-        // On this moment we can check checkboxes functionality
-        //page.check("lokator"); - zaznaczenie checkboxa
-        //page.uncheck("lokator"); - odznaczenie checkboxa
 
-        passengersDetailsPage.passengerPrefixDropdown("Mr");
+        //passengersDetailsPage.passengerPrefixDropdown("Mr");
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
         passengersDetailsPage.enterbirthDate("06/09/1985");
         // Click on the input-control passenger country element first Adult passenger
@@ -151,23 +113,6 @@ public class SaveATrain_e2e_ACP_Tests extends PlaywrightTestBase {
         // Enter passport number first Adult passenger
         passengersDetailsPage.enterPassportNumber(passportNumber);
 
-
-        /*// Click on the input-control passenger country element first Adult passenger
-        page.getByPlaceholder("Select country").first().click();
-        page.getByRole(AriaRole.MAIN).getByRole(AriaRole.LIST).getByText("Afghanistan").click();
-
-        // Click and select on the input-control nationality element first Adult passenger
-        page.click(".nationality-country .input-control");
-        page.getByRole(AriaRole.MAIN).getByRole(AriaRole.LIST).getByText("Afghanistan").click();
-
-        // Click and select on the input-control birth country element first Adult passenger
-        page.click(".birth-country .input-control");
-        page.getByRole(AriaRole.MAIN).getByRole(AriaRole.LIST).getByText("Afghanistan").click();
-
-        // Enter passport number first Adult passenger
-        page.locator("sat-passenger-info").filter(new Locator.FilterOptions().setHasText("Title Mr Mrs Miss Ms clearAfghanistanclearAfghanistanclearAfghanistan")).getByPlaceholder("Passport Number").click();
-        page.locator("sat-passenger-info").filter(new Locator.FilterOptions().setHasText("Title Mr Mrs Miss Ms clearAfghanistanclearAfghanistanclearAfghanistan")).getByPlaceholder("Passport Number").fill(passportNumber);
-*/
         // Click on the passenger male dropdown and select - Mrs second Adult passenger
         page.locator("#passenger-prefix").nth(1).selectOption("Mrs");
 
@@ -282,29 +227,6 @@ public class SaveATrain_e2e_ACP_Tests extends PlaywrightTestBase {
         // Locate the element from which you want to extract text
         ElementHandle ticketElement = page.querySelector(".tickets-order-data");
 
-        if (ticketElement != null) {
-            // Use the textContent method to get the text from the element
-            String elementText = ticketElement.textContent();
-
-            // Print the text to the console
-            System.out.println(elementText);
-        } else {
-            System.err.println("Element not found");
-        }
-
-        // Locate the element from which you want to extract text
-        ElementHandle orderElement = page.querySelector(".common-order-data");
-
-        if (orderElement != null) {
-            // Use the textContent method to get the text from the element
-            String elementText = orderElement.textContent();
-
-            // Print the text to the console
-            System.out.println(elementText);
-        } else {
-            System.err.println("Element not found");
-        }
-
         // Use Assertions for the assertion
         Assertions.assertEquals("Thank you for purchase!", actualHeaderText);
 
@@ -350,10 +272,6 @@ public class SaveATrain_e2e_ACP_Tests extends PlaywrightTestBase {
 
         // Selects a train
         page.click("id=result-1");
-
-        // On this moment we can check checkboxes functionality
-        //page.check("lokator"); - zaznaczenie checkboxa
-        //page.uncheck("lokator"); - odznaczenie checkboxa
 
 
         // Then proceeds booking
@@ -443,28 +361,6 @@ public class SaveATrain_e2e_ACP_Tests extends PlaywrightTestBase {
         // Locate the element from which you want to extract text
         ElementHandle ticketElement = page.querySelector(".tickets-order-data");
 
-        if (ticketElement != null) {
-            // Use the textContent method to get the text from the element
-            String elementText = ticketElement.textContent();
-
-            // Print the text to the console
-            System.out.println(elementText);
-        } else {
-            System.err.println("Element not found");
-        }
-
-        // Locate the element from which you want to extract text
-        ElementHandle orderElement = page.querySelector(".common-order-data");
-
-        if (orderElement != null) {
-            // Use the textContent method to get the text from the element
-            String elementText = orderElement.textContent();
-
-            // Print the text to the console
-            System.out.println(elementText);
-        } else {
-            System.err.println("Element not found");
-        }
 
         // Use Assertions for the assertion
         Assertions.assertEquals("Thank you for purchase!", actualHeaderText);
