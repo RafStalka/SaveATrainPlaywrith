@@ -73,12 +73,9 @@
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
-                    <systemProperties>
-                        <property>
-                            <name>allure.results.directory</name>
-                            <value>${project.build.directory}/target/allure-results</value>
-                        </property>
-                    </systemProperties>
+                    <systemPropertyVariables>
+                            <my.property>${project.build.directory}/target/allure-results</my.property>
+                    </systemPropertyVariables>
                 </configuration>
                 <dependencies>
                     <dependency>
