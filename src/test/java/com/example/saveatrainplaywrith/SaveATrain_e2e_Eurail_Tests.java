@@ -35,23 +35,10 @@ public class SaveATrain_e2e_Eurail_Tests extends PlaywrightTestBase {
 
     @Test
     public void e2e_SAT_EURAIL_test() {
-        page.navigate(AppConstants.SAT_HOME_PAGE);
+        mainPage.performSearch();
+        mainPage.passBookingTabClick();
+        mainPage.fillCountryToVisit("Global Pass");
 
-        // Click on the search button
-        page.click(".search-btn");
-        page.click("id=pass-booking-tab");
-
-        // Find and interact with the elements
-        Locator inputElement = page.locator(".input-group:nth-child(2) .input-control");
-        inputElement.click();
-        inputElement.type("Global Pass");
-
-        Locator itemsListElement = page.locator(".items-list > .ng-star-inserted");
-        itemsListElement.hover();
-        itemsListElement.click();
-
-        Locator invalidElement = page.locator(".ng-invalid > .autocomplete-container .input-control");
-        invalidElement.hover();
 
         Locator formElement = page.locator(".pass-booking-content-form");
         formElement.click();
@@ -109,38 +96,7 @@ public class SaveATrain_e2e_Eurail_Tests extends PlaywrightTestBase {
         // Sleep for 7 seconds
         page.waitForTimeout(7000);
 
-        // Switch to frame by index
-        Frame frame1 = page.frames().get(1);
-
-        // Locate the card number input field within frame1
-        Locator cardNumberInput = frame1.locator("id=encryptedCardNumber").first();
-
-        // Click the card number input field and enter the card number
-        cardNumberInput.click();
-        cardNumberInput.type("5577 0000 5577 0004");
-
-        // Switch back to the main frame
-        page.mainFrame();
-
-        Frame frame2 = page.frames().get(2);
-        Locator expiryDateInput = frame2.locator("id=encryptedExpiryDate").first();
-        expiryDateInput.type("03/30");
-
-        // Switch back to the main frame
-        page.locator("html").click();
-
-        Frame frame3 = page.frames().get(3);
-        Locator cvcCodeInput = frame3.locator("id=encryptedSecurityCode").first();
-        cvcCodeInput.type("737");
-
-        // Switch back to the main frame
-        page.locator("html").click();
-
-        page.locator(".adyen-checkout__input--text").click();
-        page.locator(".adyen-checkout__input--text").fill("Customer");
-
-        // Click on pay button
-        page.locator(".adyen-checkout__button__content").click();
+        summaryPage.completingAdyenForm();
 
         // Sleep for 15 seconds
         page.waitForTimeout(15000);
