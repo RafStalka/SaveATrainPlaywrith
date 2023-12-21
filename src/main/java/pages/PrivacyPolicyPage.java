@@ -30,4 +30,10 @@ public class PrivacyPolicyPage {
     private void printPageTitle(String title) {
         System.out.println("page title: " + title);
     }
+    public String getPrivacyPolicyURL() {
+        navigateToPrivacyPolicyPage();
+        String url = page.url();
+        System.out.println("page url : " + url);
+        return url;
+    }
 }

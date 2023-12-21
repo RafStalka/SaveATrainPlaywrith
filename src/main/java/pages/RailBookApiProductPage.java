@@ -32,7 +32,7 @@ public class RailBookApiProductPage {
         return title;
     }
 
-    public String getRailSearchApiPageURL() {
+    public String getRailBookApiPageURL() {
         Page page = navigateToRailBookApiPage();
         String url = page.url();
         System.out.println("page url : " + url);
