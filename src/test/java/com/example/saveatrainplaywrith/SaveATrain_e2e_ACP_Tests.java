@@ -97,8 +97,10 @@ public class SaveATrain_e2e_ACP_Tests extends PlaywrightTestBase {
         mainPage.addOneYouthPassengerIn_17_YearsAge("17");
         mainPage.findMyTicketButtonClick();
 
-        //resultsPage.selectFirstResult();
+        resultsPage.selectFirstOption();
         resultsPage.selectSecondSideConnection();
+        resultsPage.proceed();
+
 
 
         //passengersDetailsPage.passengerPrefixDropdown("Mr");

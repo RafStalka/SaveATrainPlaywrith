@@ -57,23 +57,23 @@ public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
 
         resultsPage.proceed();
 
-        //passengersDetailsPage.passengerPrefixDropdown("Mr");
+        passengersDetailsPage.selectFirstPassengerPrefix("Mr");
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
         passengersDetailsPage.enterbirthDate("06/09/1985");
         passengersDetailsPage.choosePassengerCountry();
-        //passengersDetailsPage.chooseAislePlace();
-        //passengersDetailsPage.enterEmeil(email);
-        //passengersDetailsPage.passangersDataSubmitButtonClick();
+        passengersDetailsPage.selectDepartureAisleOption();
+        passengersDetailsPage.enterEmail(email);
+        passengersDetailsPage.passengersDataSubmitButtonClick();
         // Sleep for 15 seconds
         page.waitForTimeout(15000);
 
         summaryPage.completingAdyenForm();
 
         // Find the h3 element and get its text
-        String actualHeaderText = page.locator("css=h3").textContent();
+        String actualHeaderText = page.locator("css=h3").textContent().trim();
 
         // Use Assertions for the assertion
-        Assertions.assertEquals("Thank you for purchase!", actualHeaderText);
+        Assertions.assertEquals("Please, save the following information about your order:", actualHeaderText);
 
     }
 
@@ -91,9 +91,11 @@ public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
         mainPage.addOneYouthPassengerIn_17_YearsAge("17");
         mainPage.findMyTicketButtonClick();
 
-        //resultsPage.selectFirstResult();
+        resultsPage.selectFirstOption();
 
-        //passengersDetailsPage.passengerPrefixDropdown("Mr");
+        resultsPage.proceed();
+
+        passengersDetailsPage.selectFirstPassengerPrefix("Mr");
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
         passengersDetailsPage.enterbirthDate("12/07/1985");
         passengersDetailsPage.choosePassengerCountry();
@@ -108,11 +110,11 @@ public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
         passengersDetailsPage.enter_YouthPassenger_birthDate("01/01/2007");
         passengersDetailsPage.choose_YouthPassenger_Country();
 
-        //passengersDetailsPage.chooseAislePlace();
+        passengersDetailsPage.selectDepartureAisleOption();
 
-        //passengersDetailsPage.enterEmeil(email);
+        passengersDetailsPage.enterEmail(email);
 
-        //passengersDetailsPage.passangersDataSubmitButtonClick();
+        passengersDetailsPage.passengersDataSubmitButtonClick();
 
         // Sleep for 15 seconds
         page.waitForTimeout(15000);
@@ -133,15 +135,16 @@ public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
         mainPage.departureDate();
         mainPage.findMyTicketButtonClick();
 
-        //resultsPage.selectFirstResult();
+        resultsPage.selectFirstOption();
 
+        resultsPage.proceed();
 
-        //passengersDetailsPage.passengerPrefixDropdown("Mr");
+        passengersDetailsPage.selectFirstPassengerPrefix("Mr");
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
         passengersDetailsPage.enterbirthDate("06/09/1985");
         passengersDetailsPage.choosePassengerCountry();
-        //passengersDetailsPage.enterEmeil(email);
-        //passengersDetailsPage.passangersDataSubmitButtonClick();
+        passengersDetailsPage.enterEmail(email);
+        passengersDetailsPage.passengersDataSubmitButtonClick();
 
         // Sleep for 7 seconds
         page.waitForTimeout(7000);
@@ -149,10 +152,10 @@ public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
         summaryPage.completingAdyenForm();
 
         // Find the h3 element and get its text
-        String actualHeaderText = page.locator("css=h3").textContent();
+        String actualHeaderText = page.locator("css=h3").textContent().trim();
 
         // Use Assertions for the assertion
-        Assertions.assertEquals("Thank you for purchase!", actualHeaderText);
+        Assertions.assertEquals("Please, save the following information about your order:", actualHeaderText);
 
     }
 }

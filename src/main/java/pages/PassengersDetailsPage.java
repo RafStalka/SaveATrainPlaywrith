@@ -7,6 +7,8 @@ import com.microsoft.playwright.options.SelectOption;
 
 public class PassengersDetailsPage {
     private Page page;
+    private final static String PASSENGER_DROPDOWN_SELECTOR = ".outbound-seat-select > .form-control";
+    private final static String NG_PRISTINE_SELECTOR = ".ng-pristine";
 
     public PassengersDetailsPage(Page page) {
         this.page = page;
@@ -110,14 +112,16 @@ public class PassengersDetailsPage {
         page.fill("id=passenger-passport", passportNumber);
     }
 
-    public void chooseDepartureAislePlace() {
-        // Select "Aisle" from the dropdown
-        Locator passengerTypeDropdown = page.locator(".outbound-seat-select > .form-control");
-        if (passengerTypeDropdown.isVisible()) {
-            passengerTypeDropdown.selectOption(new SelectOption().setIndex(1));
+    public void selectDepartureAisleOption() {
+        Locator passengerDropdown = page.locator(PASSENGER_DROPDOWN_SELECTOR);
+        selectDropdownOptionByIndex(passengerDropdown, 1);
+        page.click(NG_PRISTINE_SELECTOR);
+    }
+
+    private void selectDropdownOptionByIndex(Locator locator, int index) {
+        if (locator.isVisible()) {
+            locator.selectOption(new SelectOption().setIndex(index));
         }
-        // Click on the ng-pristine element
-        page.click(".ng-pristine");
     }
 
     public void enterCity(String city) {
