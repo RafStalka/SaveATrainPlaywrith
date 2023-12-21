@@ -151,16 +151,6 @@ public class SaveATrain_e2e_Eurail_Tests extends PlaywrightTestBase {
         // Locate the element from which you want to extract text
         ElementHandle element = page.querySelector(".common-order-data");
 
-        if (element != null) {
-            // Use the textContent method to get the text from the element
-            String elementText = element.textContent();
-
-            // Print the text to the console
-            System.out.println(elementText);
-        } else {
-            System.err.println("Element not found");
-        }
-
         // Use Assertions for the assertion
         Assertions.assertEquals("Thank you for purchase!", actualHeaderText);
     }
