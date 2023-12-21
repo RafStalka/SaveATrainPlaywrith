@@ -13,7 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.target>19</maven.compiler.target>
         <maven.compiler.source>19</maven.compiler.source>
-        <junit.version>5.9.3</junit.version>
+        <junit.version>5.10.0</junit.version>
         <aspectj.version>1.9.19</aspectj.version>
         <allure.version>2.22.0</allure.version>
     </properties>
@@ -52,12 +52,6 @@
             <groupId>com.microsoft.playwright</groupId>
             <artifactId>playwright</artifactId>
             <version>1.39.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.10.0</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.github.javafaker</groupId>
