@@ -53,7 +53,11 @@ public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
         mainPage.findMyTicketButtonClick();
 
         resultsPage.selectFirstOption();
-
+        String resultsPage_Departure = resultsPage.getDepartureStation_ResultPage();
+        String resultsPage_DepartureDate = resultsPage.getFirstResultDepartureDate_ResultPage();
+        String resultsPage_Arrival = resultsPage.getArrivalStation_ResultPage();
+        String resultsPage_ArrivalDate = resultsPage.getFirstResultArrivalDate_ResultPage();
+        String resultPage_ConnectionPrice = resultsPage.getPriceFirstResult_ResultPage();
         resultsPage.proceed();
 
         passengersDetailsPage.selectFirstPassengerPrefix("Mr");
@@ -92,7 +96,11 @@ public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
         mainPage.findMyTicketButtonClick();
 
         resultsPage.selectFirstOption();
-
+        String resultsPage_Departure = resultsPage.getDepartureStation_ResultPage();
+        String resultsPage_DepartureDate = resultsPage.getFirstResultDepartureDate_ResultPage();
+        String resultsPage_Arrival = resultsPage.getArrivalStation_ResultPage();
+        String resultsPage_ArrivalDate = resultsPage.getFirstResultArrivalDate_ResultPage();
+        String resultPage_ConnectionPrice = resultsPage.getPriceFirstResult_ResultPage();
         resultsPage.proceed();
 
         passengersDetailsPage.selectFirstPassengerPrefix("Mr");
@@ -137,7 +145,11 @@ public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
         mainPage.findMyTicketButtonClick();
 
         resultsPage.selectFirstOption();
-
+        String resultsPage_Departure = resultsPage.getDepartureStation_ResultPage();
+        String resultsPage_DepartureDate = resultsPage.getFirstResultDepartureDate_ResultPage();
+        String resultsPage_Arrival = resultsPage.getArrivalStation_ResultPage();
+        String resultsPage_ArrivalDate = resultsPage.getFirstResultArrivalDate_ResultPage();
+        String resultPage_ConnectionPrice = resultsPage.getPriceFirstResult_ResultPage();
         resultsPage.proceed();
 
         passengersDetailsPage.selectFirstPassengerPrefix("Mr");
