@@ -32,7 +32,7 @@ public class RailAgentDashboardProductPage {
         return title;
     }
 
-    public String getRailForwardApiPageURL() {
+    public String getRailAgentDashboardProductPageURL() {
         navigateAndClick();
         String url = page.url();
         System.out.println("page url : " + url);

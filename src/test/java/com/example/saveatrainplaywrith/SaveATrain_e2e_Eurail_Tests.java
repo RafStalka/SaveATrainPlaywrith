@@ -6,13 +6,19 @@ import com.microsoft.playwright.Frame;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.options.SelectOption;
 import constans.AppConstants;
+import io.qameta.allure.Description;
+import io.qameta.allure.Owner;
+import io.qameta.allure.Severity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pages.MainPage;
 import pages.PassengersDetailsPage;
 import pages.ResultsPage;
 import pages.SummaryPage;
+
+import static io.qameta.allure.SeverityLevel.CRITICAL;
 
 public class SaveATrain_e2e_Eurail_Tests extends PlaywrightTestBase {
     @BeforeEach
@@ -34,6 +40,10 @@ public class SaveATrain_e2e_Eurail_Tests extends PlaywrightTestBase {
     String email = "test_" + faker.name().firstName() + "@gmail.com";
 
     @Test
+    @DisplayName("EURAIL provider.")
+    @Description("Test checking e2e path on Eurail provider.")
+    @Severity(CRITICAL)
+    @Owner("Save A Train")
     public void e2e_SAT_EURAIL_test() {
         mainPage.performSearch();
         mainPage.passBookingTabClick();
