@@ -53,25 +53,28 @@ public class SaveATrain_e2e_ACP_Tests extends PlaywrightTestBase {
     public void e2e_SAT_ACPForSpain_test() {
         mainPage.complementingTheOriginStations("Madrid");
         mainPage.complementingTheDestinationStations("Leon");
+        mainPage.performSearch();
         mainPage.departureDate();
         mainPage.findMyTicketButtonClick();
 
-        //resultsPage.selectFirstResult();
+        resultsPage.selectFirstOption();
 
-        //passengersDetailsPage.passengerPrefixDropdown("Mr");
+        resultsPage.proceed();
+
+        passengersDetailsPage.selectFirstPassengerPrefix("Mr");
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
         passengersDetailsPage.enterbirthDate("06/09/1985");
         passengersDetailsPage.choosePassengerCountry();
         passengersDetailsPage.choosePassengerNationality();
         passengersDetailsPage.choosePassengerBirthCountry();
         passengersDetailsPage.enterPassportNumber(passportNumber);
-        //passengersDetailsPage.chooseAislePlace();
+        passengersDetailsPage.selectDepartureAisleOption();
         passengersDetailsPage.enterCity(city);
         passengersDetailsPage.enterStreet(street);
         passengersDetailsPage.enterPostalCode(postalCode);
         passengersDetailsPage.enterMobilePhone(phoneNumber);
-        //passengersDetailsPage.enterEmeil(email);
-        //passengersDetailsPage.passangersDataSubmitButtonClick();
+        passengersDetailsPage.enterEmail(email);
+        passengersDetailsPage.passengersDataSubmitButtonClick();
 
         summaryPage.completingAdyenForm();
 
@@ -91,6 +94,7 @@ public class SaveATrain_e2e_ACP_Tests extends PlaywrightTestBase {
     public void e2e_SAT_ACPRoundTrip_ForSpain_test() {
         mainPage.complementingTheOriginStations("Madrid");
         mainPage.complementingTheDestinationStations("Leon");
+        mainPage.performSearch();
         mainPage.departureDate();
         mainPage.returnDate();
         mainPage.addOneAdultPassenger();
@@ -103,7 +107,7 @@ public class SaveATrain_e2e_ACP_Tests extends PlaywrightTestBase {
 
 
 
-        //passengersDetailsPage.passengerPrefixDropdown("Mr");
+        passengersDetailsPage.selectFirstPassengerPrefix("Mr");
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
         passengersDetailsPage.enterbirthDate("06/09/1985");
         // Click on the input-control passenger country element first Adult passenger

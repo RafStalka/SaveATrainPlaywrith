@@ -115,9 +115,30 @@ public class MainPage {
         // Wait for auto-suggest and select the first option
         page.waitForSelector(".destination .ng-star-inserted:nth-child(1)");
         page.click(".destination .ng-star-inserted:nth-child(1)");
+    }
 
+    public void performSearch() {
         // Click on the search button
         page.click(".search-btn");
+    }
+
+    public void passBookingTabClick() {
+        page.click("id=pass-booking-tab");
+    }
+
+    public void fillCountryToVisit(String countryToVisit) {
+        Locator inputElement = page.locator(".input-group:nth-child(2) .input-control");
+        inputElement.click();
+        inputElement.fill(countryToVisit);
+        Locator itemsListElement = page.locator(".items-list > .ng-star-inserted");
+        itemsListElement.hover();
+        itemsListElement.click();
+        Locator invalidElement = page.locator(".ng-invalid > .autocomplete-container .input-control");
+        invalidElement.hover();
+    }
+
+    public void clickExchangeButton() {
+        page.locator("//i[contains(@class, 'md-36')]").click();
     }
 
     public void departureDate() {

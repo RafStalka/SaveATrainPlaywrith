@@ -50,6 +50,7 @@ public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
     public void e2e_SAT_NSI_test(String origin, String destination) {
         mainPage.complementingTheOriginStations(origin);
         mainPage.complementingTheDestinationStations(destination);
+        mainPage.performSearch();
         mainPage.departureDate();
         mainPage.findMyTicketButtonClick();
 
@@ -86,6 +87,7 @@ public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
     public void e2e_SAT_NSI_twoAdultsAndOneYouth_test(String origin, String destination) {
         mainPage.complementingTheOriginStations(origin);
         mainPage.complementingTheDestinationStations(destination);
+        mainPage.performSearch();
         mainPage.departureDate();
         mainPage.addOneAdultPassenger();
         mainPage.addOneYouthPassengerIn_17_YearsAge("17");
@@ -132,6 +134,7 @@ public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
     public void e2e_SAT_TI_test(String origin, String destination) {
         mainPage.complementingTheOriginStations(origin);
         mainPage.complementingTheDestinationStations(destination);
+        mainPage.performSearch();
         mainPage.departureDate();
         mainPage.findMyTicketButtonClick();
 
