@@ -19,6 +19,10 @@ import pages.SummaryPage;
 
 import static io.qameta.allure.SeverityLevel.CRITICAL;
 
+/**
+ * This class represents the end-to-end ACP provider tests for the Save A Train application.
+ * It extends the PlaywrightTestBase class and inherits its protected fields and methods.
+ */
 public class SaveATrain_e2e_ACP_Tests extends PlaywrightTestBase {
 
     @BeforeEach

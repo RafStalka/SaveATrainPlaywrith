@@ -20,6 +20,10 @@ import pages.SummaryPage;
 
 import static io.qameta.allure.SeverityLevel.CRITICAL;
 
+/**
+ * This class contains end-to-end tests for the SaveATrain website using Playwright framework.
+ * It extends the PlaywrightTestBase class, which provides the base setup and teardown methods for the tests.
+ */
 public class SaveATrain_e2e_Eurail_Tests extends PlaywrightTestBase {
     @BeforeEach
     public void setUp() {
