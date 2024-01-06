@@ -47,6 +47,7 @@ public class SaveATrain_e2e_Eurail_Tests extends PlaywrightTestBase {
     @Severity(CRITICAL)
     @Owner("Save A Train")
     public void e2e_SAT_EURAIL_test() {
+        mainPage.navigateToHomePage();
         mainPage.performSearch();
         mainPage.passBookingTabClick();
         mainPage.fillCountryToVisit("Global Pass");
@@ -106,7 +107,7 @@ public class SaveATrain_e2e_Eurail_Tests extends PlaywrightTestBase {
         page.click(".submit-button > .ng-star-inserted");
 
         // Sleep for 7 seconds
-        page.waitForTimeout(7000);
+        page.waitForTimeout(10000);
 
         summaryPage.completingAdyenForm();
 
