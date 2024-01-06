@@ -115,12 +115,9 @@ public class SaveATrain_e2e_Eurail_Tests extends PlaywrightTestBase {
         page.waitForTimeout(15000);
 
         // Find the h3 element and get its text
-        String actualHeaderText = page.locator("css=h3").textContent();
-
-        // Locate the element from which you want to extract text
-        ElementHandle element = page.querySelector(".common-order-data");
+        String actualHeaderText = page.locator("xpath=/html/body/sat-root/div/main/sat-order/div/div/div[2]/div/div/p[1]").textContent().trim();
 
         // Use Assertions for the assertion
-        Assertions.assertEquals("Thank you for purchase!", actualHeaderText);
+        Assertions.assertEquals("Your payment was successful", actualHeaderText);
     }
 }
