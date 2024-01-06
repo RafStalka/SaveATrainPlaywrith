@@ -46,6 +46,7 @@ public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
     @CsvSource({"Berlin Central Station, Hamburg Central Station",
             "Amsterdam Central Station, Antwerp Central Station"})
     public void e2e_SAT_NSI_test(String origin, String destination) {
+        mainPage.navigateToHomePage();
         mainPage.complementingTheOriginStations(origin);
         mainPage.complementingTheDestinationStations(destination);
         mainPage.performSearch();
@@ -87,6 +88,7 @@ public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
     @Owner("Save A Train")
     @CsvSource({"Berlin Central Station, Hamburg Central Station"})
     public void e2e_SAT_NSI_twoAdultsAndOneYouth_test(String origin, String destination) {
+        mainPage.navigateToHomePage();
         mainPage.complementingTheOriginStations(origin);
         mainPage.complementingTheDestinationStations(destination);
         mainPage.performSearch();
@@ -138,6 +140,7 @@ public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
     @CsvSource({"Rome Termini, Florence All Stations",
             "Milan Central Station, Rimini Central Station"})
     public void e2e_SAT_TI_test(String origin, String destination) {
+        mainPage.navigateToHomePage();
         mainPage.complementingTheOriginStations(origin);
         mainPage.complementingTheDestinationStations(destination);
         mainPage.performSearch();

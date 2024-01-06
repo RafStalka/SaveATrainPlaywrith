@@ -55,6 +55,7 @@ public class SaveATrain_e2e_ACP_Tests extends PlaywrightTestBase {
     @Severity(CRITICAL)
     @Owner("Save A Train")
     public void e2e_SAT_ACPForSpain_test() {
+        mainPage.navigateToHomePage();
         mainPage.complementingTheOriginStations("Madrid");
         mainPage.complementingTheDestinationStations("Leon");
         mainPage.performSearch();
@@ -96,6 +97,7 @@ public class SaveATrain_e2e_ACP_Tests extends PlaywrightTestBase {
     @Severity(CRITICAL)
     @Owner("Save A Train")
     public void e2e_SAT_ACPRoundTrip_ForSpain_test() {
+        mainPage.navigateToHomePage();
         mainPage.complementingTheOriginStations("Madrid");
         mainPage.complementingTheDestinationStations("Leon");
         mainPage.performSearch();

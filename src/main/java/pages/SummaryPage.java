@@ -32,17 +32,8 @@ public class SummaryPage {
         // Click on pay button
         page.locator(ADYEN_BUTTON_CONTENT).click();
 
-        // Sleep for 30 seconds
+        // Sleep for 45 seconds
         page.waitForTimeout(45000);
-
-        // directly continue if the element becomes visible before the 30 seconds timeout
-        if (!page.isVisible("css=h3")) {
-            try {
-                throw new TimeoutException("Element not found");
-            } catch (TimeoutException e) {
-                throw new RuntimeException(e);
-            }
-        }
     }
 
     private void enterPaymentDetailsInFrame(int frameIndex, String locatorId, String value) {

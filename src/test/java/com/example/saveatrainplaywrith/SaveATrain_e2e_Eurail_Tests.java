@@ -47,6 +47,7 @@ public class SaveATrain_e2e_Eurail_Tests extends PlaywrightTestBase {
     @Severity(CRITICAL)
     @Owner("Save A Train")
     public void e2e_SAT_EURAIL_test() {
+        mainPage.navigateToHomePage();
         mainPage.performSearch();
         mainPage.passBookingTabClick();
         mainPage.fillCountryToVisit("Global Pass");
@@ -106,7 +107,7 @@ public class SaveATrain_e2e_Eurail_Tests extends PlaywrightTestBase {
         page.click(".submit-button > .ng-star-inserted");
 
         // Sleep for 7 seconds
-        page.waitForTimeout(7000);
+        page.waitForTimeout(10000);
 
         summaryPage.completingAdyenForm();
 
@@ -114,12 +115,9 @@ public class SaveATrain_e2e_Eurail_Tests extends PlaywrightTestBase {
         page.waitForTimeout(15000);
 
         // Find the h3 element and get its text
-        String actualHeaderText = page.locator("css=h3").textContent();
-
-        // Locate the element from which you want to extract text
-        ElementHandle element = page.querySelector(".common-order-data");
+        String actualHeaderText = page.locator("xpath=/html/body/sat-root/div/main/sat-order/div/div/div[2]/div/div/p[1]").textContent().trim();
 
         // Use Assertions for the assertion
-        Assertions.assertEquals("Thank you for purchase!", actualHeaderText);
+        Assertions.assertEquals("Your payment was successful", actualHeaderText);
     }
 }

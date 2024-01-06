@@ -92,12 +92,13 @@ public class MainPage {
         return listSize;
     }
 
-    public void complementingTheOriginStations(String origin) {
+    public void navigateToHomePage() {
         page.navigate(AppConstants.SAT_HOME_PAGE);
+    }
 
+    public void complementingTheOriginStations(String origin) {
         page.click(".input-control-container > .origin");
         page.type(".input-control-container > .origin", origin);
-
         // Wait for auto-suggest and select the first option
         page.waitForSelector(".origin .ng-star-inserted:nth-child(1)");
         page.click(".origin .ng-star-inserted:nth-child(1)");
