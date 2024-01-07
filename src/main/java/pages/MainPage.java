@@ -138,6 +138,14 @@ public class MainPage {
         invalidElement.hover();
     }
 
+    public void fillCountryOfResidence() {
+        Locator formElement = page.locator(".pass-booking-content-form");
+        formElement.click();
+        Locator inputElement2 = page.locator(".input-group:nth-child(3) .input-control");
+        inputElement2.type("Pakistan");
+        formElement.click();
+    }
+
     public void clickExchangeButton() {
         page.locator("//i[contains(@class, 'md-36')]").click();
     }
@@ -159,6 +167,11 @@ public class MainPage {
     public void findMyTicketButtonClick() {
         // Click on the find my tickets button
         page.click("button[name='button']");
+    }
+
+    public void findMyPassButtonClick() {
+        // Click on the find my pass on Eurail button
+        page.click("css=.btn > p");
     }
 
     public void addOneAdultPassenger() {
