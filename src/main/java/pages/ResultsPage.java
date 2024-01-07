@@ -26,6 +26,10 @@ public class ResultsPage {
         page.click(RESULT_1_ID_SELECTOR);
     }
 
+    public void selectFirstOptionOnEurailPass() {
+        page.click("id=pass-1");
+    }
+
     public void proceed() {
         page.click(PROCEED_BUTTON_SELECTOR);
     }
