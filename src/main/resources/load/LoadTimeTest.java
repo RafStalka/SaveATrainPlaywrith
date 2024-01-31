@@ -1,4 +1,4 @@
-package com.example.load;
+package load;
 
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserType;
