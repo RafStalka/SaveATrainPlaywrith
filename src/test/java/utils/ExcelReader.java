@@ -54,7 +54,7 @@ public class ExcelReader {
                         rowData.add("UNKNOWN");
                 }
             }
-            data.add(Arguments.of(rowData.toArray()));
+            data.add(Arguments.of(rowData.toArray(new String[0])));
         }
 
         workbook.close();
