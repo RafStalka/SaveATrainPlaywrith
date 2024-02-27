@@ -25,9 +25,7 @@ public class ExcelReader {
             if (row.getRowNum() == 0) {
                 continue;
             }
-
             List<String> rowData = new ArrayList<>();
-
             for (Cell cell : row) {
                 switch (cell.getCellType()) {
                     case STRING:
@@ -56,10 +54,8 @@ public class ExcelReader {
             }
             data.add(Arguments.of(rowData.toArray(new String[0])));
         }
-
         workbook.close();
         fis.close();
-
         return data.stream();
     }
 }
