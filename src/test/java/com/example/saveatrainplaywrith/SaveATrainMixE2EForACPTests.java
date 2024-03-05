@@ -8,7 +8,7 @@ import utils.ExcelReader;
 import java.io.IOException;
 import java.util.stream.Stream;
 
-public class SaveATrain_MixE2E_ForNSI_Tests {
+public class SaveATrainMixE2EForACPTests {
     @ParameterizedTest
     @MethodSource("excelDataProvider")
     void testUsingExcelData(String originUID, String destinationUID, String departureDatetime) {
@@ -19,7 +19,7 @@ public class SaveATrain_MixE2E_ForNSI_Tests {
     }
 
     static Stream<Arguments> excelDataProvider() throws IOException {
-        String filePath = "/Users/rafalst/IdeaProjects/SaveATrainPlaywrith/src/test/resources/ConnectionsNSI.xlsx";
+        String filePath = "/Users/rafalst/IdeaProjects/SaveATrainPlaywrith/src/test/resources/ConnectionsACP.xlsx";
         return ExcelReader.readExcelData(filePath)
                 .filter(arg -> isValidRow(arg.get()));
     }
