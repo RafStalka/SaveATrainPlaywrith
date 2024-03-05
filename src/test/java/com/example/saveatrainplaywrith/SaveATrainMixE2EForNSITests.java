@@ -20,7 +20,7 @@ import utils.ExcelReader;
 import java.io.IOException;
 import java.util.stream.Stream;
 
-public class SaveATrain_MixE2E_ForNSI_Tests {
+public class SaveATrainMixE2EForNSITests {
     private static String NSITok;
 
     @Test
@@ -59,7 +59,6 @@ public class SaveATrain_MixE2E_ForNSI_Tests {
             NSITok = jsonResponse.getString(word_para3);
             System.out.println(NSITok.strip());
         } catch(JSONException e) {
-            // Handle exception here
             System.out.println("Error parsing" + word_para3 + "from response");
             e.printStackTrace();
         }

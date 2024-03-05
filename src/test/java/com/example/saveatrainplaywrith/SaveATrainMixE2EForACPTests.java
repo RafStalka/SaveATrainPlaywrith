@@ -8,7 +8,7 @@ import utils.ExcelReader;
 import java.io.IOException;
 import java.util.stream.Stream;
 
-public class SaveATrain_MixE2E_ForACP_Tests {
+public class SaveATrainMixE2EForACPTests {
     @ParameterizedTest
     @MethodSource("excelDataProvider")
     void testUsingExcelData(String originUID, String destinationUID, String departureDatetime) {

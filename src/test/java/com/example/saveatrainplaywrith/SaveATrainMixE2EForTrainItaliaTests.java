@@ -20,7 +20,7 @@ import utils.ExcelReader;
 import java.io.IOException;
 import java.util.stream.Stream;
 
-public class SaveATrain_MixE2E_ForTrainItalia_Tests {
+public class SaveATrainMixE2EForTrainItaliaTests {
     private static String TITok;
 
     @Test
@@ -58,7 +58,6 @@ public class SaveATrain_MixE2E_ForTrainItalia_Tests {
             TITok = jsonResponse.getString(word_para3);
             System.out.println(TITok.strip());
         } catch(JSONException e) {
-            // Handle exception here
             System.out.println("Error parsing" + word_para3 + "from response");
             e.printStackTrace();
         }

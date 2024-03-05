@@ -17,10 +17,10 @@ import pages.SummaryPage;
 import static io.qameta.allure.SeverityLevel.CRITICAL;
 
 /**
- * The SaveATrain_e2e_Tests class represents a set of end-to-end tests for the Save A Train application.
+ * The SaveATrainE2ETests class represents a set of end-to-end tests for the Save A Train application.
  * It extends the PlaywrightTestBase class.
  */
-public class SaveATrain_e2e_Tests extends PlaywrightTestBase {
+public class SaveATrainE2ETests extends PlaywrightTestBase {
     @BeforeEach
     public void setUp() {
         // Assuming 'page' is initialized in your base class
