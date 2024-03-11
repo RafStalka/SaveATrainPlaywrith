@@ -12,7 +12,7 @@ public class ResultsPage {
     private static final String DEPARTURE_TIME_1_ID_SELECTOR = "id=departure-t-1";
     private static final String ARRIVAL_DATE_1_ID_SELECTOR = "id=arrival-d-1";
     private static final String ARRIVAL_TIME_1_ID_SELECTOR = "id=arrival-t-1";
-    private static final String DURATION_TIME_XPATH = "xpath=//sat-result-item[@id='result-01']/div/div/div/div[2]/div[2]/p[1]";
+    private static final String DURATION_TIME_XPATH = "xpath=//*[@id='result-1']/div/div/div/div[2]/div[2]/p";
     private static final String SELECT_TEXT = "Select";
     private static final String PROCEED_TEXT = "Proceed";
 

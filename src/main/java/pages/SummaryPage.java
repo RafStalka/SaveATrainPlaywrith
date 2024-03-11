@@ -31,9 +31,6 @@ public class SummaryPage {
 
         // Click on pay button
         page.locator(ADYEN_BUTTON_CONTENT).click();
-
-        // Sleep for 45 seconds
-        page.waitForTimeout(45000);
     }
 
     private void enterPaymentDetailsInFrame(int frameIndex, String locatorId, String value) {
@@ -93,7 +90,7 @@ public class SummaryPage {
         return getTextContent("css=.ng-star-inserted > p > span:nth-child(2)");
     }
 
-    public String getPassengerNameFirst_SummaryPage() {
+    public String getPassengerSurname_SummaryPage() {
         return getTextContent("css=.ng-star-inserted > p > span:nth-child(3)");
     }
 
@@ -102,6 +99,6 @@ public class SummaryPage {
     }
 
     private String getTextContent(String cssSelector) {
-        return page.locator(cssSelector).textContent().trim();
+        return page.locator(cssSelector).textContent().strip();
     }
 }
