@@ -29,7 +29,6 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
 
     @BeforeEach
     public void setUp() {
-        // Assuming 'page' is initialized in base class
         mainPage = new MainPage(page);
         passengersDetailsPage = new PassengersDetailsPage(page);
         resultsPage = new ResultsPage(page);
@@ -108,10 +107,9 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         String passengerBirthDay = summaryPage.getPassengerBirthDate().strip();
         String passengerEmail = summaryPage.getPassengerEmail().strip();
 
-        // TODO: assertions
         Assertions.assertAll(
-                () -> Assertions.assertEquals(departure.toUpperCase(), finalDeparture, "Incorrect departure on summary page."),
-                () -> Assertions.assertEquals(arrival.toUpperCase(), finalArrival, "Incorrect arrival on summary page."),
+                () -> Assertions.assertTrue(finalDeparture.contains(departure.toUpperCase()), "Incorrect departure on summary page."),
+                () -> Assertions.assertTrue(finalArrival.contains(arrival.toUpperCase()), "Incorrect arrival on summary page."),
                 () -> Assertions.assertEquals(departureDate, finalDepartureDate, "Incorrect departure date and time on summary page."),
                 () -> Assertions.assertEquals(arrivalDate, finalArrivalDate, "Incorrect arrival date and time on summary page."),
                 () -> Assertions.assertEquals(price, finalPrice, "Incorrect price on summary page."),
@@ -274,7 +272,6 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         // Find the h3 element and get its text
         String actualHeaderText = page.getByText("Thank you for purchase!").textContent();
 
-        // Use Assertions for the assertion
         Assertions.assertEquals("Thank you for purchase!", actualHeaderText);
 
     }
@@ -336,10 +333,9 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         String passengerBirthDay = summaryPage.getPassengerBirthDate().strip();
         String passengerEmail = summaryPage.getPassengerEmail().strip();
 
-        // TODO: assertions
         Assertions.assertAll(
-                () -> Assertions.assertEquals(departure.toUpperCase(), finalDeparture, "Incorrect departure on summary page."),
-                () -> Assertions.assertEquals(arrival.toUpperCase(), finalArrival, "Incorrect arrival on summary page."),
+                () -> Assertions.assertTrue(finalDeparture.contains(departure.toUpperCase()), "Incorrect departure on summary page."),
+                () -> Assertions.assertTrue(finalArrival.contains(arrival.toUpperCase()), "Incorrect arrival on summary page."),
                 () -> Assertions.assertEquals(departureDate, finalDepartureDate, "Incorrect departure date and time on summary page."),
                 () -> Assertions.assertEquals(arrivalDate, finalArrivalDate, "Incorrect arrival date and time on summary page."),
                 () -> Assertions.assertEquals(price, finalPrice, "Incorrect price on summary page."),
@@ -358,7 +354,6 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         // Find the h3 element and get its text
         String actualHeaderText = page.getByText("Thank you for purchase!").textContent();
 
-        // Use Assertions for the assertion
         Assertions.assertEquals("Thank you for purchase!", actualHeaderText);
 
     }

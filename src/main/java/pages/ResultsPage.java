@@ -5,8 +5,8 @@ import com.microsoft.playwright.Page;
 public class ResultsPage {
     private static final String RESULT_1_ID_SELECTOR = "id=result-1";
     private static final String PROCEED_BUTTON_SELECTOR = ".proceed-btn";
-    private static final String DEPARTURE_STATION_ID = "id=departure-transfer-station-name-1-1";
-    private static final String ARRIVAL_STATION_ID = "id=arrival-transfer-station-name-1-1";
+    private static final String DEPARTURE_STATION = "xpath=//*[@class='direction-from']";
+    private static final String ARRIVAL_STATION = "xpath=//*[@class='direction-to']";
     private static final String PRICE_1_ID_SELECTOR = "id=price-1";
     private static final String DEPARTURE_DATE_1_ID_SELECTOR = "id=departure-d-1";
     private static final String DEPARTURE_TIME_1_ID_SELECTOR = "id=departure-t-1";
@@ -44,11 +44,11 @@ public class ResultsPage {
     }
 
     public String getDepartureStation_ResultPage() {
-        return getTextContent(DEPARTURE_STATION_ID);
+        return getTextContent(DEPARTURE_STATION);
     }
 
     public String getArrivalStation_ResultPage() {
-        return getTextContent(ARRIVAL_STATION_ID);
+        return getTextContent(ARRIVAL_STATION);
     }
 
     public String getPriceFirstResult_ResultPage() {
