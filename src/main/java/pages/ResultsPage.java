@@ -5,16 +5,17 @@ import com.microsoft.playwright.Page;
 public class ResultsPage {
     private static final String RESULT_1_ID_SELECTOR = "id=result-1";
     private static final String PROCEED_BUTTON_SELECTOR = ".proceed-btn";
-    private static final String DEPARTURE_STATION_ID = "id=departure-transfer-station-name-1-1";
-    private static final String ARRIVAL_STATION_ID = "id=arrival-transfer-station-name-1-1";
+    private static final String DEPARTURE_STATION = "xpath=//*[@class='direction-from']";
+    private static final String ARRIVAL_STATION = "xpath=//*[@class='direction-to']";
     private static final String PRICE_1_ID_SELECTOR = "id=price-1";
     private static final String DEPARTURE_DATE_1_ID_SELECTOR = "id=departure-d-1";
     private static final String DEPARTURE_TIME_1_ID_SELECTOR = "id=departure-t-1";
     private static final String ARRIVAL_DATE_1_ID_SELECTOR = "id=arrival-d-1";
     private static final String ARRIVAL_TIME_1_ID_SELECTOR = "id=arrival-t-1";
-    private static final String DURATION_TIME_XPATH = "xpath=//sat-result-item[@id='result-01']/div/div/div/div[2]/div[2]/p[1]";
+    private static final String DURATION_TIME_XPATH = "xpath=//*[@id='result-1']/div/div/div/div[2]/div[2]/p[2]";
     private static final String SELECT_TEXT = "Select";
     private static final String PROCEED_TEXT = "Proceed";
+    private static final String FARE_XPATH = "xpath=//*[@id='selected-fare-1']/span/span[2]";
 
     private final Page page;
 
@@ -43,11 +44,11 @@ public class ResultsPage {
     }
 
     public String getDepartureStation_ResultPage() {
-        return getTextContent(DEPARTURE_STATION_ID);
+        return getTextContent(DEPARTURE_STATION);
     }
 
     public String getArrivalStation_ResultPage() {
-        return getTextContent(ARRIVAL_STATION_ID);
+        return getTextContent(ARRIVAL_STATION);
     }
 
     public String getPriceFirstResult_ResultPage() {
@@ -59,7 +60,7 @@ public class ResultsPage {
     }
 
     public String getFirstResultDepartureTime_ResultPage() {
-        return getTextContent(DEPARTURE_TIME_1_ID_SELECTOR);
+        return getTextContent(DEPARTURE_TIME_1_ID_SELECTOR).strip();
     }
 
     public String getFirstResultArrivalDate_ResultPage() {
@@ -74,8 +75,12 @@ public class ResultsPage {
         return getTextContent(DURATION_TIME_XPATH);
     }
 
+    public String getFere_ResultPage() {
+        return getTextContent(FARE_XPATH);
+    }
+
     private String getTextContent(String cssSelector) {
-        return page.locator(cssSelector).textContent().trim();
+        return page.locator(cssSelector).textContent().strip();
     }
 
 }

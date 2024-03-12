@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import pages.MainPage;
 import pages.PassengersDetailsPage;
 import pages.ResultsPage;
@@ -27,7 +29,6 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
 
     @BeforeEach
     public void setUp() {
-        // Assuming 'page' is initialized in base class
         mainPage = new MainPage(page);
         passengersDetailsPage = new PassengersDetailsPage(page);
         resultsPage = new ResultsPage(page);
@@ -49,20 +50,30 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
     String phoneNumber = "48" + faker.number().numberBetween(111111111, 999999999);
     String email = "test_" + faker.name().firstName() + "@gmail.com";
 
-    @Test
+    @ParameterizedTest
     @DisplayName("ACP provider for Spain.")
     @Description("Test checking e2e path on ACP provider for Spain.")
     @Severity(CRITICAL)
     @Owner("Save A Train")
-    public void e2e_SAT_ACPForSpain_test() {
+    @CsvSource({"Madrid, Leon", "Cadiz, Madrid", "Barcelona El Prat Airport, Madrid", "Leon, Madrid"})
+    public void e2e_SAT_ACPForSpain_test(String origin, String destination) {
         mainPage.navigateToHomePage();
-        mainPage.complementingTheOriginStations("Madrid");
-        mainPage.complementingTheDestinationStations("Leon");
+        mainPage.complementingTheOriginStations(origin);
+        mainPage.complementingTheDestinationStations(destination);
         mainPage.performSearch();
         mainPage.departureDate();
         mainPage.findMyTicketButtonClick();
 
         resultsPage.selectFirstOption();
+        String departure = resultsPage.getDepartureStation_ResultPage().strip();
+        String arrival = resultsPage.getArrivalStation_ResultPage();
+        String departureTime = resultsPage.getFirstResultDepartureTime_ResultPage();
+        String departureDate = resultsPage.getFirstResultDepartureDate_ResultPage().strip() + ", " + departureTime.strip() + " -";
+        String arrivalTime = resultsPage.getFirstResultArrivalTime_ResultPage();
+        String arrivalDate = resultsPage.getFirstResultArrivalDate_ResultPage().strip() + ", " + arrivalTime;
+        String price = resultsPage.getPriceFirstResult_ResultPage().strip();
+        String fare = resultsPage.getFere_ResultPage().strip();
+        String durationTime = resultsPage.getDurationTime_ResultPage().strip();
 
         resultsPage.proceed();
 
@@ -81,14 +92,44 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         passengersDetailsPage.enterEmail(email);
         passengersDetailsPage.passengersDataSubmitButtonClick();
 
+        String finalDeparture = summaryPage.getDepartureStation_SummaryPage().strip();
+        String finalArrival = summaryPage.getArrivalStation_SummaryPage().strip();
+        String finalDepartureDate = summaryPage.getDepartureDate_SummaryPage().strip();
+        String finalArrivalDate = summaryPage.getArrivalDate_SummaryPage().strip();
+        String finalPrice = summaryPage.getPrice_SummaryPage().strip();
+        String reservationPrice = summaryPage.getReservationPrice_SummaryPage().strip();
+        String totalPrice = summaryPage.getFinalPrice_SummaryPage().strip();
+        String orderCode = summaryPage.getOrderCode().strip();
+        int orderCodeLength = orderCode.length();
+        String fareSummaryPage = summaryPage.getFare().strip();
+        String passengerFirstName = summaryPage.getPassengerName_SummaryPage().strip();
+        String passengerSurname = summaryPage.getPassengerSurname_SummaryPage();
+        String passengerBirthDay = summaryPage.getPassengerBirthDate().strip();
+        String passengerEmail = summaryPage.getPassengerEmail().strip();
+
+        Assertions.assertAll(
+                () -> Assertions.assertTrue(finalDeparture.contains(departure.toUpperCase()), "Incorrect departure on summary page."),
+                () -> Assertions.assertTrue(finalArrival.contains(arrival.toUpperCase()), "Incorrect arrival on summary page."),
+                () -> Assertions.assertEquals(departureDate, finalDepartureDate, "Incorrect departure date and time on summary page."),
+                () -> Assertions.assertEquals(arrivalDate, finalArrivalDate, "Incorrect arrival date and time on summary page."),
+                () -> Assertions.assertEquals(price, finalPrice, "Incorrect price on summary page."),
+                () -> Assertions.assertEquals("€0.00", reservationPrice, "Incorrect reservation price on summary page."),
+                () -> Assertions.assertEquals(price, totalPrice, "Incorrect total price on summary page."),
+                () -> Assertions.assertEquals(passengerFirstName, firstName.toUpperCase(), "Incorrect passenger first name on summary page."),
+                () -> Assertions.assertEquals(passengerSurname, lastName.toUpperCase(), "Incorrect passenger last name on summary page."),
+                () -> Assertions.assertEquals("06/09/1985", passengerBirthDay, "Incorrect passenger birth day on summary page."),
+                () -> Assertions.assertEquals(email, passengerEmail, "Incorrect passenger email on summary page."),
+                () -> Assertions.assertEquals(fare.toUpperCase(), fareSummaryPage, "Incorrect fare on summary page."),
+                () -> Assertions.assertEquals(6, orderCodeLength, "Incorrect length of the order code on summary page.")
+        );
+
         summaryPage.completingAdyenForm();
 
         // Find the h3 element and get its text
-        String actualHeaderText = page.locator("css=h3").textContent();
+        String actualHeaderText = page.getByText("Thank you for purchase!").textContent();
 
         // Use Assertions for the assertion
         Assertions.assertEquals("Thank you for purchase!", actualHeaderText);
-
     }
 
     @Test
@@ -108,10 +149,9 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         mainPage.findMyTicketButtonClick();
 
         resultsPage.selectFirstOption();
-        resultsPage.selectSecondSideConnection();
         resultsPage.proceed();
-
-
+        resultsPage.selectSecondSideConnection();
+        resultsPage.proceedSecondSideConnection();
 
         passengersDetailsPage.selectFirstPassengerPrefix("Mr");
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
@@ -229,152 +269,91 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
 
         summaryPage.completingAdyenForm();
 
-        // Sleep for 30 seconds
-        page.waitForTimeout(30000);
-        page.isVisible("css=h3");
-
         // Find the h3 element and get its text
-        String actualHeaderText = page.locator("css=h3").textContent();
+        String actualHeaderText = page.getByText("Thank you for purchase!").textContent();
 
-        // Locate the element from which you want to extract text
-        ElementHandle ticketElement = page.querySelector(".tickets-order-data");
-
-        // Use Assertions for the assertion
         Assertions.assertEquals("Thank you for purchase!", actualHeaderText);
 
     }
 
-    @Test
+    @ParameterizedTest
     @DisplayName("ACP provider for Sweden.")
     @Description("Test checking e2e path on ACP provider for Sweden.")
     @Severity(CRITICAL)
     @Owner("Save A Train")
-    public void e2e_SAT_ACPForSweden_test() {
-        page.navigate(AppConstants.SAT_HOME_PAGE);
+    @CsvSource({"Malmo Central Station, Stockholm Central Station"})
+    public void e2e_SAT_ACPForSweden_test(String origin, String destination) {
+        mainPage.navigateToHomePage();
+        mainPage.complementingTheOriginStations(origin);
+        mainPage.complementingTheDestinationStations(destination);
+        mainPage.performSearch();
+        mainPage.departureDate();
+        mainPage.findMyTicketButtonClick();
 
-        page.click(".input-control-container > .origin");
-        page.type(".input-control-container > .origin", "Malmo Central Station");
+        resultsPage.selectFirstOption();
+        String departure = resultsPage.getDepartureStation_ResultPage().strip();
+        String arrival = resultsPage.getArrivalStation_ResultPage();
+        String departureTime = resultsPage.getFirstResultDepartureTime_ResultPage();
+        String departureDate = resultsPage.getFirstResultDepartureDate_ResultPage().strip() + ", " + departureTime;
+        String arrivalTime = resultsPage.getFirstResultArrivalTime_ResultPage();
+        String arrivalDate = resultsPage.getFirstResultArrivalDate_ResultPage().strip() + ", " + arrivalTime;
+        String price = resultsPage.getPriceFirstResult_ResultPage().strip();
+        String fare = resultsPage.getFere_ResultPage().strip();
+        String durationTime = resultsPage.getDurationTime_ResultPage().strip();
 
-        // Wait for auto-suggest and select the first option
-        page.waitForSelector(".origin .ng-star-inserted:nth-child(1)");
-        page.click(".origin .ng-star-inserted:nth-child(1)");
+        resultsPage.proceed();
 
-        // Release the action-box
-        page.hover(".action-box");
+        passengersDetailsPage.selectFirstPassengerPrefix("Mr");
+        passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
+        passengersDetailsPage.enterbirthDate("06/09/1985");
+        passengersDetailsPage.choosePassengerCountry();
+        passengersDetailsPage.choosePassengerNationality();
+        passengersDetailsPage.choosePassengerBirthCountry();
+        passengersDetailsPage.enterPassportNumber(passportNumber);
+        passengersDetailsPage.selectDepartureAisleOption();
+        passengersDetailsPage.enterCity(city);
+        passengersDetailsPage.enterStreet(street);
+        passengersDetailsPage.enterPostalCode(postalCode);
+        passengersDetailsPage.enterMobilePhone(phoneNumber);
+        passengersDetailsPage.enterEmail(email);
+        passengersDetailsPage.passengersDataSubmitButtonClick();
 
-        // Find the destination input, click, and type "Hamburg Central Station"
-        page.click(".destination:nth-child(1)");
-        page.type(".destination:nth-child(1)", "Stockholm Central Station");
+        String finalDeparture = summaryPage.getDepartureStation_SummaryPage().strip();
+        String finalArrival = summaryPage.getArrivalStation_SummaryPage().strip();
+        String finalDepartureDate = summaryPage.getDepartureDate_SummaryPage().strip();
+        String finalArrivalDate = summaryPage.getArrivalDate_SummaryPage().strip();
+        String finalPrice = summaryPage.getPrice_SummaryPage().strip();
+        String reservationPrice = summaryPage.getReservationPrice_SummaryPage().strip();
+        String totalPrice = summaryPage.getFinalPrice_SummaryPage().strip();
+        String orderCode = summaryPage.getOrderCode().strip();
+        int orderCodeLength = orderCode.length();
+        String fareSummaryPage = summaryPage.getFare().strip();
+        String passengerFirstName = summaryPage.getPassengerName_SummaryPage().strip();
+        String passengerSurname = summaryPage.getPassengerSurname_SummaryPage();
+        String passengerBirthDay = summaryPage.getPassengerBirthDate().strip();
+        String passengerEmail = summaryPage.getPassengerEmail().strip();
 
-        // Wait for auto-suggest and select the first option
-        page.waitForSelector(".destination .ng-star-inserted:nth-child(1)");
-        page.click(".destination .ng-star-inserted:nth-child(1)");
-
-        // Click on the search button
-        page.click(".search-btn");
-
-        // Click on the departure date input
-        page.click(".departure-date > .form-control");
-
-        // Click on the desired date
-        page.click(".ng-star-inserted:nth-child(5) > .owl-dt-day-4 > .owl-dt-calendar-cell-content");
-
-        // Click on the find my tickets button
-        page.click("button[name='button']");
-
-        // Selects a train
-        page.click("id=result-1");
-
-
-        // Then proceeds booking
-        page.click(".proceed-btn");
-
-        // Click on the passenger-prefix element
-        page.click("#passenger-prefix");
-
-        // Select the second option in the dropdown
-        Locator genderDropdown = page.locator("#passenger-prefix");
-        genderDropdown.selectOption(new SelectOption().setIndex(1));
-
-        // Click on the passenger-fname element
-        page.click("#passenger-fname");
-
-        // Type "Test" into the passenger-fname input
-        page.fill("#passenger-fname", firstName);
-
-        // Type "Tester" into the passenger-lname input
-        page.fill("#passenger-lname", lastName);
-
-        // Click on the passenger-date element
-        page.click("#passenger-date");
-
-        // Type the date into the passenger-date input
-        page.fill("#passenger-date", "06/09/1985");
-
-        // Click on the input-control passenger country element
-        page.click(".passenger-country .input-control");
-
-        // Find and hover over the items-list passenger country element
-        Locator itemsList = page.locator(".passenger-country .items-list > .ng-star-inserted:first-of-type");
-        itemsList.click();
-
-        // Click on the input-control nationality element
-        page.click(".nationality-country .input-control");
-
-        //Select nationality
-        Locator nationalityList = page.locator(".nationality-country .items-list > .ng-star-inserted:first-of-type");
-        nationalityList.click();
-
-        // Click on the input-control birth country element
-        page.click(".birth-country .input-control");
-
-        //Select birth country
-        Locator birthCountryList = page.locator(".birth-country .items-list > .ng-star-inserted:first-of-type");
-        birthCountryList.click();
-
-        // Enter passport number
-        page.fill("id=passenger-passport", passportNumber);
-
-        // Select "Aisle" from the dropdown
-        Locator passengerTypeDropdown = page.locator(".outbound-seat-select > .form-control");
-        if (passengerTypeDropdown.isVisible()) {
-            passengerTypeDropdown.selectOption(new SelectOption().setIndex(1));
-        }
-
-        // Click on the ng-pristine element
-        page.click(".ng-pristine");
-
-        // Enter city
-        page.fill("//input[@placeholder='City']", city);
-
-        // Enter address
-        page.fill("//input[@placeholder='Address']", street);
-
-        // Enter postal code
-        page.fill("//input[@placeholder='Postal Code']", postalCode);
-
-        // Enter mobile
-        page.fill("//input[@placeholder='Mobile']", phoneNumber);
-
-        // Enter an email in the contact-info-input form control
-        page.fill("//input[@placeholder='Email']", email);
-
-        // Click on the submit-button element
-        page.click(".submit-button > .ng-star-inserted");
-
-        // Sleep for 7 seconds
-        page.waitForTimeout(7000);
+        Assertions.assertAll(
+                () -> Assertions.assertTrue(finalDeparture.contains(departure.toUpperCase()), "Incorrect departure on summary page."),
+                () -> Assertions.assertTrue(finalArrival.contains(arrival.toUpperCase()), "Incorrect arrival on summary page."),
+                () -> Assertions.assertEquals(departureDate, finalDepartureDate, "Incorrect departure date and time on summary page."),
+                () -> Assertions.assertEquals(arrivalDate, finalArrivalDate, "Incorrect arrival date and time on summary page."),
+                () -> Assertions.assertEquals(price, finalPrice, "Incorrect price on summary page."),
+                () -> Assertions.assertEquals("€0.00", reservationPrice, "Incorrect reservation price on summary page."),
+                () -> Assertions.assertEquals(price, totalPrice, "Incorrect total price on summary page."),
+                () -> Assertions.assertEquals(passengerFirstName, firstName.toUpperCase(), "Incorrect passenger first name on summary page."),
+                () -> Assertions.assertEquals(passengerSurname, lastName.toUpperCase(), "Incorrect passenger last name on summary page."),
+                () -> Assertions.assertEquals("06/09/1985", passengerBirthDay, "Incorrect passenger birth day on summary page."),
+                () -> Assertions.assertEquals(email, passengerEmail, "Incorrect passenger email on summary page."),
+                () -> Assertions.assertEquals(fare, fareSummaryPage, "Incorrect fare on summary page."),
+                () -> Assertions.assertEquals(6, orderCodeLength, "Incorrect length of the order code on summary page.")
+        );
 
         summaryPage.completingAdyenForm();
 
         // Find the h3 element and get its text
-        String actualHeaderText = page.locator("css=h3").textContent();
+        String actualHeaderText = page.getByText("Thank you for purchase!").textContent();
 
-        // Locate the element from which you want to extract text
-        ElementHandle ticketElement = page.querySelector(".tickets-order-data");
-
-
-        // Use Assertions for the assertion
         Assertions.assertEquals("Thank you for purchase!", actualHeaderText);
 
     }

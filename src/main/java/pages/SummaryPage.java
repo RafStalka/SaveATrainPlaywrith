@@ -31,9 +31,6 @@ public class SummaryPage {
 
         // Click on pay button
         page.locator(ADYEN_BUTTON_CONTENT).click();
-
-        // Sleep for 45 seconds
-        page.waitForTimeout(45000);
     }
 
     private void enterPaymentDetailsInFrame(int frameIndex, String locatorId, String value) {
@@ -62,11 +59,11 @@ public class SummaryPage {
     }
 
     public String getDepartureDate_SummaryPage() {
-        return getTextContent("css=.property-value > span:nth-child(2)");
+        return getTextContent("css=.property-value > span:nth-child(1)");
     }
 
     public String getArrivalDate_SummaryPage() {
-        return getTextContent("css=.property-value > span:nth-child(1)");
+        return getTextContent("css=.property-value > span:nth-child(2)");
     }
 
     public String getFare() {
@@ -93,7 +90,7 @@ public class SummaryPage {
         return getTextContent("css=.ng-star-inserted > p > span:nth-child(2)");
     }
 
-    public String getPassengerNameFirst_SummaryPage() {
+    public String getPassengerSurname_SummaryPage() {
         return getTextContent("css=.ng-star-inserted > p > span:nth-child(3)");
     }
 
@@ -101,7 +98,11 @@ public class SummaryPage {
         return getTextContent("css=.property-value:nth-child(4)");
     }
 
+    public String getPassengerEmail() {
+        return getTextContent("xpath=//*[@class='order-email']/span[2]");
+    }
+
     private String getTextContent(String cssSelector) {
-        return page.locator(cssSelector).textContent().trim();
+        return page.locator(cssSelector).textContent().strip();
     }
 }

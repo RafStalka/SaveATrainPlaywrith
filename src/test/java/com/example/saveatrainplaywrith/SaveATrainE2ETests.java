@@ -17,13 +17,12 @@ import pages.SummaryPage;
 import static io.qameta.allure.SeverityLevel.CRITICAL;
 
 /**
- * The SaveATrainE2ETests class represents a set of end-to-end tests for the Save A Train application.
+ * SaveATrainE2ETests class represents the test cases for end-to-end path testing on Save A Train application.
  * It extends the PlaywrightTestBase class.
  */
 public class SaveATrainE2ETests extends PlaywrightTestBase {
     @BeforeEach
     public void setUp() {
-        // Assuming 'page' is initialized in your base class
         mainPage = new MainPage(page);
         passengersDetailsPage = new PassengersDetailsPage(page);
         resultsPage = new ResultsPage(page);
@@ -54,11 +53,17 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
         mainPage.findMyTicketButtonClick();
 
         resultsPage.selectFirstOption();
-        String resultsPage_Departure = resultsPage.getDepartureStation_ResultPage();
-        String resultsPage_DepartureDate = resultsPage.getFirstResultDepartureDate_ResultPage();
-        String resultsPage_Arrival = resultsPage.getArrivalStation_ResultPage();
-        String resultsPage_ArrivalDate = resultsPage.getFirstResultArrivalDate_ResultPage();
-        String resultPage_ConnectionPrice = resultsPage.getPriceFirstResult_ResultPage();
+
+        String departure = resultsPage.getDepartureStation_ResultPage().strip();
+        String arrival = resultsPage.getArrivalStation_ResultPage();
+        String departureTime = resultsPage.getFirstResultDepartureTime_ResultPage();
+        String departureDate = resultsPage.getFirstResultDepartureDate_ResultPage().strip() + ", " + departureTime.strip() + " -";
+        String arrivalTime = resultsPage.getFirstResultArrivalTime_ResultPage();
+        String arrivalDate = resultsPage.getFirstResultArrivalDate_ResultPage().strip() + ", " + arrivalTime;
+        String price = resultsPage.getPriceFirstResult_ResultPage().strip();
+        String fare = resultsPage.getFere_ResultPage().strip();
+        String durationTime = resultsPage.getDurationTime_ResultPage().strip();
+
         resultsPage.proceed();
 
         passengersDetailsPage.selectFirstPassengerPrefix("Mr");
@@ -68,16 +73,53 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
         passengersDetailsPage.selectDepartureAisleOption();
         passengersDetailsPage.enterEmail(email);
         passengersDetailsPage.passengersDataSubmitButtonClick();
+
+        double delta = 0.001;
+        String finalDeparture = summaryPage.getDepartureStation_SummaryPage().strip();
+        String finalArrival = summaryPage.getArrivalStation_SummaryPage().strip();
+        String finalDepartureDate = summaryPage.getDepartureDate_SummaryPage().strip();
+        String finalArrivalDate = summaryPage.getArrivalDate_SummaryPage().strip();
+        String finalPrice = summaryPage.getPrice_SummaryPage().strip();
+        String finalPriceWithoutEuroSign = finalPrice.replace("€", "");
+        double priceValue = Double.parseDouble(finalPriceWithoutEuroSign);
+        String reservationPrice = summaryPage.getReservationPrice_SummaryPage().strip();
+        String reservationPriceWithoutEuroSign = reservationPrice.replace("€", "");
+        double reservationValue = Double.parseDouble(reservationPriceWithoutEuroSign);
+        String totalPrice = summaryPage.getFinalPrice_SummaryPage().strip();
+        String totalPriceWithoutEuroSign = totalPrice.replace("€", "");
+        double totalPriceValue = Double.parseDouble(totalPriceWithoutEuroSign);
+        String orderCode = summaryPage.getOrderCode().strip();
+        int orderCodeLength = orderCode.length();
+        String fareSummaryPage = summaryPage.getFare().strip();
+        String passengerFirstName = summaryPage.getPassengerName_SummaryPage().strip();
+        String passengerSurname = summaryPage.getPassengerSurname_SummaryPage();
+        String passengerBirthDay = summaryPage.getPassengerBirthDate().strip();
+        String passengerEmail = summaryPage.getPassengerEmail().strip();
+
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(departure.toUpperCase(), finalDeparture, "Incorrect departure on summary page."),
+                () -> Assertions.assertEquals(arrival.toUpperCase(), finalArrival, "Incorrect arrival on summary page."),
+                () -> Assertions.assertEquals(departureDate, finalDepartureDate, "Incorrect departure date and time on summary page."),
+                () -> Assertions.assertEquals(arrivalDate, finalArrivalDate, "Incorrect arrival date and time on summary page."),
+                () -> Assertions.assertEquals(price, finalPrice, "Incorrect price on summary page."),
+                () -> Assertions.assertEquals(priceValue + reservationValue, totalPriceValue, delta, "Incorrect total price on summary page."),
+                () -> Assertions.assertEquals(passengerFirstName, firstName.toUpperCase(), "Incorrect passenger first name on summary page."),
+                () -> Assertions.assertEquals(passengerSurname, lastName.toUpperCase(), "Incorrect passenger last name on summary page."),
+                () -> Assertions.assertEquals("06/09/1985", passengerBirthDay, "Incorrect passenger birth day on summary page."),
+                () -> Assertions.assertEquals(email, passengerEmail, "Incorrect passenger email on summary page."),
+                () -> Assertions.assertEquals(fare.toUpperCase(), fareSummaryPage, "Incorrect fare on summary page."),
+                () -> Assertions.assertEquals(6, orderCodeLength, "Incorrect length of the order code on summary page.")
+        );
+
         // Sleep for 15 seconds
-        page.waitForTimeout(15000);
+        page.waitForTimeout(7000);
 
         summaryPage.completingAdyenForm();
 
         // Find the h3 element and get its text
         String actualHeaderText = page.locator("css=h3").textContent().trim();
 
-        // Use Assertions for the assertion
-        Assertions.assertEquals("Please, save the following information about your order:", actualHeaderText);
+        Assertions.assertEquals("Thank you for purchase!", actualHeaderText.strip());
 
     }
 
@@ -98,11 +140,17 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
         mainPage.findMyTicketButtonClick();
 
         resultsPage.selectFirstOption();
-        String resultsPage_Departure = resultsPage.getDepartureStation_ResultPage();
-        String resultsPage_DepartureDate = resultsPage.getFirstResultDepartureDate_ResultPage();
-        String resultsPage_Arrival = resultsPage.getArrivalStation_ResultPage();
-        String resultsPage_ArrivalDate = resultsPage.getFirstResultArrivalDate_ResultPage();
-        String resultPage_ConnectionPrice = resultsPage.getPriceFirstResult_ResultPage();
+
+        String departure = resultsPage.getDepartureStation_ResultPage().strip();
+        String arrival = resultsPage.getArrivalStation_ResultPage();
+        String departureTime = resultsPage.getFirstResultDepartureTime_ResultPage();
+        String departureDate = resultsPage.getFirstResultDepartureDate_ResultPage().strip() + ", " + departureTime.strip() + " -";
+        String arrivalTime = resultsPage.getFirstResultArrivalTime_ResultPage();
+        String arrivalDate = resultsPage.getFirstResultArrivalDate_ResultPage().strip() + ", " + arrivalTime;
+        String price = resultsPage.getPriceFirstResult_ResultPage().strip();
+        String fare = resultsPage.getFere_ResultPage().strip();
+        String durationTime = resultsPage.getDurationTime_ResultPage().strip();
+
         resultsPage.proceed();
 
         passengersDetailsPage.selectFirstPassengerPrefix("Mr");
@@ -126,8 +174,45 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
 
         passengersDetailsPage.passengersDataSubmitButtonClick();
 
+        double delta = 0.001;
+        String finalDeparture = summaryPage.getDepartureStation_SummaryPage().strip();
+        String finalArrival = summaryPage.getArrivalStation_SummaryPage().strip();
+        String finalDepartureDate = summaryPage.getDepartureDate_SummaryPage().strip();
+        String finalArrivalDate = summaryPage.getArrivalDate_SummaryPage().strip();
+        String finalPrice = summaryPage.getPrice_SummaryPage().strip();
+        String finalPriceWithoutEuroSign = finalPrice.replace("€", "");
+        double priceValue = Double.parseDouble(finalPriceWithoutEuroSign);
+        String reservationPrice = summaryPage.getReservationPrice_SummaryPage().strip();
+        String reservationPriceWithoutEuroSign = reservationPrice.replace("€", "");
+        double reservationValue = Double.parseDouble(reservationPriceWithoutEuroSign);
+        String totalPrice = summaryPage.getFinalPrice_SummaryPage().strip();
+        String totalPriceWithoutEuroSign = totalPrice.replace("€", "");
+        double totalPriceValue = Double.parseDouble(totalPriceWithoutEuroSign);
+        String orderCode = summaryPage.getOrderCode().strip();
+        int orderCodeLength = orderCode.length();
+        String fareSummaryPage = summaryPage.getFare().strip();
+        String passengerFirstName = summaryPage.getPassengerName_SummaryPage().strip();
+        String passengerSurname = summaryPage.getPassengerSurname_SummaryPage();
+        String passengerBirthDay = summaryPage.getPassengerBirthDate().strip();
+        String passengerEmail = summaryPage.getPassengerEmail().strip();
+
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(departure.toUpperCase(), finalDeparture, "Incorrect departure on summary page."),
+                () -> Assertions.assertEquals(arrival.toUpperCase(), finalArrival, "Incorrect arrival on summary page."),
+                () -> Assertions.assertEquals(departureDate, finalDepartureDate, "Incorrect departure date and time on summary page."),
+                () -> Assertions.assertEquals(arrivalDate, finalArrivalDate, "Incorrect arrival date and time on summary page."),
+                () -> Assertions.assertEquals(price, finalPrice, "Incorrect price on summary page."),
+                () -> Assertions.assertEquals(priceValue + reservationValue, totalPriceValue, delta, "Incorrect total price on summary page."),
+                () -> Assertions.assertEquals(passengerFirstName, firstName.toUpperCase(), "Incorrect passenger first name on summary page."),
+                () -> Assertions.assertEquals(passengerSurname, lastName.toUpperCase(), "Incorrect passenger last name on summary page."),
+                () -> Assertions.assertEquals("06/09/1985", passengerBirthDay, "Incorrect passenger birth day on summary page."),
+                () -> Assertions.assertEquals(email, passengerEmail, "Incorrect passenger email on summary page."),
+                () -> Assertions.assertEquals(fare.toUpperCase(), fareSummaryPage, "Incorrect fare on summary page."),
+                () -> Assertions.assertEquals(6, orderCodeLength, "Incorrect length of the order code on summary page.")
+        );
+
         // Sleep for 15 seconds
-        page.waitForTimeout(15000);
+        page.waitForTimeout(7000);
 
         summaryPage.completingAdyenForm();
     }
@@ -137,7 +222,7 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
     @Description("Test checking e2e path on TI provider.")
     @Severity(CRITICAL)
     @Owner("Save A Train")
-    @CsvSource({"Rome Termini, Florence All Stations",
+    @CsvSource({"Rome Termini, Florence Santa Maria Novella",
             "Milan Central Station, Rimini Central Station"})
     public void e2e_SAT_TI_test(String origin, String destination) {
         mainPage.navigateToHomePage();
@@ -148,11 +233,17 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
         mainPage.findMyTicketButtonClick();
 
         resultsPage.selectFirstOption();
-        String resultsPage_Departure = resultsPage.getDepartureStation_ResultPage();
-        String resultsPage_DepartureDate = resultsPage.getFirstResultDepartureDate_ResultPage();
-        String resultsPage_Arrival = resultsPage.getArrivalStation_ResultPage();
-        String resultsPage_ArrivalDate = resultsPage.getFirstResultArrivalDate_ResultPage();
-        String resultPage_ConnectionPrice = resultsPage.getPriceFirstResult_ResultPage();
+
+        String departure = resultsPage.getDepartureStation_ResultPage().strip();
+        String arrival = resultsPage.getArrivalStation_ResultPage();
+        String departureTime = resultsPage.getFirstResultDepartureTime_ResultPage();
+        String departureDate = resultsPage.getFirstResultDepartureDate_ResultPage().strip() + ", " + departureTime.strip() + " -";
+        String arrivalTime = resultsPage.getFirstResultArrivalTime_ResultPage();
+        String arrivalDate = resultsPage.getFirstResultArrivalDate_ResultPage().strip() + ", " + arrivalTime;
+        String price = resultsPage.getPriceFirstResult_ResultPage().strip();
+        String fare = resultsPage.getFere_ResultPage().strip();
+        String durationTime = resultsPage.getDurationTime_ResultPage().strip();
+
         resultsPage.proceed();
 
         passengersDetailsPage.selectFirstPassengerPrefix("Mr");
@@ -162,6 +253,37 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
         passengersDetailsPage.enterEmail(email);
         passengersDetailsPage.passengersDataSubmitButtonClick();
 
+        String finalDeparture = summaryPage.getDepartureStation_SummaryPage().strip();
+        String finalArrival = summaryPage.getArrivalStation_SummaryPage().strip();
+        String finalDepartureDate = summaryPage.getDepartureDate_SummaryPage().strip();
+        String finalArrivalDate = summaryPage.getArrivalDate_SummaryPage().strip();
+        String finalPrice = summaryPage.getPrice_SummaryPage().strip();
+        String reservationPrice = summaryPage.getReservationPrice_SummaryPage().strip();
+        String totalPrice = summaryPage.getFinalPrice_SummaryPage().strip();
+        String orderCode = summaryPage.getOrderCode().strip();
+        int orderCodeLength = orderCode.length();
+        String fareSummaryPage = summaryPage.getFare().strip();
+        String passengerFirstName = summaryPage.getPassengerName_SummaryPage().strip();
+        String passengerSurname = summaryPage.getPassengerSurname_SummaryPage();
+        String passengerBirthDay = summaryPage.getPassengerBirthDate().strip();
+        String passengerEmail = summaryPage.getPassengerEmail().strip();
+
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(departure.toUpperCase(), finalDeparture, "Incorrect departure on summary page."),
+                () -> Assertions.assertEquals(arrival.toUpperCase(), finalArrival, "Incorrect arrival on summary page."),
+                () -> Assertions.assertEquals(departureDate, finalDepartureDate, "Incorrect departure date and time on summary page."),
+                () -> Assertions.assertEquals(arrivalDate, finalArrivalDate, "Incorrect arrival date and time on summary page."),
+                () -> Assertions.assertEquals(price, finalPrice, "Incorrect price on summary page."),
+                () -> Assertions.assertEquals("€0.00", reservationPrice, "Incorrect reservation price on summary page."),
+                () -> Assertions.assertEquals(price, totalPrice, "Incorrect total price on summary page."),
+                () -> Assertions.assertEquals(passengerFirstName, firstName.toUpperCase(), "Incorrect passenger first name on summary page."),
+                () -> Assertions.assertEquals(passengerSurname, lastName.toUpperCase(), "Incorrect passenger last name on summary page."),
+                () -> Assertions.assertEquals("06/09/1985", passengerBirthDay, "Incorrect passenger birth day on summary page."),
+                () -> Assertions.assertEquals(email, passengerEmail, "Incorrect passenger email on summary page."),
+                () -> Assertions.assertEquals(fare.toUpperCase(), fareSummaryPage, "Incorrect fare on summary page."),
+                () -> Assertions.assertEquals(6, orderCodeLength, "Incorrect length of the order code on summary page.")
+        );
+
         // Sleep for 7 seconds
         page.waitForTimeout(7000);
 
@@ -170,8 +292,7 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
         // Find the h3 element and get its text
         String actualHeaderText = page.locator("css=h3").textContent().trim();
 
-        // Use Assertions for the assertion
-        Assertions.assertEquals("Please, save the following information about your order:", actualHeaderText);
+        Assertions.assertEquals("Thank you for purchase!", actualHeaderText.strip());
 
     }
 }
