@@ -59,11 +59,11 @@ public class SummaryPage {
     }
 
     public String getDepartureDate_SummaryPage() {
-        return getTextContent("css=.property-value > span:nth-child(2)");
+        return getTextContent("css=.property-value > span:nth-child(1)");
     }
 
     public String getArrivalDate_SummaryPage() {
-        return getTextContent("css=.property-value > span:nth-child(1)");
+        return getTextContent("css=.property-value > span:nth-child(2)");
     }
 
     public String getFare() {
@@ -96,6 +96,10 @@ public class SummaryPage {
 
     public String getPassengerBirthDate() {
         return getTextContent("css=.property-value:nth-child(4)");
+    }
+
+    public String getPassengerEmail() {
+        return getTextContent("xpath=//*[@class='order-email']/span[2]");
     }
 
     private String getTextContent(String cssSelector) {

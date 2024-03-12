@@ -68,11 +68,12 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         resultsPage.selectFirstOption();
         String departure = resultsPage.getDepartureStation_ResultPage().strip();
         String arrival = resultsPage.getArrivalStation_ResultPage();
-        String departureDate = resultsPage.getFirstResultDepartureDate_ResultPage().strip();
-        String arrivalDate = resultsPage.getFirstResultArrivalDate_ResultPage().strip();
         String departureTime = resultsPage.getFirstResultDepartureTime_ResultPage();
+        String departureDate = resultsPage.getFirstResultDepartureDate_ResultPage().strip() + ", " + departureTime.strip() + " -";
         String arrivalTime = resultsPage.getFirstResultArrivalTime_ResultPage();
+        String arrivalDate = resultsPage.getFirstResultArrivalDate_ResultPage().strip() + ", " + arrivalTime;
         String price = resultsPage.getPriceFirstResult_ResultPage().strip();
+        String fare = resultsPage.getFere_ResultPage().strip();
         String durationTime = resultsPage.getDurationTime_ResultPage().strip();
 
         resultsPage.proceed();
@@ -100,12 +101,29 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         String reservationPrice = summaryPage.getReservationPrice_SummaryPage().strip();
         String totalPrice = summaryPage.getFinalPrice_SummaryPage().strip();
         String orderCode = summaryPage.getOrderCode().strip();
-        String fare = summaryPage.getFare().strip();
+        int orderCodeLength = orderCode.length();
+        String fareSummaryPage = summaryPage.getFare().strip();
         String passengerFirstName = summaryPage.getPassengerName_SummaryPage().strip();
         String passengerSurname = summaryPage.getPassengerSurname_SummaryPage();
         String passengerBirthDay = summaryPage.getPassengerBirthDate().strip();
+        String passengerEmail = summaryPage.getPassengerEmail().strip();
 
         // TODO: assertions
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(departure.toUpperCase(), finalDeparture, "Incorrect departure on summary page."),
+                () -> Assertions.assertEquals(arrival.toUpperCase(), finalArrival, "Incorrect arrival on summary page."),
+                () -> Assertions.assertEquals(departureDate, finalDepartureDate, "Incorrect departure date and time on summary page."),
+                () -> Assertions.assertEquals(arrivalDate, finalArrivalDate, "Incorrect arrival date and time on summary page."),
+                () -> Assertions.assertEquals(price, finalPrice, "Incorrect price on summary page."),
+                () -> Assertions.assertEquals("€0.00", reservationPrice, "Incorrect reservation price on summary page."),
+                () -> Assertions.assertEquals(price, totalPrice, "Incorrect total price on summary page."),
+                () -> Assertions.assertEquals(passengerFirstName, firstName.toUpperCase(), "Incorrect passenger first name on summary page."),
+                () -> Assertions.assertEquals(passengerSurname, lastName.toUpperCase(), "Incorrect passenger last name on summary page."),
+                () -> Assertions.assertEquals("06/09/1985", passengerBirthDay, "Incorrect passenger birth day on summary page."),
+                () -> Assertions.assertEquals(email, passengerEmail, "Incorrect passenger email on summary page."),
+                () -> Assertions.assertEquals(fare.toUpperCase(), fareSummaryPage, "Incorrect fare on summary page."),
+                () -> Assertions.assertEquals(6, orderCodeLength, "Incorrect length of the order code on summary page.")
+        );
 
         summaryPage.completingAdyenForm();
 
@@ -136,8 +154,6 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         resultsPage.proceed();
         resultsPage.selectSecondSideConnection();
         resultsPage.proceedSecondSideConnection();
-
-
 
         passengersDetailsPage.selectFirstPassengerPrefix("Mr");
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
@@ -280,11 +296,12 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         resultsPage.selectFirstOption();
         String departure = resultsPage.getDepartureStation_ResultPage().strip();
         String arrival = resultsPage.getArrivalStation_ResultPage();
-        String departureDate = resultsPage.getFirstResultDepartureDate_ResultPage().strip();
-        String arrivalDate = resultsPage.getFirstResultArrivalDate_ResultPage().strip();
         String departureTime = resultsPage.getFirstResultDepartureTime_ResultPage();
+        String departureDate = resultsPage.getFirstResultDepartureDate_ResultPage().strip() + ", " + departureTime;
         String arrivalTime = resultsPage.getFirstResultArrivalTime_ResultPage();
+        String arrivalDate = resultsPage.getFirstResultArrivalDate_ResultPage().strip() + ", " + arrivalTime;
         String price = resultsPage.getPriceFirstResult_ResultPage().strip();
+        String fare = resultsPage.getFere_ResultPage().strip();
         String durationTime = resultsPage.getDurationTime_ResultPage().strip();
 
         resultsPage.proceed();
@@ -312,12 +329,29 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         String reservationPrice = summaryPage.getReservationPrice_SummaryPage().strip();
         String totalPrice = summaryPage.getFinalPrice_SummaryPage().strip();
         String orderCode = summaryPage.getOrderCode().strip();
-        String fare = summaryPage.getFare().strip();
+        int orderCodeLength = orderCode.length();
+        String fareSummaryPage = summaryPage.getFare().strip();
         String passengerFirstName = summaryPage.getPassengerName_SummaryPage().strip();
         String passengerSurname = summaryPage.getPassengerSurname_SummaryPage();
         String passengerBirthDay = summaryPage.getPassengerBirthDate().strip();
+        String passengerEmail = summaryPage.getPassengerEmail().strip();
 
         // TODO: assertions
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(departure.toUpperCase(), finalDeparture, "Incorrect departure on summary page."),
+                () -> Assertions.assertEquals(arrival.toUpperCase(), finalArrival, "Incorrect arrival on summary page."),
+                () -> Assertions.assertEquals(departureDate, finalDepartureDate, "Incorrect departure date and time on summary page."),
+                () -> Assertions.assertEquals(arrivalDate, finalArrivalDate, "Incorrect arrival date and time on summary page."),
+                () -> Assertions.assertEquals(price, finalPrice, "Incorrect price on summary page."),
+                () -> Assertions.assertEquals("€0.00", reservationPrice, "Incorrect reservation price on summary page."),
+                () -> Assertions.assertEquals(price, totalPrice, "Incorrect total price on summary page."),
+                () -> Assertions.assertEquals(passengerFirstName, firstName.toUpperCase(), "Incorrect passenger first name on summary page."),
+                () -> Assertions.assertEquals(passengerSurname, lastName.toUpperCase(), "Incorrect passenger last name on summary page."),
+                () -> Assertions.assertEquals("06/09/1985", passengerBirthDay, "Incorrect passenger birth day on summary page."),
+                () -> Assertions.assertEquals(email, passengerEmail, "Incorrect passenger email on summary page."),
+                () -> Assertions.assertEquals(fare, fareSummaryPage, "Incorrect fare on summary page."),
+                () -> Assertions.assertEquals(6, orderCodeLength, "Incorrect length of the order code on summary page.")
+        );
 
         summaryPage.completingAdyenForm();
 

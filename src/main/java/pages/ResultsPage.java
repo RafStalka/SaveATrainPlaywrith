@@ -12,9 +12,10 @@ public class ResultsPage {
     private static final String DEPARTURE_TIME_1_ID_SELECTOR = "id=departure-t-1";
     private static final String ARRIVAL_DATE_1_ID_SELECTOR = "id=arrival-d-1";
     private static final String ARRIVAL_TIME_1_ID_SELECTOR = "id=arrival-t-1";
-    private static final String DURATION_TIME_XPATH = "xpath=//*[@id='result-1']/div/div/div/div[2]/div[2]/p";
+    private static final String DURATION_TIME_XPATH = "xpath=//*[@id='result-1']/div/div/div/div[2]/div[2]/p[2]";
     private static final String SELECT_TEXT = "Select";
     private static final String PROCEED_TEXT = "Proceed";
+    private static final String FARE_XPATH = "xpath=//*[@id='selected-fare-1']/span/span[2]";
 
     private final Page page;
 
@@ -59,7 +60,7 @@ public class ResultsPage {
     }
 
     public String getFirstResultDepartureTime_ResultPage() {
-        return getTextContent(DEPARTURE_TIME_1_ID_SELECTOR);
+        return getTextContent(DEPARTURE_TIME_1_ID_SELECTOR).strip();
     }
 
     public String getFirstResultArrivalDate_ResultPage() {
@@ -74,8 +75,12 @@ public class ResultsPage {
         return getTextContent(DURATION_TIME_XPATH);
     }
 
+    public String getFere_ResultPage() {
+        return getTextContent(FARE_XPATH);
+    }
+
     private String getTextContent(String cssSelector) {
-        return page.locator(cssSelector).textContent().trim();
+        return page.locator(cssSelector).textContent().strip();
     }
 
 }
