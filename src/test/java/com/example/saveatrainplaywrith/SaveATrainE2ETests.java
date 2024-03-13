@@ -111,13 +111,13 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
                 () -> Assertions.assertEquals(6, orderCodeLength, "Incorrect length of the order code on summary page.")
         );
 
-        // Sleep for 15 seconds
+        // Sleep for 7 seconds
         page.waitForTimeout(7000);
 
         summaryPage.completingAdyenForm();
 
         // Find the h3 element and get its text
-        String actualHeaderText = page.locator("css=h3").textContent().trim();
+        String actualHeaderText = page.locator("css=h3").textContent().strip();
 
         Assertions.assertEquals("Thank you for purchase!", actualHeaderText.strip());
 
@@ -211,10 +211,15 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
                 () -> Assertions.assertEquals(6, orderCodeLength, "Incorrect length of the order code on summary page.")
         );
 
-        // Sleep for 15 seconds
+        // Sleep for 7 seconds
         page.waitForTimeout(7000);
 
         summaryPage.completingAdyenForm();
+
+        // Find the h3 element and get its text
+        String actualHeaderText = page.locator("css=h3").textContent().strip();
+
+        Assertions.assertEquals("Thank you for purchase!", actualHeaderText.strip());
     }
 
     @ParameterizedTest

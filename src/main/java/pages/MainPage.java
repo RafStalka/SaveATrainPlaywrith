@@ -6,6 +6,9 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import constans.AppConstants;
 
+/**
+ * The MainPage class provides methods to interact with the main page.
+ */
 public class MainPage {
     public Page page;
 
@@ -102,24 +105,19 @@ public class MainPage {
         // Wait for auto-suggest and select the first option
         page.waitForSelector(".origin .ng-star-inserted:nth-child(1)");
         page.click(".origin .ng-star-inserted:nth-child(1)");
-
         // Release the action-box
         page.hover(".action-box");
     }
 
     public void complementingTheDestinationStations(String destination) {
-
-        // Find the destination input, click, and type
         page.click(".destination:nth-child(1)");
         page.type(".destination:nth-child(1)", destination);
-
         // Wait for auto-suggest and select the first option
         page.waitForSelector(".destination .ng-star-inserted:nth-child(1)");
         page.click(".destination .ng-star-inserted:nth-child(1)");
     }
 
     public void performSearch() {
-        // Click on the search button
         page.click(".search-btn");
     }
 
@@ -151,36 +149,28 @@ public class MainPage {
     }
 
     public void departureDate() {
-        // Click on the departure date input
         page.click(".departure-date > .form-control");
-        // Click on the desired date
         page.click(".ng-star-inserted:nth-child(5) > .owl-dt-day-4 > .owl-dt-calendar-cell-content");
     }
 
     public void returnDate() {
-        // Click on the departure date input
-        page.click(".departure-date > .form-control");
-        // Click on the desired date
+        page.click("id=main-form-return-date");
         page.click(".ng-star-inserted:nth-child(5) > .owl-dt-day-4 > .owl-dt-calendar-cell-content");
     }
 
     public void findMyTicketButtonClick() {
-        // Click on the find my tickets button
         page.click("button[name='button']");
     }
 
     public void findMyPassButtonClick() {
-        // Click on the find my pass on Eurail button
         page.click("css=.btn > p");
     }
 
     public void addOneAdultPassenger() {
-        // Add adult passenger type
         page.locator("#main-form-adult-plus svg").click();
     }
 
     public void addOneYouthPassengerIn_17_YearsAge(String youthAge) {
-        // Add youth passenger type in 17 age
         page.getByText("Show All Passenger Types").click();
         page.locator("#main-form-youth-plus path").click();
         page.getByRole(AriaRole.SPINBUTTON).click();

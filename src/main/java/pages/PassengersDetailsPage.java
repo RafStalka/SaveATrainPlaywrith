@@ -5,6 +5,9 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.SelectOption;
 
+/**
+ * This class represents the page where passenger details are entered.
+ */
 public class PassengersDetailsPage {
     private Page page;
     private final static String PASSENGER_DROPDOWN_SELECTOR = ".outbound-seat-select > .form-control";
@@ -108,8 +111,15 @@ public class PassengersDetailsPage {
     }
 
     public void enterPassportNumber(String passportNumber) {
-        // Enter passport number
-        page.fill("id=passenger-passport", passportNumber);
+        page.fill("(//input[@id='passenger-passport'])[1]", passportNumber);
+    }
+
+    public void enterSecondPassengerPassportNumber(String passportNumber) {
+        page.fill("(//input[@id='passenger-passport'])[2]", passportNumber);
+    }
+
+    public void enterThirdPassengerPassportNumber(String passportNumber) {
+        page.fill("(//input[@id='passenger-passport'])[3]", passportNumber);
     }
 
     public void selectDepartureAisleOption() {
@@ -125,34 +135,28 @@ public class PassengersDetailsPage {
     }
 
     public void enterCity(String city) {
-        // Enter city
         page.fill("//input[@placeholder='City']", city);
     }
 
     public void enterStreet( String street) {
-        // Enter address
         page.fill("//input[@placeholder='Address']", street);
     }
 
     public void enterPostalCode(String postalCode) {
-        // Enter postal code
         page.fill("//input[@placeholder='Postal Code']", postalCode);
     }
 
     public void enterMobilePhone(String phoneNumber) {
-        // Enter mobile
         page.fill("//input[@placeholder='Mobile']", phoneNumber);
     }
 
     public void enterEmail(String email) {
-        // Enter an email in the contact-info-input form control
         page.fill("//input[@placeholder='Email']", email);
     }
 
     public void passengersDataSubmitButtonClick() {
-        // Click on the submit-button element
         page.click(".submit-button > .ng-star-inserted");
-        // Sleep for 7 seconds
+        // Sleep for 5 seconds
         page.waitForTimeout(5000);
     }
 }
