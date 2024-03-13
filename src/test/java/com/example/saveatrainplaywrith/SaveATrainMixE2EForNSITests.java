@@ -10,6 +10,7 @@ import io.restassured.specification.ResponseSpecification;
 import org.hamcrest.Matchers;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -23,6 +24,7 @@ import java.util.stream.Stream;
 public class SaveATrainMixE2EForNSITests {
     private static String NSITok;
 
+    @Disabled("Disabled until DB connection will start.")
     @Test
     public void testAuth() throws JSONException {
         String word_para1 = "email";
@@ -63,6 +65,7 @@ public class SaveATrainMixE2EForNSITests {
             e.printStackTrace();
         }
     }
+    @Disabled("Disabled until DB connection will start.")
     @ParameterizedTest
     @MethodSource("excelDataProvider")
     void testUsingExcelData(String originUID, String destinationUID, String departureDatetime) {

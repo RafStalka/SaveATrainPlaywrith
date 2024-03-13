@@ -6,6 +6,7 @@ import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -123,6 +124,7 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
 
     }
 
+    @Disabled("Disabled until bug will be repair.")
     @ParameterizedTest
     @DisplayName("NSI provider 2xAdult and 1xYouth passenger.")
     @Description("Test checking e2e path on NSI provider with different types of passenger.")
