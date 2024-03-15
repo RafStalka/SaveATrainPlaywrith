@@ -1,5 +1,7 @@
 package com.example.saveatrainplaywrith;
 
+import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
 import constans.AppConstants;
 import io.qameta.allure.Description;
 import io.qameta.allure.Owner;
@@ -71,7 +73,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void aboutUs_TabChecking() {
-        String titleAboutUsPage = aboutUsPage.getAboutUsPageTitle().trim();
+        String titleAboutUsPage = aboutUsPage.getAboutUsPageTitle().strip();
         Assertions.assertEquals("About Us | Save A Train", titleAboutUsPage);
     }
 
@@ -91,8 +93,25 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void contactUs_TabChecking() {
-        String contactUsTitle = contactUsPage.getContactUsPageTitle().trim();
+        String contactUsTitle = contactUsPage.getContactUsPageTitle().strip();
         Assertions.assertEquals("Contact Us | Save A Train", contactUsTitle);
+    }
+
+    @Test
+    @DisplayName("Contact Us")
+    @Description("Contact Us fill form to contact without company name - positive scenario.")
+    @Severity(NORMAL)
+    @Owner("Save A Train")
+    public void contactUsWithoutCompanyName() {
+        contactUsPage.navigateToContactUsPage();
+        contactUsPage.fillContactUsFormWithoutCompanyName("Test", "Testerski", "test@email.com", "");
+       /* Assertions.assertEquals(name, actualName, "First name validation failed");
+        Assertions.assertEquals(lastName, actualLastName, "Last name validation failed");
+        Assertions.assertEquals(email, actualEmail, "Email validation failed");
+        Assertions.assertEquals(message, actualMessage, "Message validation failed");
+        contactUsPage.submitContactUsForm();*/
+        //Assertions.assertEquals("We receive your request and", page.getByText("We receive your request and"));
+        //page.pause();
     }
 
     @Test

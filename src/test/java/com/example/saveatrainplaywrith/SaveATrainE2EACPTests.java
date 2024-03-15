@@ -1,10 +1,6 @@
 package com.example.saveatrainplaywrith;
 
 import com.github.javafaker.Faker;
-import com.microsoft.playwright.ElementHandle;
-import com.microsoft.playwright.Locator;
-import com.microsoft.playwright.options.SelectOption;
-import constans.AppConstants;
 import io.qameta.allure.Description;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
