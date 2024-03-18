@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import utils.ConfigLoader;
 import utils.ExcelReader;
 
 import java.io.IOException;
@@ -13,15 +14,12 @@ public class SaveATrainMixE2EForEurailTests {
     @Disabled("Disabled until DB connection will start.")
     @ParameterizedTest
     @MethodSource("excelDataProvider")
-    void testUsingExcelData(String originUID, String destinationUID, String departureDatetime) {
-        System.out.println(originUID);
-        System.out.println(destinationUID);
-        System.out.println(departureDatetime);
-        // originUID, destinationUID, and departureDatetime corresponds to the columns in Excel sheet
+    void testUsingExcelDataForSearchConnectionsEurail(String originUID, String destinationUID, String departureDatetime) {
+
     }
 
     static Stream<Arguments> excelDataProvider() throws IOException {
-        String filePath = "/Users/rafalst/IdeaProjects/SaveATrainPlaywrith/src/test/resources/ConnectionsEurail.xlsx";
+        String filePath = System.getProperty("user.dir") + ConfigLoader.getInstance().getFilePathEurail();
         return ExcelReader.readExcelData(filePath)
                 .filter(arg -> isValidRow(arg.get()));
     }

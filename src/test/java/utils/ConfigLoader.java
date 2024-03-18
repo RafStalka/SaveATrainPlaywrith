@@ -16,22 +16,6 @@ public class ConfigLoader {
     }
     return configLoader;
   }
-
-  public String getHeaderEVercel() {
-    String prop = properties.getProperty("userEHeaderVercel");
-    if (prop != null) return prop;
-    else
-      throw new RuntimeException(
-              "Property headerE is not specified in the config.properties file");
-  }
-
-  public String getHeaderTVercel() {
-    String prop = properties.getProperty("userTHeaderVercel");
-    if (prop != null) return prop;
-    else
-      throw new RuntimeException(
-              "Property headerT is not specified in the config.properties file");
-  }
   public String getHeaderE() {
     String prop = properties.getProperty("userEHeader");
     if (prop != null) return prop;
@@ -46,40 +30,6 @@ public class ConfigLoader {
     else
       throw new RuntimeException(
               "Property headerT is not specified in the config.properties file");
-  }
-
-
-
-  public String getParamPage() {
-    String prop = properties.getProperty("paramPage");
-    if (prop != null) return prop;
-    else
-      throw new RuntimeException(
-              "Property paramP is not specified in the config.properties file");
-  }
-
-  public String getParamPageValue() {
-    String prop = properties.getProperty("paramPageValue");
-    if (prop != null) return prop;
-    else
-      throw new RuntimeException(
-              "Property paramPValue is not specified in the config.properties file");
-  }
-
-  public String getParamPerPage() {
-    String prop = properties.getProperty("paramPerPage");
-    if (prop != null) return prop;
-    else
-      throw new RuntimeException(
-              "Property paramPP is not specified in the config.properties file");
-  }
-
-  public String getParamPerPageValue() {
-    String prop = properties.getProperty("paramPerPageValue");
-    if (prop != null) return prop;
-    else
-      throw new RuntimeException(
-              "Property paramPPValue is not specified in the config.properties file");
   }
 
   public String getIEmailVercel() {
@@ -98,60 +48,68 @@ public class ConfigLoader {
               "Property iPassVercel is not specified in the config.properties file");
   }
 
-  public String getREmail() {
-    String prop = properties.getProperty("rEmail");
-    if (prop != null) return prop;
-    else
-      throw new RuntimeException(
-              "Property rEmail is not specified in the config.properties file");
-  }
-
-  public String getSATBalance() {
-    String prop = properties.getProperty("satURIBalance");
-    if (prop != null) return prop;
-    else
-      throw new RuntimeException(
-              "Property SATBalance is not specified in the config.properties file");
-  }
-
-  public String getPRODBalance() {
-    String prop = properties.getProperty("prodURIBalance");
-    if (prop != null) return prop;
-    else
-      throw new RuntimeException(
-              "Property prodURIBalance is not specified in the config.properties file");
-  }
-
-  public String getSATOrder() {
-    String prop = properties.getProperty("satURIOrder");
-    if (prop != null) return prop;
-    else
-      throw new RuntimeException(
-              "Property SATOrder is not specified in the config.properties file");
-  }
-
-  public String getPRODOrder() {
-    String prop = properties.getProperty("prodURIOrder");
-    if (prop != null) return prop;
-    else
-      throw new RuntimeException(
-              "Property prodURIOrder is not specified in the config.properties file");
-  }
-
-  public String getApiBook() {
-    String prop = properties.getProperty("apiBookURI");
-    if (prop != null) return prop;
-    else
-      throw new RuntimeException(
-              "Property api book is not specified in the config.properties file");
-  }
-
   public String getVendor() {
     String prop = properties.getProperty("vendorURI");
     if (prop != null) return prop;
     else
       throw new RuntimeException(
-              "Property api book is not specified in the config.properties file");
+              "Property vendor staging URI is not specified in the config.properties file");
+  }
+
+  public String getVendorEndpoint() {
+    String prop = properties.getProperty("salesAgentSessionEndpoint");
+    if (prop != null) return prop;
+    else
+      throw new RuntimeException(
+              "Property vendor staging sales agent session endpoint is not specified in the config.properties file");
+  }
+
+  public String getVendorContentType() {
+    String prop = properties.getProperty("contentTypeVercelStaging");
+    if (prop != null) return prop;
+    else
+      throw new RuntimeException(
+              "Property content type for vendor staging is not specified in the config.properties file");
+  }
+
+  public String getVendorSearchEndpoint() {
+    String prop = properties.getProperty("searchEndpoint");
+    if (prop != null) return prop;
+    else
+      throw new RuntimeException(
+              "Property vendor staging search endpoint is not specified in the config.properties file");
+  }
+
+  public String getFilePathTrainItalia() {
+    String prop = properties.getProperty("filePathTrainItalia");
+    if (prop != null) return prop;
+    else
+      throw new RuntimeException(
+              "Property file path to Train Italia file is not specified in the config.properties file");
+  }
+
+  public String getFilePathNSI() {
+    String prop = properties.getProperty("filePathNSI");
+    if (prop != null) return prop;
+    else
+      throw new RuntimeException(
+              "Property file path to NSI file is not specified in the config.properties file");
+  }
+
+  public String getFilePathEurail() {
+    String prop = properties.getProperty("filePathEurail");
+    if (prop != null) return prop;
+    else
+      throw new RuntimeException(
+              "Property file path to Eurail file is not specified in the config.properties file");
+  }
+
+  public String getFilePathACP() {
+    String prop = properties.getProperty("filePathACP");
+    if (prop != null) return prop;
+    else
+      throw new RuntimeException(
+              "Property file path to ACP file is not specified in the config.properties file");
   }
 
 }

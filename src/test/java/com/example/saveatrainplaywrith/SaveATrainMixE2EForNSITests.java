@@ -8,9 +8,9 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import org.hamcrest.Matchers;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -19,22 +19,29 @@ import utils.ConfigLoader;
 import utils.ExcelReader;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
-public class SaveATrainMixE2EForNSITests {
-    private static String NSITok;
+import static io.restassured.RestAssured.given;
 
-    @Disabled("Disabled until DB connection will start.")
+public class SaveATrainMixE2EForNSITests {
+    private final List<String> allIdentifiers = new ArrayList<>();
+    private final Map<String, List<String>> identifierToIdsMap = new HashMap<>();
+    private final List<String> allIds = new ArrayList<>();
+    private static String TITok;
+
     @Test
     public void testAuth() throws JSONException {
         String word_para1 = "email";
         String word_para2 = "password";
         String word_para3 = "access_token";
-
         RequestSpecBuilder requestSpecBuilder = new RequestSpecBuilder();
         requestSpecBuilder.setUrlEncodingEnabled(false);
         requestSpecBuilder.setContentType(ContentType.JSON);
-        requestSpecBuilder.setBaseUri(ConfigLoader.getInstance().getApiBook());
+        requestSpecBuilder.setBaseUri(ConfigLoader.getInstance().getVendor());
 
         RequestSpecification requestSpec = requestSpecBuilder.build();
 
@@ -46,7 +53,7 @@ public class SaveATrainMixE2EForNSITests {
                 .given()
                 .spec(requestSpec)
                 .body(requestBody.toString())
-                .post("/admin/sessions");
+                .post(ConfigLoader.getInstance().getVendorEndpoint());
 
         ResponseSpecification responseSpec = new ResponseSpecBuilder()
                 .expectStatusCode(200)
@@ -58,25 +65,125 @@ public class SaveATrainMixE2EForNSITests {
         JSONObject jsonResponse = new JSONObject(response.asString());
 
         try {
-            NSITok = jsonResponse.getString(word_para3);
-            System.out.println(NSITok.strip());
-        } catch(JSONException e) {
+            TITok = jsonResponse.getString(word_para3);
+        } catch (JSONException e) {
             System.out.println("Error parsing" + word_para3 + "from response");
             e.printStackTrace();
         }
     }
-    @Disabled("Disabled until DB connection will start.")
+
     @ParameterizedTest
     @MethodSource("excelDataProvider")
-    void testUsingExcelData(String originUID, String destinationUID, String departureDatetime) {
-        System.out.println(originUID);
-        System.out.println(destinationUID);
-        System.out.println(departureDatetime);
-        // originUID, destinationUID, and departureDatetime corresponds to the columns in Excel sheet
+    void testUsingExcelDataForSearchConnectionsNSI(String originUID, String destinationUID, String departureDatetime) {
+        RestAssured.useRelaxedHTTPSValidation();
+
+        JSONObject requestParams = new JSONObject();
+        JSONObject searchParams = new JSONObject();
+
+        searchParams.put("departure_datetime", departureDatetime);
+
+        JSONObject passengerAttributes = new JSONObject();
+        passengerAttributes.put("age", 21);
+        passengerAttributes.put("passenger_type_attributes", new JSONObject().put("type", "Search::PassengerType::Adult"));
+        JSONObject passengerMap = new JSONObject();
+        passengerMap.put("0", passengerAttributes);
+        searchParams.put("searches_passengers_attributes", passengerMap);
+
+        JSONObject routeAttributes = new JSONObject();
+        routeAttributes.put("origin_station_attributes", new JSONObject().put("uid", originUID));
+        routeAttributes.put("destination_station_attributes", new JSONObject().put("uid", destinationUID));
+        searchParams.put("route_attributes", routeAttributes);
+
+        requestParams.put("search", searchParams);
+
+        String agentEmail = ConfigLoader.getInstance().getIEmailVercel();
+        String agentToken = TITok;
+
+        RequestSpecification requestSpec = new RequestSpecBuilder()
+                .setBaseUri(ConfigLoader.getInstance().getVendor() + ConfigLoader.getInstance().getVendorSearchEndpoint())
+                .setContentType(ConfigLoader.getInstance().getVendorContentType())
+                .addHeader(ConfigLoader.getInstance().getHeaderE(), agentEmail)
+                .addHeader(ConfigLoader.getInstance().getHeaderT(), agentToken)
+                .setBody(requestParams.toString())
+                .build();
+
+        ResponseSpecification responseSpec = new ResponseSpecBuilder()
+                .expectStatusCode(200)
+                .build();
+
+        Response response = given()
+                .spec(requestSpec)
+                .when()
+                .post()
+                .then()
+                .spec(responseSpec)
+                .extract()
+                .response();
+
+        JSONObject jsonResponse = new JSONObject(response.getBody().asString());
+
+        JSONObject originStation = jsonResponse.getJSONObject("route").getJSONObject("origin_station");
+        JSONArray originNames = originStation.getJSONArray("names");
+        String originStationName = "";
+        for (int i = 0; i < originNames.length(); i++) {
+            JSONObject originName = originNames.getJSONObject(i);
+            String languageName = originName.getJSONObject("language").getString("name");
+            if (languageName.equals("English")) {
+                originStationName = originName.getString("name");
+                break;
+            }
+        }
+
+        JSONObject destinationStation = jsonResponse.getJSONObject("route").getJSONObject("destination_station");
+        JSONArray destinationNames = destinationStation.getJSONArray("names");
+        String destinationStationName = "";
+        for (int i = 0; i < destinationNames.length(); i++) {
+            JSONObject destinationName = destinationNames.getJSONObject(i);
+            String languageName = destinationName.getJSONObject("language").getString("name");
+            if (languageName.equals("English")) {
+                destinationStationName = destinationName.getString("name");
+                break;
+            }
+        }
+
+        if (jsonResponse.has("identifier")) {
+            String identifier = jsonResponse.getString("identifier");
+            allIdentifiers.add(identifier);
+            System.out.println("Identifier: " + identifier);
+        }
+
+        JSONArray results = jsonResponse.getJSONArray("results");
+        int totalIds = 0;
+        for (int i = 0; i < results.length(); i++) {
+            JSONObject result = results.getJSONObject(i);
+            if (result.has("id")) {
+                totalIds++;
+                String idValue = String.valueOf(result.getInt("id"));
+                allIds.add(idValue);
+                System.out.println("ID: " + result.getInt("id"));
+
+                if (jsonResponse.has("identifier")) {
+                    String identifier = jsonResponse.getString("identifier");
+                    identifierToIdsMap.putIfAbsent(identifier, new ArrayList<>());
+                    identifierToIdsMap.get(identifier).add(idValue);
+                }
+
+                String departureDatetimeResult = "";
+                if (result.has("departure_datetime")) {
+                    departureDatetimeResult = result.getString("departure_datetime");
+                    System.out.println("Departure DateTime: " + departureDatetimeResult);
+                } else {
+                    System.out.println("Departure DateTime not present in response. Using date from Excel: " + departureDatetime);
+                }
+            }
+        }
+
+        System.out.println(originStationName + " --> " + destinationStationName + " "
+                + "Departure request: " + departureDatetime + " " + "Total ids: " + totalIds);
     }
 
     static Stream<Arguments> excelDataProvider() throws IOException {
-        String filePath = "/Users/rafalst/IdeaProjects/SaveATrainPlaywrith/src/test/resources/ConnectionsNSI.xlsx";
+        String filePath = System.getProperty("user.dir") + ConfigLoader.getInstance().getFilePathNSI();
         return ExcelReader.readExcelData(filePath)
                 .filter(arg -> isValidRow(arg.get()));
     }
