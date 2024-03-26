@@ -72,6 +72,7 @@ public class SaveATrainMixE2EForNSITests {
         }
     }
 
+
     @ParameterizedTest
     @MethodSource("excelDataProvider")
     void testUsingExcelDataForSearchConnectionsNSI(String originUID, String destinationUID, String departureDatetime) {

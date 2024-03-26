@@ -11,7 +11,10 @@ import org.hamcrest.Matchers;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -27,6 +30,7 @@ import java.util.stream.Stream;
 
 import static io.restassured.RestAssured.given;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class SaveATrainMixE2EForTrainItaliaTests {
 
     private final List<String> allIdentifiers = new ArrayList<>();
@@ -34,6 +38,7 @@ public class SaveATrainMixE2EForTrainItaliaTests {
     private final List<String> allIds = new ArrayList<>();
     private static String TITok;
 
+    @Order(1)
     @Test
     public void testAuth() throws JSONException {
         String word_para1 = "email";
