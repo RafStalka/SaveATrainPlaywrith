@@ -1,5 +1,7 @@
 package com.example.saveatrainplaywrith;
 
+import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
 import constans.AppConstants;
 import io.qameta.allure.Description;
 import io.qameta.allure.Owner;
@@ -16,8 +18,10 @@ import static io.qameta.allure.SeverityLevel.CRITICAL;
 import static io.qameta.allure.SeverityLevel.NORMAL;
 
 /**
- * This class contains regression tests for the Save A Train application. It extends the PlaywrightTestBase class.
- * The regression tests cover various functionalities and UI elements of the application.
+ * SaveATrainRegressionTests is a class that contains regression tests for the Save A Train application.
+ * It extends the PlaywrightTestBase class.
+ *
+ * It provides methods for setting up the test environment and executing various test cases.
  */
 public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @BeforeEach
@@ -69,8 +73,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void aboutUs_TabChecking() {
-        // User should see About Us introduction page
-        String titleAboutUsPage = aboutUsPage.getAboutUsPageTitle().trim();
+        String titleAboutUsPage = aboutUsPage.getAboutUsPageTitle().strip();
         Assertions.assertEquals("About Us | Save A Train", titleAboutUsPage);
     }
 
@@ -80,7 +83,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void aboutUsURL_TabChecking() {
-        // User should see About Us introduction page
         String urlAboutUsPage = aboutUsPage.getAboutUsPageURL();
         Assertions.assertEquals(AppConstants.SAT_HOME_PAGE + "/help/about", urlAboutUsPage);
     }
@@ -91,9 +93,26 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void contactUs_TabChecking() {
-        // User should see Contact Us page
-        String contactUsTitle = contactUsPage.getContactUsPageTitle().trim();
+        String contactUsTitle = contactUsPage.getContactUsPageTitle().strip();
         Assertions.assertEquals("Contact Us | Save A Train", contactUsTitle);
+    }
+
+    // TODO: Create assertions for filled form
+    @Test
+    @DisplayName("Contact Us")
+    @Description("Contact Us fill form to contact without company name - positive scenario.")
+    @Severity(NORMAL)
+    @Owner("Save A Train")
+    public void contactUsWithoutCompanyName() {
+        contactUsPage.navigateToContactUsPage();
+        contactUsPage.fillContactUsFormWithoutCompanyName("Test", "Testerski", "test@email.com", "");
+       /* Assertions.assertEquals(name, actualName, "First name validation failed");
+        Assertions.assertEquals(lastName, actualLastName, "Last name validation failed");
+        Assertions.assertEquals(email, actualEmail, "Email validation failed");
+        Assertions.assertEquals(message, actualMessage, "Message validation failed");
+        contactUsPage.submitContactUsForm();*/
+        //Assertions.assertEquals("We receive your request and", page.getByText("We receive your request and"));
+        //page.pause();
     }
 
     @Test
@@ -102,7 +121,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void contactUsURL_TabChecking() {
-        // User should see Contact Us page
         String contactUsURL = contactUsPage.getContactUsPageURL();
         Assertions.assertEquals(AppConstants.SAT_HOME_PAGE + "/help/contact", contactUsURL);
     }
@@ -113,7 +131,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void productPageChecking() {
-        // User should see Products introduction page
         String productsPageTitle = productsPage.getProductsPageTitle().trim();
         Assertions.assertEquals("Products | Save A Train", productsPageTitle);
     }
@@ -124,7 +141,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void productPageURLChecking() {
-        // User should see Products introduction page
         String productsPageURL = productsPage.getProductsPageURL();
         Assertions.assertEquals(AppConstants.SAT_HOME_PAGE + "/business/products", productsPageURL);
     }
@@ -135,7 +151,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void railSearchApi_ProductChecking() {
-        // User should see Rail Search API product introduction page
         String railSearchApiTitle = railSearchApiProductPage.getRailSearchApiPageTitle().trim();
         Assertions.assertEquals("Rail Search Api | Save A Train", railSearchApiTitle);
     }
@@ -146,7 +161,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void railSearchApi_ProductURLChecking() {
-        // User should see Rail Search API product introduction page
         String railSearchApiURL = railSearchApiProductPage.getRailSearchApiPageURL();
         Assertions.assertEquals(AppConstants.SAT_HOME_PAGE + "/product/rail-api-search", railSearchApiURL);
     }
@@ -157,7 +171,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void railBookApi_ProductChecking() {
-        // User should see Rail Book API product introduction page
         String railBookApiTitle = railBookApiProductPage.getRailBookApiPageTitle().trim();
         Assertions.assertEquals("Rail Book Api | Save A Train", railBookApiTitle);
     }
@@ -168,7 +181,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void railBookApi_ProductURLChecking() {
-        // User should see Rail Book API product introduction page
         String railBookApiURL = railBookApiProductPage.getRailBookApiPageURL();
         Assertions.assertEquals(AppConstants.SAT_HOME_PAGE + "/product/rail-api-book", railBookApiURL);
     }
@@ -179,7 +191,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void railForwardApi_ProductChecking() {
-        // User should see Rail Forward product introduction page
         String railForwardApiTitle = railForwardApiPage.getRailForwardApiPageTitle().trim();
         Assertions.assertEquals("Rails Forward Api | Save A Train", railForwardApiTitle);
     }
@@ -190,7 +201,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void railForwardApi_ProductURLChecking() {
-        // User should see Rail Forward product introduction page
         String railForwardApiURL = railForwardApiPage.getRailForwardApiPageURL();
         Assertions.assertEquals(AppConstants.SAT_HOME_PAGE + "/product/rail-api-forward", railForwardApiURL);
     }
@@ -201,7 +211,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void railAgentDashboard_ProductChecking() {
-        // User should see Rail Agent Dashboard product introduction page
         String railAgentDashboardProductTitle = railAgentDashboardProductPage.getRailAgentDashboardProductPageTitle().trim();
         Assertions.assertEquals("Rail Agent Dashboard | Save A Train", railAgentDashboardProductTitle);
     }
@@ -212,7 +221,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void railAgentDashboard_ProductURLChecking() {
-        // User should see Rail Agent Dashboard product introduction page
         String railAgentDashboardProductURL = railAgentDashboardProductPage.getRailAgentDashboardProductPageURL();
         Assertions.assertEquals(AppConstants.SAT_HOME_PAGE + "/product/agent-dashboard", railAgentDashboardProductURL);
     }
@@ -223,7 +231,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void whiteLabel_ProductChecking() {
-        // User should see White Label product introduction page
         String whiteLabelProductTitle = whiteLabelProductPage.getWhiteLabelProductPageTitle().trim();
         Assertions.assertEquals("White Label | Save A Train", whiteLabelProductTitle);
     }
@@ -234,7 +241,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void whiteLabel_ProductURLChecking() {
-        // User should see White Label product introduction page
         String whiteLabelProductURL = whiteLabelProductPage.getWhiteLabelPageURL();
         Assertions.assertEquals(AppConstants.SAT_HOME_PAGE + "/product/white-label", whiteLabelProductURL);
     }
@@ -245,7 +251,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void railAffiliate_ProductChecking() {
-        // User should see Rail Affiliate product introduction page
         String railAffiliateProductTitle = railAffiliateProductPage.getRailAffiliateProductPageTitle().trim();
         Assertions.assertEquals("Rail Affiliate | Save A Train", railAffiliateProductTitle);
     }
@@ -256,7 +261,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void railAffiliate_ProductURLChecking() {
-        // User should see Rail Affiliate product introduction page
         String railAffiliateProductURL = railAffiliateProductPage.getRailAffiliatePageURL();
         Assertions.assertEquals(AppConstants.SAT_HOME_PAGE + "/product/rail-affiliat", railAffiliateProductURL);
     }
@@ -267,7 +271,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void eurailPass_ProductChecking() {
-        // User should see Eurail product introduction page
         String eurailProductTitle = eurailProductPage.getEurailProductPageTitle().trim();
         Assertions.assertEquals("Eurail Pass | Save A Train", eurailProductTitle);
     }
@@ -277,7 +280,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void eurailPass_ProductURLChecking() {
-        // User should see Eurail product introduction page
         String eurailProductURL = eurailProductPage.getEurailPassPageURL();
         Assertions.assertEquals(AppConstants.SAT_HOME_PAGE + "/product/eurail", eurailProductURL);
     }
@@ -288,7 +290,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void manageBookings_HelpTabChecking() {
-        // User should see Manage Bookings in Help tab introduction page
         String manageBookingsTitle = manageBookingsHelpTabPage.getManageBookingsHelpTabPageTitle().trim();
         Assertions.assertEquals("Manage Bookings | Save A Train", manageBookingsTitle);
     }
@@ -299,7 +300,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void manageBookings_HelpTabURLChecking() {
-        // User should see Manage Bookings in Help tab introduction page
         String manageBookingsURL = manageBookingsHelpTabPage.getManageBookingsPageURL();
         Assertions.assertEquals(AppConstants.SAT_HOME_PAGE + "/reservations/find", manageBookingsURL);
     }
@@ -310,7 +310,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void FAQ_HelpTabChecking() {
-        // User should see FAQ page in Help tab introduction page
         String faqTitle = faqHelpTabPage.getFAQHelpTabPageTitle().trim();
         Assertions.assertEquals("FAQ | Save A Train", faqTitle);
     }
@@ -321,7 +320,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void FAQ_HelpTabURLChecking() {
-        // User should see FAQ page in Help tab introduction page
         String faqURL = faqHelpTabPage.getFAQPageURL();
         Assertions.assertEquals(AppConstants.SAT_HOME_PAGE + "/help/faqs", faqURL);
     }
@@ -332,7 +330,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void readMore_ButtonChecking() {
-        // Checking Read More button functionality
         String readMoreTitle = aboutUsPage.readMoreButtonFunctionality().trim();
         Assertions.assertEquals("About Us | Save A Train", readMoreTitle);
     }
@@ -343,7 +340,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void privacyPolicy_ButtonChecking() {
-        // Checking Privacy Policy title
         String privacyPolicyTitle = privacyPolicyPage.navigateToPrivacyPolicyPage().trim();
         Assertions.assertEquals("Train Ticket Booking and Reservation | Save A Train", privacyPolicyTitle);
     }
@@ -354,7 +350,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void privacyPolicy_URLChecking() {
-        // Checking Privacy Policy title
         String privacyPolicyURL = privacyPolicyPage.getPrivacyPolicyURL();
         Assertions.assertEquals(AppConstants.SAT_HOME_PAGE + "/page/privacy-policy", privacyPolicyURL);
     }
@@ -365,7 +360,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void termsAndConditions_ButtonChecking() {
-        // Checking Terms And Conditions title
         String privacyPolicyTitle = termsAndConditionsPage.termsAndConditionsButtonFunctionality().trim();
         Assertions.assertEquals("Train Ticket Booking and Reservation | Save A Train", privacyPolicyTitle);
     }
@@ -376,7 +370,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Severity(NORMAL)
     @Owner("Save A Train")
     public void termsAndConditions_URLChecking() {
-        // Checking Terms And Conditions URL
         String termsAndConditionsURL = termsAndConditionsPage.getTermsAndConditionsURL();
         Assertions.assertEquals(AppConstants.SAT_HOME_PAGE + "/page/terms-of-use", termsAndConditionsURL);
     }
@@ -413,13 +406,11 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
         mainPage.navigateToHomePage();
         mainPage.complementingTheOriginStations("Berlin Central Station");
         mainPage.complementingTheDestinationStations("Hamburg Central Station");
-        // Find and interact with the elements
         String originPrimary = page.locator(".input-control-container > .origin").inputValue();
         String destinPrimary = page.locator(".destination:nth-child(1)").inputValue();
         Assertions.assertEquals("Berlin Central Station", originPrimary);
         Assertions.assertEquals("Hamburg Central Station", destinPrimary);
         mainPage.clickExchangeButton();
-        // Find and interact with the elements
         String originSecondary = page.locator(".input-control-container > .origin").inputValue();
         String destinSecondary = page.locator(".destination:nth-child(1)").inputValue();
         Assertions.assertEquals("Hamburg Central Station", originSecondary);

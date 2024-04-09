@@ -1,17 +1,10 @@
 package com.example.saveatrainplaywrith;
 
 import com.github.javafaker.Faker;
-import com.microsoft.playwright.ElementHandle;
-import com.microsoft.playwright.Locator;
-import com.microsoft.playwright.options.SelectOption;
-import constans.AppConstants;
 import io.qameta.allure.Description;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import pages.MainPage;
@@ -55,7 +48,7 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
     @Description("Test checking e2e path on ACP provider for Spain.")
     @Severity(CRITICAL)
     @Owner("Save A Train")
-    @CsvSource({"Madrid, Leon", "Cadiz, Madrid", "Barcelona El Prat Airport, Madrid", "Leon, Madrid"})
+    @CsvSource({"Madrid, Leon", "Cadiz, Madrid", "Madrid, Valencia", "Leon, Madrid"})
     public void e2e_SAT_ACPForSpain_test(String origin, String destination) {
         mainPage.navigateToHomePage();
         mainPage.complementingTheOriginStations(origin);
@@ -216,6 +209,7 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
 
     }
 
+    @Disabled("Disabled until stations from Sweden will be imported.")
     @ParameterizedTest
     @DisplayName("ACP provider for Sweden.")
     @Description("Test checking e2e path on ACP provider for Sweden.")

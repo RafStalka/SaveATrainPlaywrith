@@ -5,6 +5,10 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import constans.AppConstants;
+import org.junit.jupiter.api.Assertions;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The MainPage class provides methods to interact with the main page.
@@ -149,13 +153,21 @@ public class MainPage {
     }
 
     public void departureDate() {
-        page.click(".departure-date > .form-control");
-        page.click(".ng-star-inserted:nth-child(5) > .owl-dt-day-4 > .owl-dt-calendar-cell-content");
+        LocalDate tomorrow = LocalDate.now().plusDays(1);
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String formattedDate = tomorrow.format(dateFormat);
+        page.fill("id=main-form-departure-date", formattedDate);
+        String actualDate = page.inputValue("id=main-form-departure-date");
+        Assertions.assertEquals(formattedDate, actualDate, "The departure date filled in the input field does not match the expected date.");
     }
 
     public void returnDate() {
-        page.click("id=main-form-return-date");
-        page.click(".ng-star-inserted:nth-child(5) > .owl-dt-day-4 > .owl-dt-calendar-cell-content");
+        LocalDate tomorrow = LocalDate.now().plusDays(2);
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String formattedDate = tomorrow.format(dateFormat);
+        page.fill("id=main-form-return-date", formattedDate);
+        String actualDate = page.inputValue("id=main-form-return-date");
+        Assertions.assertEquals(formattedDate, actualDate, "The return date filled in the input field does not match the expected date.");
     }
 
     public void findMyTicketButtonClick() {
