@@ -18,8 +18,36 @@ import pages.SummaryPage;
 import static io.qameta.allure.SeverityLevel.CRITICAL;
 
 /**
- * SaveATrainE2ETests class represents the test cases for end-to-end path testing on Save A Train application.
- * It extends the PlaywrightTestBase class.
+ * SaveATrainE2ETests class is responsible for performing end-to-end tests related to the Save A Train application.
+ * It extends the PlaywrightTestBase class and inherits its fields and methods.
+ *
+ * Class Fields:
+ * - faker: An instance of the Faker class for generating fake data.
+ * - firstName: The first name of the first adult passenger.
+ * - firstNameSecondAdultPassenger: The first name of the second adult passenger.
+ * - firstNameYouthPassenger: The first name of the youth passenger.
+ * - lastName: The last name of the first adult passenger.
+ * - lastNameSecondAdultPassenger: The last name of the second adult passenger.
+ * - lastNameYouthPassenger: The last name of the youth passenger.
+ * - email: The email address of the passenger.
+ *
+ * Class Methods:
+ * - setUp(): Annotated method that runs before each test method in the class to set up the test environment.
+ *
+ * - e2e_SAT_NSI_test(origin: String, destination: String): Annotated parameterized test method that checks
+ *   the end-to-end path on the NSI provider. It takes the origin and destination as input parameters.
+ *
+ * - e2e_SAT_NSI_twoAdultsAndOneYouth_test(origin: String, destination: String): Annotated parameterized test method
+ *   that checks the end-to-end path on the NSI provider with two adult passengers and one youth passenger.
+ *   It takes the origin and destination as input parameters.
+ *
+ * - e2e_SAT_TI_test(origin: String, destination: String): Annotated parameterized test method that checks
+ *   the end-to-end path on the TI provider. It takes the origin and destination as input parameters.
+ *
+ * Super Classes:
+ * - PlaywrightTestBase: A base class for Playwright tests that provides common fields and methods related to the Save A Train application.
+ *
+ * Note: This class does not contain any example code, @author, or @version tags as requested.
  */
 public class SaveATrainE2ETests extends PlaywrightTestBase {
     @BeforeEach
