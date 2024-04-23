@@ -20,7 +20,6 @@ import static io.qameta.allure.SeverityLevel.NORMAL;
 /**
  * SaveATrainRegressionTests is a class that contains regression tests for the Save A Train application.
  * It extends the PlaywrightTestBase class.
- *
  * It provides methods for setting up the test environment and executing various test cases.
  */
 public class SaveATrainRegressionTests extends PlaywrightTestBase {
