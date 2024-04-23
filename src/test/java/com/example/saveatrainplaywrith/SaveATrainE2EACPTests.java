@@ -20,6 +20,26 @@ import static io.qameta.allure.SeverityLevel.CRITICAL;
  */
 public class SaveATrainE2EACPTests extends PlaywrightTestBase {
 
+    public static final String BIRTH_DATE = "06/09/1985";
+    public static final String MR = "Mr";
+    public static final String YOUTH_AGE = "17";
+    public static final String MRS = "Mrs";
+    public static final String ZERO = "€0.00";
+    public static final String INCORRECT_DEPARTURE_ON_SUMMARY_PAGE = "Incorrect departure on summary page.";
+    public static final String INCORRECT_ARRIVAL_ON_SUMMARY_PAGE = "Incorrect arrival on summary page.";
+    public static final String INCORRECT_DEPARTURE_DATE_AND_TIME_ON_SUMMARY_PAGE = "Incorrect departure date and time on summary page.";
+    public static final String INCORRECT_ARRIVAL_DATE_AND_TIME_ON_SUMMARY_PAGE = "Incorrect arrival date and time on summary page.";
+    public static final String INCORRECT_PRICE_ON_SUMMARY_PAGE = "Incorrect price on summary page.";
+    public static final String INCORRECT_RESERVATION_PRICE_ON_SUMMARY_PAGE = "Incorrect reservation price on summary page.";
+    public static final String INCORRECT_TOTAL_PRICE_ON_SUMMARY_PAGE = "Incorrect total price on summary page.";
+    public static final String INCORRECT_PASSENGER_FIRST_NAME_ON_SUMMARY_PAGE = "Incorrect passenger first name on summary page.";
+    public static final String INCORRECT_PASSENGER_LAST_NAME_ON_SUMMARY_PAGE = "Incorrect passenger last name on summary page.";
+    public static final String INCORRECT_PASSENGER_BIRTH_DAY_ON_SUMMARY_PAGE = "Incorrect passenger birth day on summary page.";
+    public static final String INCORRECT_PASSENGER_EMAIL_ON_SUMMARY_PAGE = "Incorrect passenger email on summary page.";
+    public static final String INCORRECT_FARE_ON_SUMMARY_PAGE = "Incorrect fare on summary page.";
+    public static final String INCORRECT_LENGTH_OF_THE_ORDER_CODE_ON_SUMMARY_PAGE = "Incorrect length of the order code on summary page.";
+    public static final String YOU_FOR_PURCHASE = "Thank you for purchase!";
+
     @BeforeEach
     public void setUp() {
         mainPage = new MainPage(page);
@@ -70,9 +90,9 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
 
         resultsPage.proceed();
 
-        passengersDetailsPage.selectFirstPassengerPrefix("Mr");
+        passengersDetailsPage.selectFirstPassengerPrefix(MR);
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
-        passengersDetailsPage.enterbirthDate("06/09/1985");
+        passengersDetailsPage.enterbirthDate(BIRTH_DATE);
         passengersDetailsPage.choosePassengerCountry();
         passengersDetailsPage.choosePassengerNationality();
         passengersDetailsPage.choosePassengerBirthCountry();
@@ -101,28 +121,28 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         String passengerEmail = summaryPage.getPassengerEmail().strip();
 
         Assertions.assertAll(
-                () -> Assertions.assertTrue(finalDeparture.contains(departure.toUpperCase()), "Incorrect departure on summary page."),
-                () -> Assertions.assertTrue(finalArrival.contains(arrival.toUpperCase()), "Incorrect arrival on summary page."),
-                () -> Assertions.assertEquals(departureDate, finalDepartureDate, "Incorrect departure date and time on summary page."),
-                () -> Assertions.assertEquals(arrivalDate, finalArrivalDate, "Incorrect arrival date and time on summary page."),
-                () -> Assertions.assertEquals(price, finalPrice, "Incorrect price on summary page."),
-                () -> Assertions.assertEquals("€0.00", reservationPrice, "Incorrect reservation price on summary page."),
-                () -> Assertions.assertEquals(price, totalPrice, "Incorrect total price on summary page."),
-                () -> Assertions.assertEquals(passengerFirstName, firstName.toUpperCase(), "Incorrect passenger first name on summary page."),
-                () -> Assertions.assertEquals(passengerSurname, lastName.toUpperCase(), "Incorrect passenger last name on summary page."),
-                () -> Assertions.assertEquals("06/09/1985", passengerBirthDay, "Incorrect passenger birth day on summary page."),
-                () -> Assertions.assertEquals(email, passengerEmail, "Incorrect passenger email on summary page."),
-                () -> Assertions.assertEquals(fare.toUpperCase(), fareSummaryPage, "Incorrect fare on summary page."),
-                () -> Assertions.assertEquals(6, orderCodeLength, "Incorrect length of the order code on summary page.")
+                () -> Assertions.assertTrue(finalDeparture.contains(departure.toUpperCase()), INCORRECT_DEPARTURE_ON_SUMMARY_PAGE),
+                () -> Assertions.assertTrue(finalArrival.contains(arrival.toUpperCase()), INCORRECT_ARRIVAL_ON_SUMMARY_PAGE),
+                () -> Assertions.assertEquals(departureDate, finalDepartureDate, INCORRECT_DEPARTURE_DATE_AND_TIME_ON_SUMMARY_PAGE),
+                () -> Assertions.assertEquals(arrivalDate, finalArrivalDate, INCORRECT_ARRIVAL_DATE_AND_TIME_ON_SUMMARY_PAGE),
+                () -> Assertions.assertEquals(price, finalPrice, INCORRECT_PRICE_ON_SUMMARY_PAGE),
+                () -> Assertions.assertEquals(ZERO, reservationPrice, INCORRECT_RESERVATION_PRICE_ON_SUMMARY_PAGE),
+                () -> Assertions.assertEquals(price, totalPrice, INCORRECT_TOTAL_PRICE_ON_SUMMARY_PAGE),
+                () -> Assertions.assertEquals(passengerFirstName, firstName.toUpperCase(), INCORRECT_PASSENGER_FIRST_NAME_ON_SUMMARY_PAGE),
+                () -> Assertions.assertEquals(passengerSurname, lastName.toUpperCase(), INCORRECT_PASSENGER_LAST_NAME_ON_SUMMARY_PAGE),
+                () -> Assertions.assertEquals(BIRTH_DATE, passengerBirthDay, INCORRECT_PASSENGER_BIRTH_DAY_ON_SUMMARY_PAGE),
+                () -> Assertions.assertEquals(email, passengerEmail, INCORRECT_PASSENGER_EMAIL_ON_SUMMARY_PAGE),
+                () -> Assertions.assertEquals(fare.toUpperCase(), fareSummaryPage, INCORRECT_FARE_ON_SUMMARY_PAGE),
+                () -> Assertions.assertEquals(6, orderCodeLength, INCORRECT_LENGTH_OF_THE_ORDER_CODE_ON_SUMMARY_PAGE)
         );
 
         summaryPage.completingAdyenForm();
 
         // Find the h3 element and get its text
-        String actualHeaderText = page.getByText("Thank you for purchase!").textContent();
+        String actualHeaderText = page.getByText(YOU_FOR_PURCHASE).textContent();
 
         // Use Assertions for the assertion
-        Assertions.assertEquals("Thank you for purchase!", actualHeaderText);
+        Assertions.assertEquals(YOU_FOR_PURCHASE, actualHeaderText);
     }
 
     @Test
@@ -138,7 +158,7 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         mainPage.departureDate();
         mainPage.returnDate();
         mainPage.addOneAdultPassenger();
-        mainPage.addOneYouthPassengerIn_17_YearsAge("17");
+        mainPage.addOneYouthPassengerIn_17_YearsAge(YOUTH_AGE);
         mainPage.findMyTicketButtonClick();
 
         resultsPage.selectFirstOption();
@@ -147,25 +167,25 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         resultsPage.proceedSecondSideConnection();
 
         // First passenger
-        passengersDetailsPage.selectFirstPassengerPrefix("Mr");
+        passengersDetailsPage.selectFirstPassengerPrefix(MR);
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
-        passengersDetailsPage.enterbirthDate("06/09/1985");
+        passengersDetailsPage.enterbirthDate(BIRTH_DATE);
         passengersDetailsPage.choosePassengerCountry();
         passengersDetailsPage.choosePassengerNationality();
         passengersDetailsPage.choosePassengerBirthCountry();
         passengersDetailsPage.enterPassportNumber(passportNumber);
 
         // Second passenger
-        passengersDetailsPage.secondPassengerPrefixDropdown("Mrs");
+        passengersDetailsPage.secondPassengerPrefixDropdown(MRS);
         passengersDetailsPage.enter_SecondAdultPassenger_FirstAndLastName(firstNameSecondPassenger, lastNameSecondPassenger);
-        passengersDetailsPage.enter_SecondAdultPassenger_birthDate("06/09/1985");
+        passengersDetailsPage.enter_SecondAdultPassenger_birthDate(BIRTH_DATE);
         passengersDetailsPage.choose_SecondAdultPassenger_Country();
         passengersDetailsPage.chooseSecondPassengerNationality();
         passengersDetailsPage.chooseSecondPassengerBirthCountry();
         passengersDetailsPage.enterSecondPassengerPassportNumber(passportNumberSecondPassenger);
 
         // Third passenger
-        passengersDetailsPage.thirdPassengerPrefixDropdown("Mr");
+        passengersDetailsPage.thirdPassengerPrefixDropdown(MR);
         passengersDetailsPage.enter_YouthPassenger_FirstAndLastName(firstNameThirdPassenger, lastNameThirdPassenger);
         passengersDetailsPage.enter_YouthPassenger_birthDate("06/09/2006");
         passengersDetailsPage.choose_YouthPassenger_Country();
@@ -203,9 +223,9 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         summaryPage.completingAdyenForm();
 
         // Find the h3 element and get its text
-        String actualHeaderText = page.getByText("Thank you for purchase!").textContent();
+        String actualHeaderText = page.getByText(YOU_FOR_PURCHASE).textContent();
 
-        Assertions.assertEquals("Thank you for purchase!", actualHeaderText);
+        Assertions.assertEquals(YOU_FOR_PURCHASE, actualHeaderText);
 
     }
 
@@ -237,9 +257,9 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
 
         resultsPage.proceed();
 
-        passengersDetailsPage.selectFirstPassengerPrefix("Mr");
+        passengersDetailsPage.selectFirstPassengerPrefix(MR);
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
-        passengersDetailsPage.enterbirthDate("06/09/1985");
+        passengersDetailsPage.enterbirthDate(BIRTH_DATE);
         passengersDetailsPage.choosePassengerCountry();
         passengersDetailsPage.choosePassengerNationality();
         passengersDetailsPage.choosePassengerBirthCountry();
@@ -268,27 +288,27 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         String passengerEmail = summaryPage.getPassengerEmail().strip();
 
         Assertions.assertAll(
-                () -> Assertions.assertTrue(finalDeparture.contains(departure.toUpperCase()), "Incorrect departure on summary page."),
-                () -> Assertions.assertTrue(finalArrival.contains(arrival.toUpperCase()), "Incorrect arrival on summary page."),
-                () -> Assertions.assertEquals(departureDate, finalDepartureDate, "Incorrect departure date and time on summary page."),
-                () -> Assertions.assertEquals(arrivalDate, finalArrivalDate, "Incorrect arrival date and time on summary page."),
-                () -> Assertions.assertEquals(price, finalPrice, "Incorrect price on summary page."),
-                () -> Assertions.assertEquals("€0.00", reservationPrice, "Incorrect reservation price on summary page."),
-                () -> Assertions.assertEquals(price, totalPrice, "Incorrect total price on summary page."),
-                () -> Assertions.assertEquals(passengerFirstName, firstName.toUpperCase(), "Incorrect passenger first name on summary page."),
-                () -> Assertions.assertEquals(passengerSurname, lastName.toUpperCase(), "Incorrect passenger last name on summary page."),
-                () -> Assertions.assertEquals("06/09/1985", passengerBirthDay, "Incorrect passenger birth day on summary page."),
-                () -> Assertions.assertEquals(email, passengerEmail, "Incorrect passenger email on summary page."),
-                () -> Assertions.assertEquals(fare, fareSummaryPage, "Incorrect fare on summary page."),
-                () -> Assertions.assertEquals(6, orderCodeLength, "Incorrect length of the order code on summary page.")
+                () -> Assertions.assertTrue(finalDeparture.contains(departure.toUpperCase()), INCORRECT_DEPARTURE_ON_SUMMARY_PAGE),
+                () -> Assertions.assertTrue(finalArrival.contains(arrival.toUpperCase()), INCORRECT_ARRIVAL_ON_SUMMARY_PAGE),
+                () -> Assertions.assertEquals(departureDate, finalDepartureDate, INCORRECT_DEPARTURE_DATE_AND_TIME_ON_SUMMARY_PAGE),
+                () -> Assertions.assertEquals(arrivalDate, finalArrivalDate, INCORRECT_ARRIVAL_DATE_AND_TIME_ON_SUMMARY_PAGE),
+                () -> Assertions.assertEquals(price, finalPrice, INCORRECT_PRICE_ON_SUMMARY_PAGE),
+                () -> Assertions.assertEquals(ZERO, reservationPrice, INCORRECT_RESERVATION_PRICE_ON_SUMMARY_PAGE),
+                () -> Assertions.assertEquals(price, totalPrice, INCORRECT_TOTAL_PRICE_ON_SUMMARY_PAGE),
+                () -> Assertions.assertEquals(passengerFirstName, firstName.toUpperCase(), INCORRECT_PASSENGER_FIRST_NAME_ON_SUMMARY_PAGE),
+                () -> Assertions.assertEquals(passengerSurname, lastName.toUpperCase(), INCORRECT_PASSENGER_LAST_NAME_ON_SUMMARY_PAGE),
+                () -> Assertions.assertEquals(BIRTH_DATE, passengerBirthDay, INCORRECT_PASSENGER_BIRTH_DAY_ON_SUMMARY_PAGE),
+                () -> Assertions.assertEquals(email, passengerEmail, INCORRECT_PASSENGER_EMAIL_ON_SUMMARY_PAGE),
+                () -> Assertions.assertEquals(fare, fareSummaryPage, INCORRECT_FARE_ON_SUMMARY_PAGE),
+                () -> Assertions.assertEquals(6, orderCodeLength, INCORRECT_LENGTH_OF_THE_ORDER_CODE_ON_SUMMARY_PAGE)
         );
 
         summaryPage.completingAdyenForm();
 
         // Find the h3 element and get its text
-        String actualHeaderText = page.getByText("Thank you for purchase!").textContent();
+        String actualHeaderText = page.getByText(YOU_FOR_PURCHASE).textContent();
 
-        Assertions.assertEquals("Thank you for purchase!", actualHeaderText);
+        Assertions.assertEquals(YOU_FOR_PURCHASE, actualHeaderText);
 
     }
 }

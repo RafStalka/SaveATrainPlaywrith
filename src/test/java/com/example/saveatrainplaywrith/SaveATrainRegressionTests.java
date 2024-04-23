@@ -24,6 +24,24 @@ import static io.qameta.allure.SeverityLevel.NORMAL;
  * It provides methods for setting up the test environment and executing various test cases.
  */
 public class SaveATrainRegressionTests extends PlaywrightTestBase {
+
+    public static final String PRODUCTS_SAVE_A_TRAIN = "Products | Save A Train";
+    public static final String RAIL_SEARCH_API_SAVE_A_TRAIN = "Rail Search Api | Save A Train";
+    public static final String RAIL_BOOK_API_SAVE_A_TRAIN = "Rail Book Api | Save A Train";
+    public static final String RAILS_FORWARD_API_SAVE_A_TRAIN = "Rails Forward Api | Save A Train";
+    public static final String RAIL_AGENT_DASHBOARD_SAVE_A_TRAIN = "Rail Agent Dashboard | Save A Train";
+    public static final String WHITE_LABEL_SAVE_A_TRAIN = "White Label | Save A Train";
+    public static final String RAIL_AFFILIATE_SAVE_A_TRAIN = "Rail Affiliate | Save A Train";
+    public static final String EURAIL_PASS_SAVE_A_TRAIN = "Eurail Pass | Save A Train";
+    public static final String MANAGE_BOOKINGS_SAVE_A_TRAIN = "Manage Bookings | Save A Train";
+    public static final String FAQ_SAVE_A_TRAIN = "FAQ | Save A Train";
+    public static final String ABOUT_US_SAVE_A_TRAIN = "About Us | Save A Train";
+    public static final String TRAIN_TICKET_BOOKING_AND_RESERVATION_SAVE_A_TRAIN = "Train Ticket Booking and Reservation | Save A Train";
+    public static final String NUMBER_OF_AVAILABLE_PRODUCTS_IS_WRONG = "Number of available products is wrong.";
+    public static final String NUMBER_OF_HELP_TAB_FUNCTIONALITIES_IS_WRONG = "Number of help tab functionalities is wrong.";
+    public static final String NUMBER_OF_AVAILABLE_CURRENCIES_IS_WRONG = "Number of available currencies is wrong.";
+    public static final String NUMBER_OF_AVAILABLE_LANGUAGES_IS_WRONG = "Number of available languages is wrong.";
+
     @BeforeEach
     public void setUp() {
         // Assuming 'page' is initialized in your base class
@@ -54,7 +72,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Owner("Save A Train")
     public void mainPageTitleTest() {
         String actualTitle = mainPage.getMainPageTitle().trim();
-        Assertions.assertEquals("Train Ticket Booking and Reservation | Save A Train", actualTitle);
+        Assertions.assertEquals(TRAIN_TICKET_BOOKING_AND_RESERVATION_SAVE_A_TRAIN, actualTitle);
     }
 
     @Test
@@ -74,7 +92,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Owner("Save A Train")
     public void aboutUs_TabChecking() {
         String titleAboutUsPage = aboutUsPage.getAboutUsPageTitle().strip();
-        Assertions.assertEquals("About Us | Save A Train", titleAboutUsPage);
+        Assertions.assertEquals(ABOUT_US_SAVE_A_TRAIN, titleAboutUsPage);
     }
 
     @Test
@@ -132,7 +150,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Owner("Save A Train")
     public void productPageChecking() {
         String productsPageTitle = productsPage.getProductsPageTitle().trim();
-        Assertions.assertEquals("Products | Save A Train", productsPageTitle);
+        Assertions.assertEquals(PRODUCTS_SAVE_A_TRAIN, productsPageTitle);
     }
 
     @Test
@@ -152,7 +170,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Owner("Save A Train")
     public void railSearchApi_ProductChecking() {
         String railSearchApiTitle = railSearchApiProductPage.getRailSearchApiPageTitle().trim();
-        Assertions.assertEquals("Rail Search Api | Save A Train", railSearchApiTitle);
+        Assertions.assertEquals(RAIL_SEARCH_API_SAVE_A_TRAIN, railSearchApiTitle);
     }
 
     @Test
@@ -172,7 +190,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Owner("Save A Train")
     public void railBookApi_ProductChecking() {
         String railBookApiTitle = railBookApiProductPage.getRailBookApiPageTitle().trim();
-        Assertions.assertEquals("Rail Book Api | Save A Train", railBookApiTitle);
+        Assertions.assertEquals(RAIL_BOOK_API_SAVE_A_TRAIN, railBookApiTitle);
     }
 
     @Test
@@ -192,7 +210,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Owner("Save A Train")
     public void railForwardApi_ProductChecking() {
         String railForwardApiTitle = railForwardApiPage.getRailForwardApiPageTitle().trim();
-        Assertions.assertEquals("Rails Forward Api | Save A Train", railForwardApiTitle);
+        Assertions.assertEquals(RAILS_FORWARD_API_SAVE_A_TRAIN, railForwardApiTitle);
     }
 
     @Test
@@ -212,7 +230,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Owner("Save A Train")
     public void railAgentDashboard_ProductChecking() {
         String railAgentDashboardProductTitle = railAgentDashboardProductPage.getRailAgentDashboardProductPageTitle().trim();
-        Assertions.assertEquals("Rail Agent Dashboard | Save A Train", railAgentDashboardProductTitle);
+        Assertions.assertEquals(RAIL_AGENT_DASHBOARD_SAVE_A_TRAIN, railAgentDashboardProductTitle);
     }
 
     @Test
@@ -232,7 +250,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Owner("Save A Train")
     public void whiteLabel_ProductChecking() {
         String whiteLabelProductTitle = whiteLabelProductPage.getWhiteLabelProductPageTitle().trim();
-        Assertions.assertEquals("White Label | Save A Train", whiteLabelProductTitle);
+        Assertions.assertEquals(WHITE_LABEL_SAVE_A_TRAIN, whiteLabelProductTitle);
     }
 
     @Test
@@ -252,7 +270,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Owner("Save A Train")
     public void railAffiliate_ProductChecking() {
         String railAffiliateProductTitle = railAffiliateProductPage.getRailAffiliateProductPageTitle().trim();
-        Assertions.assertEquals("Rail Affiliate | Save A Train", railAffiliateProductTitle);
+        Assertions.assertEquals(RAIL_AFFILIATE_SAVE_A_TRAIN, railAffiliateProductTitle);
     }
 
     @Test
@@ -272,7 +290,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Owner("Save A Train")
     public void eurailPass_ProductChecking() {
         String eurailProductTitle = eurailProductPage.getEurailProductPageTitle().trim();
-        Assertions.assertEquals("Eurail Pass | Save A Train", eurailProductTitle);
+        Assertions.assertEquals(EURAIL_PASS_SAVE_A_TRAIN, eurailProductTitle);
     }
     @Test
     @DisplayName("Eurail Pass URL")
@@ -291,7 +309,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Owner("Save A Train")
     public void manageBookings_HelpTabChecking() {
         String manageBookingsTitle = manageBookingsHelpTabPage.getManageBookingsHelpTabPageTitle().trim();
-        Assertions.assertEquals("Manage Bookings | Save A Train", manageBookingsTitle);
+        Assertions.assertEquals(MANAGE_BOOKINGS_SAVE_A_TRAIN, manageBookingsTitle);
     }
 
     @Test
@@ -311,7 +329,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Owner("Save A Train")
     public void FAQ_HelpTabChecking() {
         String faqTitle = faqHelpTabPage.getFAQHelpTabPageTitle().trim();
-        Assertions.assertEquals("FAQ | Save A Train", faqTitle);
+        Assertions.assertEquals(FAQ_SAVE_A_TRAIN, faqTitle);
     }
 
     @Test
@@ -331,7 +349,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Owner("Save A Train")
     public void readMore_ButtonChecking() {
         String readMoreTitle = aboutUsPage.readMoreButtonFunctionality().trim();
-        Assertions.assertEquals("About Us | Save A Train", readMoreTitle);
+        Assertions.assertEquals(ABOUT_US_SAVE_A_TRAIN, readMoreTitle);
     }
 
     @Test
@@ -341,7 +359,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Owner("Save A Train")
     public void privacyPolicy_ButtonChecking() {
         String privacyPolicyTitle = privacyPolicyPage.navigateToPrivacyPolicyPage().trim();
-        Assertions.assertEquals("Train Ticket Booking and Reservation | Save A Train", privacyPolicyTitle);
+        Assertions.assertEquals(TRAIN_TICKET_BOOKING_AND_RESERVATION_SAVE_A_TRAIN, privacyPolicyTitle);
     }
 
     @Test
@@ -361,7 +379,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Owner("Save A Train")
     public void termsAndConditions_ButtonChecking() {
         String privacyPolicyTitle = termsAndConditionsPage.termsAndConditionsButtonFunctionality().trim();
-        Assertions.assertEquals("Train Ticket Booking and Reservation | Save A Train", privacyPolicyTitle);
+        Assertions.assertEquals(TRAIN_TICKET_BOOKING_AND_RESERVATION_SAVE_A_TRAIN, privacyPolicyTitle);
     }
 
     @Test
@@ -424,7 +442,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Owner("Save A Train")
     public void checkingProductsTabListSize() {
         int listSize = mainPage.productListSizeChecking();
-        Assertions.assertEquals(listSize, 7, "Number of available products is wrong.");
+        Assertions.assertEquals(listSize, 7, NUMBER_OF_AVAILABLE_PRODUCTS_IS_WRONG);
     }
 
     @Test
@@ -434,7 +452,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Owner("Save A Train")
     public void checkingHelpTabListSize() {
         int listSize = mainPage.helpListSizeChecking();
-        Assertions.assertEquals(listSize, 2, "Number of help tab functionalities is wrong.");
+        Assertions.assertEquals(listSize, 2, NUMBER_OF_HELP_TAB_FUNCTIONALITIES_IS_WRONG);
     }
 
     @Test
@@ -444,7 +462,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Owner("Save A Train")
     public void currency_ListSizeChecking() {
         int currencyListSize = mainPage.currencyListSizeChecking();
-        Assertions.assertEquals(7, currencyListSize, "Number of available currencies is wrong.");
+        Assertions.assertEquals(7, currencyListSize, NUMBER_OF_AVAILABLE_CURRENCIES_IS_WRONG);
 
     }
 
@@ -455,6 +473,6 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Owner("Save A Train")
     public void language_ListSizeChecking() {
         int languageListSize = mainPage.languageListSizeChecking();
-        Assertions.assertEquals(10, languageListSize, "Number of available languages is wrong.");
+        Assertions.assertEquals(10, languageListSize, NUMBER_OF_AVAILABLE_LANGUAGES_IS_WRONG);
     }
 }
