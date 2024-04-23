@@ -22,6 +22,14 @@ import static io.qameta.allure.SeverityLevel.CRITICAL;
  * It extends the PlaywrightTestBase class, which provides the base setup and teardown methods for the tests.
  */
 public class SaveATrainE2EEurailTests extends PlaywrightTestBase {
+
+    public static final String PAYMENT_WAS_SUCCESSFUL = "Your payment was successful";
+    public static final String BIRTH_DATE = "06/09/1985";
+    public static final String GLOBAL_PASS = "Global Pass";
+    public static final String GMAIL_COM = "@gmail.com";
+    public static final String TEST = "test_";
+    public static final String COUNTRY_NUMBER = "48";
+
     @BeforeEach
     public void setUp() {
         // Assuming 'page' is initialized in your base class
@@ -33,8 +41,8 @@ public class SaveATrainE2EEurailTests extends PlaywrightTestBase {
     Faker faker = new Faker();
     String firstName = faker.name().firstName();
     String lastName = faker.name().lastName();
-    String phoneNumber = "48" + faker.number().numberBetween(111111111, 999999999);
-    String email = "test_" + faker.name().firstName() + "@gmail.com";
+    String phoneNumber = COUNTRY_NUMBER + faker.number().numberBetween(111111111, 999999999);
+    String email = TEST + faker.name().firstName() + GMAIL_COM;
 
     @Test
     @DisplayName("EURAIL provider.")
@@ -45,7 +53,7 @@ public class SaveATrainE2EEurailTests extends PlaywrightTestBase {
         mainPage.navigateToHomePage();
         mainPage.performSearch();
         mainPage.passBookingTabClick();
-        mainPage.fillCountryToVisit("Global Pass");
+        mainPage.fillCountryToVisit(GLOBAL_PASS);
         mainPage.fillCountryOfResidence();
         mainPage.findMyPassButtonClick();
 
@@ -55,7 +63,7 @@ public class SaveATrainE2EEurailTests extends PlaywrightTestBase {
         Locator genderDropdown = page.locator("#passenger-prefix");
         genderDropdown.selectOption(new SelectOption().setIndex(1));
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
-        passengersDetailsPage.enterbirthDate("06/09/1985");
+        passengersDetailsPage.enterbirthDate(BIRTH_DATE);
         passengersDetailsPage.choosePassengerCountry();
         //passengersDetailsPage.enterMobilePhone(phoneNumber);
         page.fill("id=passenger-contact-number", phoneNumber);
@@ -73,6 +81,6 @@ public class SaveATrainE2EEurailTests extends PlaywrightTestBase {
         String actualHeaderText = page.locator("xpath=/html/body/sat-root/div/main/sat-order/div/div/div[2]/div/div/p[1]").textContent().trim();
 
         // Use Assertions for the assertion
-        Assertions.assertEquals("Your payment was successful", actualHeaderText);
+        Assertions.assertEquals(PAYMENT_WAS_SUCCESSFUL, actualHeaderText);
     }
 }
