@@ -61,12 +61,13 @@ public class SaveATrainE2EEurailTests extends PlaywrightTestBase {
         resultsPage.proceed();
 
         Locator genderDropdown = page.locator("#passenger-prefix");
+//        if ()
         genderDropdown.selectOption(new SelectOption().setIndex(1));
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
         passengersDetailsPage.enterbirthDate(BIRTH_DATE);
         passengersDetailsPage.choosePassengerCountry();
         //passengersDetailsPage.enterMobilePhone(phoneNumber);
-        page.fill("id=passenger-contact-number", phoneNumber);
+        //page.fill("id=passenger-contact-number", phoneNumber);116 56
         passengersDetailsPage.enterEmail(email);
         passengersDetailsPage.passengersDataSubmitButtonClick();
         // Sleep for 7 seconds

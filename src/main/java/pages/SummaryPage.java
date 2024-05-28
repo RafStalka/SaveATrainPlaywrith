@@ -7,9 +7,9 @@ import com.microsoft.playwright.Page;
 import java.util.concurrent.TimeoutException;
 
 public class SummaryPage {
-    private static final String ADYEN_CARD_NUMBER = "id=encryptedCardNumber";
-    private static final String ADYEN_EXPIRY_DATE = "id=encryptedExpiryDate";
-    private static final String ADYEN_FORM_SC = "id=encryptedSecurityCode";
+    private static final String ADYEN_CARD_NUMBER = "xpath=//*[@data-fieldtype='encryptedCardNumber']";
+    private static final String ADYEN_EXPIRY_DATE = "xpath=//*[@data-fieldtype='encryptedExpiryDate']";
+    private static final String ADYEN_FORM_SC = "xpath=//*[@data-fieldtype='encryptedSecurityCode']";
     private static final String ADYEN_CHECKOUT = ".adyen-checkout__input--text";
     private static final String ADYEN_BUTTON_CONTENT = ".adyen-checkout__button__content";
 

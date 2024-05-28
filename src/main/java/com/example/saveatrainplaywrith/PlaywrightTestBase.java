@@ -31,6 +31,7 @@ public class PlaywrightTestBase {
     protected RailAgentDashboardProductPage railAgentDashboardProductPage;
     protected WhiteLabelProductPage whiteLabelProductPage;
     protected RailAffiliateProductPage railAffiliateProductPage;
+    protected RailEnrichmentAPIProductPage railEnrichmentProductPage;
     protected EurailProductPage eurailProductPage;
     protected ManageBookingsHelpTabPage manageBookingsHelpTabPage;
     protected FAQHelpTabPage faqHelpTabPage;

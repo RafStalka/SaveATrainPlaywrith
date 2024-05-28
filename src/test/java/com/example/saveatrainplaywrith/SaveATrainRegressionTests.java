@@ -1,7 +1,5 @@
 package com.example.saveatrainplaywrith;
 
-import com.microsoft.playwright.Page;
-import com.microsoft.playwright.options.AriaRole;
 import constans.AppConstants;
 import io.qameta.allure.Description;
 import io.qameta.allure.Owner;
@@ -28,6 +26,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     public static final String RAIL_SEARCH_API_SAVE_A_TRAIN = "Rail Search Api | Save A Train";
     public static final String RAIL_BOOK_API_SAVE_A_TRAIN = "Rail Book Api | Save A Train";
     public static final String RAILS_FORWARD_API_SAVE_A_TRAIN = "Rails Forward Api | Save A Train";
+    public static final String RAILS_ENRICHMENT_API_SAVE_A_TRAIN = "Rails Enrichment Api | Save A Train";
     public static final String RAIL_AGENT_DASHBOARD_SAVE_A_TRAIN = "Rail Agent Dashboard | Save A Train";
     public static final String WHITE_LABEL_SAVE_A_TRAIN = "White Label | Save A Train";
     public static final String RAIL_AFFILIATE_SAVE_A_TRAIN = "Rail Affiliate | Save A Train";
@@ -57,6 +56,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
         railAgentDashboardProductPage = new RailAgentDashboardProductPage(page);
         whiteLabelProductPage = new WhiteLabelProductPage(page);
         railAffiliateProductPage = new RailAffiliateProductPage(page);
+        railEnrichmentProductPage = new RailEnrichmentAPIProductPage(page);
         eurailProductPage = new EurailProductPage(page);
         manageBookingsHelpTabPage = new ManageBookingsHelpTabPage(page);
         faqHelpTabPage = new FAQHelpTabPage(page);
@@ -220,6 +220,26 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     public void railForwardApi_ProductURLChecking() {
         String railForwardApiURL = railForwardApiPage.getRailForwardApiPageURL();
         Assertions.assertEquals(AppConstants.SAT_HOME_PAGE + "/product/rail-api-forward", railForwardApiURL);
+    }
+
+    @Test
+    @DisplayName("Rail enrichment API")
+    @Description("Rail enrichment API page title checking.")
+    @Severity(NORMAL)
+    @Owner("Save A Train")
+    public void railEnrichmentApi_ProductChecking() {
+        String railEnrichmentApiTitle = railEnrichmentProductPage.getRailEnrichmentAPIProductPageTitle();
+        Assertions.assertEquals(RAILS_ENRICHMENT_API_SAVE_A_TRAIN, railEnrichmentApiTitle);
+    }
+
+    @Test
+    @DisplayName("Rail enrichment API")
+    @Description("Rail enrichment API page URL checking.")
+    @Severity(NORMAL)
+    @Owner("Save A Train")
+    public void railEnrichmentApi_ProductURLChecking() {
+        String railEnrichmentApiURL = railEnrichmentProductPage.getRailEnrichmentAPIProductPageURL();
+        Assertions.assertEquals(AppConstants.SAT_HOME_PAGE + "/product/rail-api-enrichment", railEnrichmentApiURL);
     }
 
     @Test
@@ -441,7 +461,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Owner("Save A Train")
     public void checkingProductsTabListSize() {
         int listSize = mainPage.productListSizeChecking();
-        Assertions.assertEquals(listSize, 7, NUMBER_OF_AVAILABLE_PRODUCTS_IS_WRONG);
+        Assertions.assertEquals(listSize, 8, NUMBER_OF_AVAILABLE_PRODUCTS_IS_WRONG);
     }
 
     @Test
