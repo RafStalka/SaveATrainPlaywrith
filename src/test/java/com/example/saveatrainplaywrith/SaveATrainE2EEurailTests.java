@@ -38,6 +38,7 @@ public class SaveATrainE2EEurailTests extends PlaywrightTestBase {
         resultsPage = new ResultsPage(page);
         summaryPage = new SummaryPage(page);
     }
+
     Faker faker = new Faker();
     String firstName = faker.name().firstName();
     String lastName = faker.name().lastName();
@@ -64,7 +65,7 @@ public class SaveATrainE2EEurailTests extends PlaywrightTestBase {
 //        if ()
         genderDropdown.selectOption(new SelectOption().setIndex(1));
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
-        passengersDetailsPage.enterbirthDate(BIRTH_DATE);
+        passengersDetailsPage.enterBirthDate(BIRTH_DATE);
         passengersDetailsPage.choosePassengerCountry();
         //passengersDetailsPage.enterMobilePhone(phoneNumber);
         //page.fill("id=passenger-contact-number", phoneNumber);116 56

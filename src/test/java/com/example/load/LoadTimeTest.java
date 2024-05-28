@@ -97,7 +97,7 @@ public class LoadTimeTest {
             long firstRunTime = pageLoadTimesFirstRun.get(url);
             long secondRunTime = pageLoadTimesSecondRun.get(url);
             System.out.println("Load time for " + url + ", 1st run: " + firstRunTime + "ms, 2nd run: "
-                    + secondRunTime + "ms, difference: " + (firstRunTime-secondRunTime) + "ms");
+                    + secondRunTime + "ms, difference: " + (firstRunTime - secondRunTime) + "ms");
         }
     }
 
