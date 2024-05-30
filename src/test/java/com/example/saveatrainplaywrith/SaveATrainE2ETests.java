@@ -32,12 +32,12 @@ import static io.qameta.allure.SeverityLevel.CRITICAL;
  * Class Methods:
  * - setUp(): Annotated method that runs before each test method in the class to set up the test environment.
  * - e2e_SAT_NSI_test(origin: String, destination: String): Annotated parameterized test method that checks
- *   the end-to-end path on the NSI provider. It takes the origin and destination as input parameters.
+ * the end-to-end path on the NSI provider. It takes the origin and destination as input parameters.
  * - e2e_SAT_NSI_twoAdultsAndOneYouth_test(origin: String, destination: String): Annotated parameterized test method
- *   that checks the end-to-end path on the NSI provider with two adult passengers and one youth passenger.
- *   It takes the origin and destination as input parameters.
+ * that checks the end-to-end path on the NSI provider with two adult passengers and one youth passenger.
+ * It takes the origin and destination as input parameters.
  * - e2e_SAT_TI_test(origin: String, destination: String): Annotated parameterized test method that checks
- *   the end-to-end path on the TI provider. It takes the origin and destination as input parameters.
+ * the end-to-end path on the TI provider. It takes the origin and destination as input parameters.
  * Super Classes:
  * - PlaywrightTestBase: A base class for Playwright tests that provides common fields and methods related to the Save A Train application.
  * Note: This class does not contain any example code, @author, or @version tags as requested.
@@ -74,6 +74,7 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
         resultsPage = new ResultsPage(page);
         summaryPage = new SummaryPage(page);
     }
+
     Faker faker = new Faker();
     String firstName = faker.name().firstName();
     String firstNameSecondAdultPassenger = faker.name().firstName();
@@ -114,7 +115,7 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
 
         passengersDetailsPage.selectFirstPassengerPrefix(MALE_VALUE);
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
-        passengersDetailsPage.enterbirthDate(BIRTH_DATE);
+        passengersDetailsPage.enterBirthDate(BIRTH_DATE);
         passengersDetailsPage.choosePassengerCountry();
         passengersDetailsPage.selectDepartureAisleOption();
         passengersDetailsPage.enterEmail(email);
@@ -202,7 +203,7 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
 
         passengersDetailsPage.selectFirstPassengerPrefix(MALE_VALUE);
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
-        passengersDetailsPage.enterbirthDate("12/07/1985");
+        passengersDetailsPage.enterBirthDate("12/07/1985");
         passengersDetailsPage.choosePassengerCountry();
 
         passengersDetailsPage.secondPassengerPrefixDropdown(FEMALE_VALUE);
@@ -300,7 +301,7 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
 
         passengersDetailsPage.selectFirstPassengerPrefix(MALE_VALUE);
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
-        passengersDetailsPage.enterbirthDate(BIRTH_DATE);
+        passengersDetailsPage.enterBirthDate(BIRTH_DATE);
         passengersDetailsPage.choosePassengerCountry();
         passengersDetailsPage.enterEmail(email);
         passengersDetailsPage.passengersDataSubmitButtonClick();

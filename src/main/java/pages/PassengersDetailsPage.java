@@ -9,51 +9,73 @@ import com.microsoft.playwright.options.SelectOption;
  * This class represents the page where passenger details are entered.
  */
 public class PassengersDetailsPage {
+
+    private static final String PASSENGER_DROPDOWN_SELECTOR = ".outbound-seat-select > .form-control";
+    private static final String AISLE_SELECTOR = ".ng-pristine";
+    private static final String FIRST_PASSENGER_PREFIX_SELECTOR = "(//select[@id='passenger-prefix'])[1]";
+    private static final String SECOND_PASSENGER_PREFIX_SELECTOR = "(//select[@id='passenger-prefix'])[2]";
+    private static final String THIRD_PASSENGER_PREFIX_SELECTOR = "(//select[@id='passenger-prefix'])[3]";
+    private static final String FIRST_PASSENGER_FIRST_NAME_INPUT_SELECTOR = "(//input[@id='passenger-fname'])[1]";
+    private static final String SECOND_PASSENGER_FIRST_NAME_INPUT_SELECTOR = "(//input[@id='passenger-fname'])[2]";
+    private static final String FIRST_YOUTH_PASSENGER_FIRST_NAME_SELECTOR = "(//input[@id='passenger-fname'])[3]";
+    private static final String FIRST_PASSENGER_LAST_NAME_INPUT_SELECTOR = "(//input[@id='passenger-lname'])[1]";
+    private static final String SECOND_PASSENGER_LAST_NAME_SELECTOR = "(//input[@id='passenger-lname'])[2]";
+    private static final String FIRST_YOUTH_PASSENGER_LAST_NAME_SELECTOR = "(//input[@id='passenger-lname'])[3]";
+    private static final String FIRST_PASSENGER_BIRTH_DATE_SELECTOR = "(//input[@id='passenger-date'])[1]";
+    private static final String SECOND_PASSENGER_BIRTHDATE_SELECTOR = "(//input[@id='passenger-date'])[2]";
+    private static final String FIRST_YOUTH_PASSENGER_BIRTHDATE_SELECTOR = "(//input[@id='passenger-date'])[3]";
+    private static final String CITY_INPUT_SELECTOR = "//input[@placeholder='City']";
+    private static final String STREET_INPUT_SELECTOR = "//input[@placeholder='Address']";
+    private static final String POSTAL_CODE_INPUT_SELECTOR = "//input[@placeholder='Postal Code']";
+    private static final String MOBILE_PHONE_INPUT_SELECTOR = "//input[@placeholder='Mobile']";
+    private static final String EMAIL_INPUT_SELECTOR = "//input[@placeholder='Email']";
+    private static final String SUBMIT_BUTTON_SELECTOR = ".submit-button > .ng-star-inserted";
+    public static final String FIRST_PASSENGER_PASSPORT_INPUT_SELECTOR = "(//input[@id='passenger-passport'])[1]";
+    public static final String SECOND_PASSENGER_PASSPORT_INPUT_SELECTOR = "(//input[@id='passenger-passport'])[2]";
+    public static final String FIRST_YOUTH_PASSENGER_PASSPORT_INPUT_SELECTOR = "(//input[@id='passenger-passport'])[3]";
     private Page page;
-    private final static String PASSENGER_DROPDOWN_SELECTOR = ".outbound-seat-select > .form-control";
-    private final static String NG_PRISTINE_SELECTOR = ".ng-pristine";
 
     public PassengersDetailsPage(Page page) {
         this.page = page;
     }
 
     public void selectFirstPassengerPrefix(String maleValue) {
-        page.locator("(//select[@id='passenger-prefix'])[1]").selectOption(maleValue);
+        page.locator(FIRST_PASSENGER_PREFIX_SELECTOR).selectOption(maleValue);
     }
 
     public void secondPassengerPrefixDropdown(String maleValueSecondAdult) {
-        page.locator("(//select[@id='passenger-prefix'])[2]").selectOption(maleValueSecondAdult);
+        page.locator(SECOND_PASSENGER_PREFIX_SELECTOR).selectOption(maleValueSecondAdult);
     }
 
     public void thirdPassengerPrefixDropdown(String maleValueThirdPassenger) {
-        page.locator("(//select[@id='passenger-prefix'])[3]").selectOption(maleValueThirdPassenger);
+        page.locator(THIRD_PASSENGER_PREFIX_SELECTOR).selectOption(maleValueThirdPassenger);
     }
 
     public void enterFirstAndLastName(String firstName, String lastName) {
-        page.fill("(//input[@id='passenger-fname'])[1]", firstName);
-        page.fill("(//input[@id='passenger-lname'])[1]", lastName);
+        page.fill(FIRST_PASSENGER_FIRST_NAME_INPUT_SELECTOR, firstName);
+        page.fill(FIRST_PASSENGER_LAST_NAME_INPUT_SELECTOR, lastName);
     }
 
-    public void enter_SecondAdultPassenger_FirstAndLastName(String secondAdultPassender_firstName, String secondAdultPassenger_lastName) {
-        page.fill("(//input[@id='passenger-fname'])[2]", secondAdultPassender_firstName);
-        page.fill("(//input[@id='passenger-lname'])[2]", secondAdultPassenger_lastName);
+    public void enter_SecondAdultPassenger_FirstAndLastName(String secondAdultPassenger_firstName, String secondAdultPassenger_lastName) {
+        page.fill(SECOND_PASSENGER_FIRST_NAME_INPUT_SELECTOR, secondAdultPassenger_firstName);
+        page.fill(SECOND_PASSENGER_LAST_NAME_SELECTOR, secondAdultPassenger_lastName);
     }
 
-    public void enter_YouthPassenger_FirstAndLastName(String youthPassender_firstName, String youthPassenger_lastName) {
-        page.fill("(//input[@id='passenger-fname'])[3]", youthPassender_firstName);
-        page.fill("(//input[@id='passenger-lname'])[3]", youthPassenger_lastName);
+    public void enter_YouthPassenger_FirstAndLastName(String youthPassenger_firstName, String youthPassenger_lastName) {
+        page.fill(FIRST_YOUTH_PASSENGER_FIRST_NAME_SELECTOR, youthPassenger_firstName);
+        page.fill(FIRST_YOUTH_PASSENGER_LAST_NAME_SELECTOR, youthPassenger_lastName);
     }
 
-    public void enterbirthDate(String birthDate) {
-        page.fill("(//input[@id='passenger-date'])[1]", birthDate);
+    public void enterBirthDate(String birthDate) {
+        page.fill(FIRST_PASSENGER_BIRTH_DATE_SELECTOR, birthDate);
     }
 
     public void enter_SecondAdultPassenger_birthDate(String secondAdultPassenger_birthDate) {
-        page.fill("(//input[@id='passenger-date'])[2]", secondAdultPassenger_birthDate);
+        page.fill(SECOND_PASSENGER_BIRTHDATE_SELECTOR, secondAdultPassenger_birthDate);
     }
 
     public void enter_YouthPassenger_birthDate(String youthPassenger_birthDate) {
-        page.fill("(//input[@id='passenger-date'])[3]", youthPassenger_birthDate);
+        page.fill(FIRST_YOUTH_PASSENGER_BIRTHDATE_SELECTOR, youthPassenger_birthDate);
     }
 
     public void choosePassengerCountry() {
@@ -111,21 +133,21 @@ public class PassengersDetailsPage {
     }
 
     public void enterPassportNumber(String passportNumber) {
-        page.fill("(//input[@id='passenger-passport'])[1]", passportNumber);
+        page.fill(FIRST_PASSENGER_PASSPORT_INPUT_SELECTOR, passportNumber);
     }
 
     public void enterSecondPassengerPassportNumber(String passportNumber) {
-        page.fill("(//input[@id='passenger-passport'])[2]", passportNumber);
+        page.fill(SECOND_PASSENGER_PASSPORT_INPUT_SELECTOR, passportNumber);
     }
 
     public void enterThirdPassengerPassportNumber(String passportNumber) {
-        page.fill("(//input[@id='passenger-passport'])[3]", passportNumber);
+        page.fill(FIRST_YOUTH_PASSENGER_PASSPORT_INPUT_SELECTOR, passportNumber);
     }
 
     public void selectDepartureAisleOption() {
         Locator passengerDropdown = page.locator(PASSENGER_DROPDOWN_SELECTOR);
         selectDropdownOptionByIndex(passengerDropdown, 1);
-        page.click(NG_PRISTINE_SELECTOR);
+        page.click(AISLE_SELECTOR);
     }
 
     private void selectDropdownOptionByIndex(Locator locator, int index) {
@@ -135,28 +157,27 @@ public class PassengersDetailsPage {
     }
 
     public void enterCity(String city) {
-        page.fill("//input[@placeholder='City']", city);
+        page.fill(CITY_INPUT_SELECTOR, city);
     }
 
     public void enterStreet( String street) {
-        page.fill("//input[@placeholder='Address']", street);
+        page.fill(STREET_INPUT_SELECTOR, street);
     }
 
     public void enterPostalCode(String postalCode) {
-        page.fill("//input[@placeholder='Postal Code']", postalCode);
+        page.fill(POSTAL_CODE_INPUT_SELECTOR, postalCode);
     }
 
     public void enterMobilePhone(String phoneNumber) {
-        page.fill("//input[@placeholder='Mobile']", phoneNumber);
+        page.fill(MOBILE_PHONE_INPUT_SELECTOR, phoneNumber);
     }
 
     public void enterEmail(String email) {
-        page.fill("//input[@placeholder='Email']", email);
+        page.fill(EMAIL_INPUT_SELECTOR, email);
     }
 
     public void passengersDataSubmitButtonClick() {
-        page.click(".submit-button > .ng-star-inserted");
-        // Sleep for 5 seconds
+        page.click(SUBMIT_BUTTON_SELECTOR);
         page.waitForTimeout(5000);
     }
 }

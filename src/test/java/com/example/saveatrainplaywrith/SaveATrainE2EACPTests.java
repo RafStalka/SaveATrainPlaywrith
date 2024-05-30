@@ -47,6 +47,7 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         resultsPage = new ResultsPage(page);
         summaryPage = new SummaryPage(page);
     }
+
     Faker faker = new Faker();
     String firstName = faker.name().firstName();
     String firstNameSecondPassenger = faker.name().firstName();
@@ -92,7 +93,7 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
 
         passengersDetailsPage.selectFirstPassengerPrefix(MR);
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
-        passengersDetailsPage.enterbirthDate(BIRTH_DATE);
+        passengersDetailsPage.enterBirthDate(BIRTH_DATE);
         passengersDetailsPage.choosePassengerCountry();
         passengersDetailsPage.choosePassengerNationality();
         passengersDetailsPage.choosePassengerBirthCountry();
@@ -169,7 +170,7 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         // First passenger
         passengersDetailsPage.selectFirstPassengerPrefix(MR);
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
-        passengersDetailsPage.enterbirthDate(BIRTH_DATE);
+        passengersDetailsPage.enterBirthDate(BIRTH_DATE);
         passengersDetailsPage.choosePassengerCountry();
         passengersDetailsPage.choosePassengerNationality();
         passengersDetailsPage.choosePassengerBirthCountry();
@@ -259,7 +260,7 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
 
         passengersDetailsPage.selectFirstPassengerPrefix(MR);
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
-        passengersDetailsPage.enterbirthDate(BIRTH_DATE);
+        passengersDetailsPage.enterBirthDate(BIRTH_DATE);
         passengersDetailsPage.choosePassengerCountry();
         passengersDetailsPage.choosePassengerNationality();
         passengersDetailsPage.choosePassengerBirthCountry();
