@@ -7,6 +7,17 @@ import com.microsoft.playwright.Page;
  */
 public class ContactUsPage {
 
+    private static final String FIRST_NAME_INPUT_SELECTOR = "id=first_name";
+    private static final String LAST_NAME_INPUT_SELECTOR = "id=last_name";
+    private static final String EMAIL_INPUT_SELECTOR = "id=email";
+    private static final String MESSAGE_INPUT_SELECTOR = "id=message";
+    private static final String SUBMIT_BUTTON_SELECTOR = "xpath=//input[@type='submit']";
+    private static final String CONTACT_US_FORM_ERROR_MESSAGE_EMPTY_INPUT = "xpath=//*[@id='message']//../div/span/span";
+    private static final String CONTACT_US_FORM_ERROR_FIRST_NAME_EMPTY_INPUT = "xpath=//*[@id='first_name']//../div/span/span";
+    private static final String CONTACT_US_FORM_ERROR_LAST_NAME_EMPTY_INPUT = "xpath=//*[@id='last_name']//../div/span/span";
+    private static final String CONTACT_US_FORM_ERROR_EMAIL_EMPTY_INPUT = "xpath=//*[@id='email']//../div/span/span";
+    private static final String CONTACT_US_SUCCESS_MESSAGE_SELECTOR = "xpath=/html/body/sat-root/div/main/sat-help-page/sat-contact-us/div[1]/p";
+
     private final Page page;
 
     public ContactUsPage(Page page) {
@@ -26,14 +37,34 @@ public class ContactUsPage {
         return url;
     }
 
-    public void fillContactUsFormWithoutCompanyName(String name, String lastName, String email, String message) {
-        page.fill("id=first_name", name);
-        page.fill("id=last_name", lastName);
-        page.fill("id=email", email);
-        page.fill("id=message", message);
+    public void fillContactUsForm(String name, String lastName, String email, String message) {
+        page.fill(FIRST_NAME_INPUT_SELECTOR, name);
+        page.fill(LAST_NAME_INPUT_SELECTOR, lastName);
+        page.fill(EMAIL_INPUT_SELECTOR, email);
+        page.fill(MESSAGE_INPUT_SELECTOR, message);
     }
 
     public void submitContactUsForm() {
-        page.click("xpath=//input[@type='submit']");
+        page.click(SUBMIT_BUTTON_SELECTOR);
+    }
+
+    public String getContactUsFormErrorFromEmptyMessageInputField() {
+        return page.textContent(CONTACT_US_FORM_ERROR_MESSAGE_EMPTY_INPUT);
+    }
+
+    public String getContactUsFormErrorFromEmptyFirstNameInputField() {
+        return page.textContent(CONTACT_US_FORM_ERROR_FIRST_NAME_EMPTY_INPUT);
+    }
+
+    public String getContactUsFormErrorFromEmptyLastNameInputField() {
+        return page.textContent(CONTACT_US_FORM_ERROR_LAST_NAME_EMPTY_INPUT);
+    }
+
+    public String getContactUsFormErrorFromEmptyEmailInputField() {
+        return page.textContent(CONTACT_US_FORM_ERROR_EMAIL_EMPTY_INPUT);
+    }
+
+    public String getSuccessMessage() {
+        return page.textContent(CONTACT_US_SUCCESS_MESSAGE_SELECTOR);
     }
 }

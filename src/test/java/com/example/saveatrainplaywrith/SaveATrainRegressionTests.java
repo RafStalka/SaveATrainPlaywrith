@@ -117,18 +117,86 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
         Assertions.assertEquals("Contact Us | Save A Train", contactUsTitle);
     }
 
-    // TODO: Create assertions for filled form
     @Test
     @DisplayName("Contact Us")
-    @Description("Contact Us fill form to contact without company name - positive scenario.")
+    @Description("Contact Us - fill form to contact without eny message - negative scenario.")
     @Severity(NORMAL)
     @Owner("Save A Train")
-    public void contactUsWithoutCompanyName() {
+    public void contactUsWithoutMessageTextTest() {
         mainPage.navigateToHomePage();
         ContactUsPage contactUsPage = mainPage.navigateToContactUsPage();
-        contactUsPage.fillContactUsFormWithoutCompanyName("Test", "Testerski", "test@email.com", "");
-        /*String expectedSuccessMessage = "We received your request and";
-        String actualSuccessMessage = contactUsPage.getSuccessMessage();
+        contactUsPage.fillContactUsForm("Test", "Testerski", "test@email.com", "");
+        contactUsPage.submitContactUsForm();
+        String expectedSuccessMessage = "Message can't be blank";
+        String actualSuccessMessage = contactUsPage.getContactUsFormErrorFromEmptyMessageInputField().trim();
+
+        Assertions.assertEquals(expectedSuccessMessage, actualSuccessMessage,
+                "Failed - The actual error message does not match the expected message!");
+    }
+
+    @Test
+    @DisplayName("Contact Us")
+    @Description("Contact Us - fill form to contact without first name - negative scenario.")
+    @Severity(NORMAL)
+    @Owner("Save A Train")
+    public void contactUsWithoutFirstNameTextTest() {
+        mainPage.navigateToHomePage();
+        ContactUsPage contactUsPage = mainPage.navigateToContactUsPage();
+        contactUsPage.fillContactUsForm("", "Testerski", "test@email.com", "Random message.");
+        contactUsPage.submitContactUsForm();
+        String expectedSuccessMessage = "Name can't be blank";
+        String actualSuccessMessage = contactUsPage.getContactUsFormErrorFromEmptyFirstNameInputField().trim();
+
+        Assertions.assertEquals(expectedSuccessMessage, actualSuccessMessage,
+                "Failed - The actual error message does not match the expected message!");
+    }
+
+    @Test
+    @DisplayName("Contact Us")
+    @Description("Contact Us - fill form to contact without last name - negative scenario.")
+    @Severity(NORMAL)
+    @Owner("Save A Train")
+    public void contactUsWithoutLastNameTextTest() {
+        mainPage.navigateToHomePage();
+        ContactUsPage contactUsPage = mainPage.navigateToContactUsPage();
+        contactUsPage.fillContactUsForm("Test", "", "test@email.com", "Random message.");
+        contactUsPage.submitContactUsForm();
+        String expectedSuccessMessage = "Name can't be blank";
+        String actualSuccessMessage = contactUsPage.getContactUsFormErrorFromEmptyLastNameInputField().trim();
+
+        Assertions.assertEquals(expectedSuccessMessage, actualSuccessMessage,
+                "Failed - The actual error message does not match the expected message!");
+    }
+
+    @Test
+    @DisplayName("Contact Us")
+    @Description("Contact Us - fill form to contact without email - negative scenario.")
+    @Severity(NORMAL)
+    @Owner("Save A Train")
+    public void contactUsWithoutEmailTextTest() {
+        mainPage.navigateToHomePage();
+        ContactUsPage contactUsPage = mainPage.navigateToContactUsPage();
+        contactUsPage.fillContactUsForm("Test", "Testerski", "", "Random message.");
+        contactUsPage.submitContactUsForm();
+        String expectedSuccessMessage = "Email can't be blank";
+        String actualSuccessMessage = contactUsPage.getContactUsFormErrorFromEmptyEmailInputField().trim();
+
+        Assertions.assertEquals(expectedSuccessMessage, actualSuccessMessage,
+                "Failed - The actual error message does not match the expected message!");
+    }
+
+    @Test
+    @DisplayName("Contact Us")
+    @Description("Contact Us fill form to contact with all fields - positive scenario.")
+    @Severity(NORMAL)
+    @Owner("Save A Train")
+    public void contactUsWithWholeTextTest() {
+        mainPage.navigateToHomePage();
+        ContactUsPage contactUsPage = mainPage.navigateToContactUsPage();
+        contactUsPage.fillContactUsForm("Test", "Testerski", "test@email.com", "Some random message.");
+        contactUsPage.submitContactUsForm();
+        /*String expectedSuccessMessage = "Message can't be blank";
+        String actualSuccessMessage = contactUsPage.getContactUsFormErrorText().trim();
 
         Assertions.assertEquals(expectedSuccessMessage, actualSuccessMessage,
                 "Failed - The actual success message does not match the expected message!");*/
