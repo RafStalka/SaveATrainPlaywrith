@@ -87,7 +87,7 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         String arrivalDate = resultsPage.getFirstResultArrivalDate_ResultPage().strip() + ", " + arrivalTime;
         String price = resultsPage.getPriceFirstResult_ResultPage().strip();
         String fare = resultsPage.getFere_ResultPage().strip();
-        String durationTime = resultsPage.getDurationTime_ResultPage().strip();
+        //String durationTime = resultsPage.getDurationTime_ResultPage().strip();
 
         resultsPage.proceed();
 
