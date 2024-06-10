@@ -1,5 +1,6 @@
 package com.example.saveatrainplaywrith;
 
+import com.microsoft.playwright.Page;
 import constans.AppConstants;
 import io.qameta.allure.Description;
 import io.qameta.allure.Owner;
@@ -14,6 +15,7 @@ import pages.*;
 
 import static io.qameta.allure.SeverityLevel.CRITICAL;
 import static io.qameta.allure.SeverityLevel.NORMAL;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * SaveATrainRegressionTests is a class that contains regression tests for the Save A Train application.
@@ -62,6 +64,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
         faqHelpTabPage = new FAQHelpTabPage(page);
         privacyPolicyPage = new PrivacyPolicyPage(page);
         termsAndConditionsPage = new TermsAndConditionsPage(page);
+        blogPage = new BlogPage(page);
     }
 
     @Test
@@ -591,5 +594,13 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     public void language_ListSizeChecking() {
         int languageListSize = mainPage.languageListSizeChecking();
         Assertions.assertEquals(10, languageListSize, NUMBER_OF_AVAILABLE_LANGUAGES_IS_WRONG);
+    }
+
+    @Test
+    public void mainPageToBlogTest() {
+        mainPage.navigateToBlogPage();
+        String blogPageURL = blogPage.getBlogPageURL().trim();
+        Assertions.assertEquals("https://www.saveatrain.com/blog/", blogPageURL);
+
     }
 }

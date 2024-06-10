@@ -119,6 +119,7 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
         passengersDetailsPage.choosePassengerCountry();
         passengersDetailsPage.selectDepartureAisleOption();
         passengersDetailsPage.enterEmail(email);
+        passengersDetailsPage.enterMobilePhone("500135432");
         passengersDetailsPage.passengersDataSubmitButtonClick();
 
         double delta = 0.001;
@@ -219,6 +220,7 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
         passengersDetailsPage.selectDepartureAisleOption();
 
         passengersDetailsPage.enterEmail(email);
+        passengersDetailsPage.enterMobilePhone("500135432");
 
         passengersDetailsPage.passengersDataSubmitButtonClick();
 
@@ -304,6 +306,7 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
         passengersDetailsPage.enterBirthDate(BIRTH_DATE);
         passengersDetailsPage.choosePassengerCountry();
         passengersDetailsPage.enterEmail(email);
+        passengersDetailsPage.enterMobilePhone("500135432");
         passengersDetailsPage.passengersDataSubmitButtonClick();
 
         String finalDeparture = summaryPage.getDepartureStation_SummaryPage().strip();

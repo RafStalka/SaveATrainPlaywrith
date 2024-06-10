@@ -60,6 +60,7 @@ public class MainPage {
     private static final String FIND_TICKET_BUTTON = "button[name='button']";
     private static final String ADULT_PLUS_BUTTON = "#main-form-adult-plus svg";
     private static final String RESIDENCE_COUNTRY = "Pakistan";
+    public static final String BLOG_PAGE_SELECTOR = "id=blog";
 
     public Page page;
 
@@ -335,4 +336,12 @@ public class MainPage {
         page.click(TERMS_AND_CONDITIONS_SELECTOR);
         return new TermsAndConditionsPage(page);
     }
+
+    public BlogPage navigateToBlogPage() {
+        navigateToHomePage();
+        page.click(BLOG_PAGE_SELECTOR);
+        //Page newPage = browser.pages().get(browser.pages().size() - 1);
+        return new BlogPage(page);
+    }
+
 }

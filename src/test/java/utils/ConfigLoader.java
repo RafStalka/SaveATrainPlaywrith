@@ -113,4 +113,12 @@ public class ConfigLoader {
                     "Property file path to ACP file is not specified in the config.properties file");
     }
 
+    public String getFilePathGATE() {
+        String prop = properties.getProperty("filePathGATE");
+        if (prop != null) return prop;
+        else
+            throw new RuntimeException(
+                    "Property file path to GATE file is not specified in the config.properties file");
+    }
+
 }

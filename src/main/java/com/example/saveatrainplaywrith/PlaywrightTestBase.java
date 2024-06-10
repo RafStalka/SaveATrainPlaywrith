@@ -41,6 +41,7 @@ public class PlaywrightTestBase {
     protected ResultsPage resultsPage;
     protected PassengersDetailsPage passengersDetailsPage;
     protected SummaryPage summaryPage;
+    protected BlogPage blogPage;
 
     public static Playwright playwright;
     private static Browser browser;
@@ -51,7 +52,7 @@ public class PlaywrightTestBase {
     @BeforeAll
     static void initBrowser() {
         playwright = Playwright.create();
-        browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(true).setSlowMo(1000));
+        browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false).setSlowMo(1000));
     }
 
     @AfterAll
