@@ -69,7 +69,7 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
     @Description("Test checking e2e path on ACP provider for Spain.")
     @Severity(CRITICAL)
     @Owner("Save A Train")
-    @CsvSource({"Madrid, Leon", "Cadiz, Madrid", "Madrid, Valencia", "Leon, Madrid"})
+    @CsvSource({"Madrid, Toledo", "Cadiz, Madrid", "Madrid, Valencia", "Leon, Toledo"})
     public void e2e_SAT_ACPForSpain_test(String origin, String destination) {
         mainPage.navigateToHomePage();
         mainPage.complementingTheOriginStations(origin);
@@ -154,7 +154,7 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
     public void e2e_SAT_ACPRoundTrip_ForSpain_test() {
         mainPage.navigateToHomePage();
         mainPage.complementingTheOriginStations("Madrid");
-        mainPage.complementingTheDestinationStations("Leon");
+        mainPage.complementingTheDestinationStations("Toledo");
         mainPage.performSearch();
         mainPage.departureDate();
         mainPage.returnDate();
@@ -254,7 +254,7 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         String arrivalDate = resultsPage.getFirstResultArrivalDate_ResultPage().strip() + ", " + arrivalTime;
         String price = resultsPage.getPriceFirstResult_ResultPage().strip();
         String fare = resultsPage.getFere_ResultPage().strip();
-        String durationTime = resultsPage.getDurationTime_ResultPage().strip();
+        //String durationTime = resultsPage.getDurationTime_ResultPage().strip();
 
         resultsPage.proceed();
 

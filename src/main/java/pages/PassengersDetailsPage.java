@@ -27,7 +27,7 @@ public class PassengersDetailsPage {
     private static final String CITY_INPUT_SELECTOR = "//input[@placeholder='City']";
     private static final String STREET_INPUT_SELECTOR = "//input[@placeholder='Address']";
     private static final String POSTAL_CODE_INPUT_SELECTOR = "//input[@placeholder='Postal Code']";
-    private static final String MOBILE_PHONE_INPUT_SELECTOR = "//input[@placeholder='Mobile']";
+    private static final String MOBILE_PHONE_INPUT_SELECTOR = "id=phobe-number";
     private static final String EMAIL_INPUT_SELECTOR = "//input[@placeholder='Email']";
     private static final String SUBMIT_BUTTON_SELECTOR = ".submit-button > .ng-star-inserted";
     public static final String FIRST_PASSENGER_PASSPORT_INPUT_SELECTOR = "(//input[@id='passenger-passport'])[1]";
