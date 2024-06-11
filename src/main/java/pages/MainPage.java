@@ -340,7 +340,6 @@ public class MainPage {
     public BlogPage navigateToBlogPage() {
         navigateToHomePage();
         page.click(BLOG_PAGE_SELECTOR);
-        //Page newPage = browser.pages().get(browser.pages().size() - 1);
         return new BlogPage(page);
     }
 
