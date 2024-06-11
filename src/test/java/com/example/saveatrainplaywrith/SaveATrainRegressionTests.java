@@ -598,8 +598,11 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
 
     @Test
     public void mainPageToBlogTest() {
-        mainPage.navigateToBlogPage();
-        String blogPageURL = blogPage.getBlogPageURL().trim();
+        mainPage.navigateToHomePage();
+        Page page1 = page.waitForPopup(() -> {
+            page.getByText("Blog").click();
+        });
+        String blogPageURL = page1.url();
         Assertions.assertEquals("https://www.saveatrain.com/blog/", blogPageURL);
 
     }
