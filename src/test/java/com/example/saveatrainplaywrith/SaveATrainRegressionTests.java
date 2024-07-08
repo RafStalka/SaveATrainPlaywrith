@@ -524,9 +524,9 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
             "Madrid, Leon"})
     public void checking_CorrectnessOfSearchData(String origin, String destination) {
         mainPage.navigateToHomePage();
+        mainPage.performSearch();
         mainPage.complementingTheOriginStations(origin);
         mainPage.complementingTheDestinationStations(destination);
-        mainPage.performSearch();
         mainPage.departureDate();
         mainPage.findMyTicketButtonClick();
         String searchPage_Origin = page.locator(".direction .direction-from").textContent().trim();
@@ -542,6 +542,7 @@ public class SaveATrainRegressionTests extends PlaywrightTestBase {
     @Owner("Save A Train")
     public void _changingDestinationWithOrigin_FunctionalityButton() {
         mainPage.navigateToHomePage();
+        mainPage.performSearch();
         mainPage.complementingTheOriginStations("Berlin Central Station");
         mainPage.complementingTheDestinationStations("Hamburg Central Station");
         String originPrimary = page.locator(".input-control-container > .origin").inputValue();
