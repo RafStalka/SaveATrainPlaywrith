@@ -37,11 +37,11 @@ public class MainPage {
     private static final String WHITE_LABEL_SELECTOR = "id=white-label";
     private static final String PRIVACY_POLICY_SELECTOR = "a:nth-of-type(1) > p";
     private static final String TERMS_AND_CONDITIONS_SELECTOR = "a:nth-of-type(2) > p";
-    private static final String ORIGIN_INPUT_SELECTOR = ".input-control-container > .origin";
-    private static final String ORIGIN_STATION_SELECTOR = ".origin .ng-star-inserted:nth-child(1)";
+    private static final String ORIGIN_INPUT_SELECTOR = ".from .input-control";
+    private static final String ORIGIN_STATION_SELECTOR = ".items-list > .ng-star-inserted";
     private static final String ACTION_BOX_SELECTOR = ".action-box";
-    private static final String DESTINATION_INPUT_SELECTOR = ".destination:nth-child(1)";
-    private static final String DESTINATION_STATION_SELECTOR = ".destination .ng-star-inserted:nth-child(1)";
+    private static final String DESTINATION_INPUT_SELECTOR = ".ng-pristine .input-control";
+    private static final String DESTINATION_STATION_SELECTOR = ".to .items-list > .ng-star-inserted";
     private static final String SEARCH_BUTTON_SELECTOR = ".search-btn";
     private static final String PASS_BOOKING_TAB_SELECTOR = "id=pass-booking-tab";
     private static final String COUNTRY_INPUT_SELECTOR = ".input-group:nth-child(2) .input-control";
@@ -153,7 +153,7 @@ public class MainPage {
         page.type(ORIGIN_INPUT_SELECTOR, origin);
         page.waitForSelector(ORIGIN_STATION_SELECTOR);
         page.click(ORIGIN_STATION_SELECTOR);
-        page.hover(ACTION_BOX_SELECTOR);
+        //page.hover(ACTION_BOX_SELECTOR);
     }
 
     public void complementingTheDestinationStations(String destination) {

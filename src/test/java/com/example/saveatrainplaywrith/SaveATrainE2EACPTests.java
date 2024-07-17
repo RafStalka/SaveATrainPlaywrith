@@ -69,12 +69,12 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
     @Description("Test checking e2e path on ACP provider for Spain.")
     @Severity(CRITICAL)
     @Owner("Save A Train")
-    @CsvSource({"Madrid, Toledo", "Cadiz, Madrid", "Madrid, Valencia", "Leon, Toledo"})
+    @CsvSource({"Madrid, Toledo", "Cadiz, Madrid", "Madrid, Valencia", "Toledo, Madrid"})
     public void e2e_SAT_ACPForSpain_test(String origin, String destination) {
         mainPage.navigateToHomePage();
+        mainPage.performSearch();
         mainPage.complementingTheOriginStations(origin);
         mainPage.complementingTheDestinationStations(destination);
-        mainPage.performSearch();
         mainPage.departureDate();
         mainPage.findMyTicketButtonClick();
 
@@ -153,10 +153,11 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
     @Owner("Save A Train")
     public void e2e_SAT_ACPRoundTrip_ForSpain_test() {
         mainPage.navigateToHomePage();
+        mainPage.performSearch();
         mainPage.complementingTheOriginStations("Madrid");
         mainPage.complementingTheDestinationStations("Toledo");
-        mainPage.performSearch();
         mainPage.departureDate();
+        mainPage.performSearch();
         mainPage.returnDate();
         mainPage.addOneAdultPassenger();
         mainPage.addOneYouthPassengerIn_17_YearsAge(YOUTH_AGE);
