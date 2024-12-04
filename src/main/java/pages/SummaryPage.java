@@ -3,9 +3,10 @@ package pages;
 import com.microsoft.playwright.Frame;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
 
 public class SummaryPage {
-    private static final String ADYEN_CARD_NUMBER = "xpath=//*[@data-fieldtype='encryptedCardNumber']";
+    private static final String ADYEN_CARD_NUMBER = "xpath=//input[@data-fieldtype='encryptedCardNumber']";
     private static final String ADYEN_EXPIRY_DATE = "xpath=//*[@data-fieldtype='encryptedExpiryDate']";
     private static final String ADYEN_FORM_SC = "xpath=//*[@data-fieldtype='encryptedSecurityCode']";
     private static final String ADYEN_CHECKOUT = ".adyen-checkout__input--text";
@@ -19,24 +20,20 @@ public class SummaryPage {
     }
 
     public void completingAdyenForm() {
-        enterPaymentDetailsInFrame(1, ADYEN_CARD_NUMBER, "5577 0000 5577 0004");
-        enterPaymentDetailsInFrame(2, ADYEN_EXPIRY_DATE, "03/30");
-        enterPaymentDetailsInFrame(3, ADYEN_FORM_SC, "737");
 
-        page.locator(ADYEN_CHECKOUT).click();
-        page.locator(ADYEN_CHECKOUT).fill("Customer");
-
-        // Click on pay button
-        page.locator(ADYEN_BUTTON_CONTENT).click();
-    }
-
-    private void enterPaymentDetailsInFrame(int frameIndex, String locatorId, String value) {
-        Frame frame = page.frames().get(frameIndex);
-        Locator inputField = frame.locator(locatorId).first();
-        inputField.click();
-        inputField.type(value);
-        // Switch back to the main frame
-        page.mainFrame();
+        Locator cardNumber = page.locator("iframe[title=\"Iframe for secured card number\"]").contentFrame().getByPlaceholder("5678 9012 3456");
+        cardNumber.click();
+        cardNumber.type("5577 0000 5577 0004");
+        Locator expiryDate = page.locator("iframe[title=\"Iframe for secured card expiry date\"]").contentFrame().getByPlaceholder("MM/YY");
+        expiryDate.click();
+        expiryDate.type("03/30");
+        Locator cvcNumber = page.locator("iframe[title=\"Iframe for secured card security code\"]").contentFrame().getByPlaceholder("digits");
+        cvcNumber.click();
+        cvcNumber.type("737");
+        Locator cardOwner = page.getByPlaceholder("J. Smith");
+        cardOwner.click();
+        cardOwner.type("Customer");
+        page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Pay").setExact(true)).click();
     }
 
     public String getConfirmationCode() {

@@ -3,12 +3,14 @@ package pages;
 import com.microsoft.playwright.ElementHandle;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.PlaywrightException;
 import com.microsoft.playwright.options.AriaRole;
 import constans.AppConstants;
 import org.junit.jupiter.api.Assertions;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /**
  * The MainPage class provides methods to interact with the main page.
@@ -49,7 +51,7 @@ public class MainPage {
     private static final String AUTOCOMPLETE_INPUT_SELECTOR = ".ng-invalid > .autocomplete-container .input-control";
     private static final String RESIDENCE_INPUT_SELECTOR = ".pass-booking-content-form";
     private static final String RESIDENCE_LIST_SELECTOR = ".input-group:nth-child(3) .input-control";
-    private static final String EXCHANGE_BUTTON_SELECTOR = "//i[contains(@class, 'md-36')]";
+    private static final String EXCHANGE_BUTTON_SELECTOR = "id=main-form-change-direction";
     private static final String DEPARTURE_DATE_SELECTOR = "id=main-form-departure-date";
     private static final String NOT_MATCH_THE_EXPECTED_DATE = "The departure date filled in the input field does not match the expected date.";
     private static final String LANGUAGE_CURRENCY_SELECTOR = "#language-currency a";
@@ -146,6 +148,16 @@ public class MainPage {
 
     public void navigateToHomePage() {
         page.navigate(AppConstants.SAT_HOME_PAGE);
+    }
+
+    public void navigateToUrls(String url) { // Przyjmuje pojedynczy URL
+        try {
+            page.navigate(url);
+            System.out.println("Navigated to: " + url);
+        } catch (PlaywrightException e) {
+            System.err.println("Error navigating to " + url + ": " + e.getMessage());
+            throw new RuntimeException("Navigation failed", e);
+        }
     }
 
     public void complementingTheOriginStations(String origin) {

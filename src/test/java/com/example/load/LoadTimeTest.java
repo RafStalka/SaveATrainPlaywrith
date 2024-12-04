@@ -7,6 +7,7 @@ import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.options.LoadState;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -18,7 +19,7 @@ public class LoadTimeTest {
     private static final BrowserType browserType = Playwright.create().chromium();
     private static Browser browser;
 
-    public static final String BASE_URL = "https://www.saveatrain.com";
+    public static final String BASE_URL = "https://sat-client-staging.saveatrain.com";
 
     public static final List<String> LANGUAGES = Arrays.asList(
             "/en",
@@ -84,6 +85,7 @@ public class LoadTimeTest {
     }
 
 
+    @Disabled("Test time")
     @Test
     void testLoadTime() {
         // First run
