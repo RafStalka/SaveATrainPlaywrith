@@ -33,7 +33,6 @@ public class SummaryPage {
         Locator cardOwner = page.getByPlaceholder("J. Smith");
         cardOwner.click();
         cardOwner.type("Customer");
-        page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Pay").setExact(true)).click();
     }
 
     public String getConfirmationCode() {
