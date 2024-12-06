@@ -87,7 +87,6 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         String arrivalDate = resultsPage.getFirstResultArrivalDate_ResultPage().strip() + ", " + arrivalTime;
         String price = resultsPage.getPriceFirstResult_ResultPage().strip();
         String fare = resultsPage.getFere_ResultPage().strip();
-        //String durationTime = resultsPage.getDurationTime_ResultPage().strip();
 
         resultsPage.proceed();
 
@@ -137,12 +136,13 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
                 () -> Assertions.assertEquals(6, orderCodeLength, INCORRECT_LENGTH_OF_THE_ORDER_CODE_ON_SUMMARY_PAGE)
         );
 
+        System.out.println(page.url());
+
         summaryPage.completingAdyenForm();
 
         // Find the h3 element and get its text
         String actualHeaderText = page.getByText(YOU_FOR_PURCHASE).textContent();
 
-        // Use Assertions for the assertion
         Assertions.assertEquals(YOU_FOR_PURCHASE, actualHeaderText);
     }
 
@@ -157,7 +157,6 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         mainPage.complementingTheOriginStations("Madrid");
         mainPage.complementingTheDestinationStations("Toledo");
         mainPage.departureDate();
-        mainPage.performSearch();
         mainPage.returnDate();
         mainPage.addOneAdultPassenger();
         mainPage.addOneYouthPassengerIn_17_YearsAge(YOUTH_AGE);
@@ -196,10 +195,10 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         passengersDetailsPage.enterThirdPassengerPassportNumber(passportNumberThirdPassenger);
 
         // Seat preference outbound
-        page.getByLabel("Outbound seat preferenceWindowAisle").selectOption("Window");
+        page.getByLabel("Outbound seat preference").selectOption("Window");
 
         // Seat preference inbound
-        page.getByLabel("Inbound seat preferenceWindowAisle").selectOption("Aisle");
+        page.getByLabel("Inbound seat").selectOption("Aisle");
 
         // Enter city
         passengersDetailsPage.enterCity(city);
@@ -221,6 +220,7 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
 
         // Sleep for 7 seconds
         page.waitForTimeout(7000);
+        System.out.println(page.url());
 
         summaryPage.completingAdyenForm();
 
@@ -255,7 +255,6 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         String arrivalDate = resultsPage.getFirstResultArrivalDate_ResultPage().strip() + ", " + arrivalTime;
         String price = resultsPage.getPriceFirstResult_ResultPage().strip();
         String fare = resultsPage.getFere_ResultPage().strip();
-        //String durationTime = resultsPage.getDurationTime_ResultPage().strip();
 
         resultsPage.proceed();
 

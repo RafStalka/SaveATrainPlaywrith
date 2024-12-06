@@ -71,6 +71,7 @@ public class SaveATrainE2EEurailTests extends PlaywrightTestBase {
         passengersDetailsPage.passengersDataSubmitButtonClick();
         // Sleep for 7 seconds
         page.waitForTimeout(10000);
+        System.out.println(page.url());
 
         summaryPage.completingAdyenForm();
 

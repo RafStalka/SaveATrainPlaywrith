@@ -206,7 +206,6 @@ public class NewAttemptForAllTests extends PlaywrightTestBase {
             page.waitForTimeout(7000);
 
             System.out.println(page.url());
-            page.pause();
             summaryPage.completingAdyenForm();
 
             // Find the h3 element and get its text

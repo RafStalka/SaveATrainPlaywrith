@@ -161,6 +161,7 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
 
         // Sleep for 7 seconds
         page.waitForTimeout(7000);
+        System.out.println(page.url());
 
         summaryPage.completingAdyenForm();
 
@@ -263,6 +264,7 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
 
         // Sleep for 7 seconds
         page.waitForTimeout(7000);
+        System.out.println(page.url());
 
         summaryPage.completingAdyenForm();
 
@@ -342,6 +344,7 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
 
         // Sleep for 7 seconds
         page.waitForTimeout(7000);
+        System.out.println(page.url());
 
         summaryPage.completingAdyenForm();
 
