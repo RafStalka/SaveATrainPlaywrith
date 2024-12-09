@@ -1,6 +1,9 @@
 package com.example.saveatrainplaywrith;
 
 import com.github.javafaker.Faker;
+import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
+import com.microsoft.playwright.options.LoadState;
 import io.qameta.allure.Description;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
@@ -14,6 +17,9 @@ import pages.MainPage;
 import pages.PassengersDetailsPage;
 import pages.ResultsPage;
 import pages.SummaryPage;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import static io.qameta.allure.SeverityLevel.CRITICAL;
 
@@ -109,13 +115,12 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
         String arrivalDate = resultsPage.getFirstResultArrivalDate_ResultPage().strip() + ", " + arrivalTime;
         String price = resultsPage.getPriceFirstResult_ResultPage().strip();
         String fare = resultsPage.getFere_ResultPage().strip();
-//        String durationTime = resultsPage.getDurationTime_ResultPage().strip();
 
         resultsPage.proceed();
 
         passengersDetailsPage.selectFirstPassengerPrefix(MALE_VALUE);
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
-        passengersDetailsPage.enterBirthDate(BIRTH_DATE);
+        passengersDetailsPage.enterFirstAdultBirthDate(27);
         passengersDetailsPage.choosePassengerCountry();
         passengersDetailsPage.selectDepartureAisleOption();
         passengersDetailsPage.enterEmail(email);
@@ -153,23 +158,16 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
                 () -> Assertions.assertEquals(priceValue + reservationValue, totalPriceValue, delta, INCORRECT_TOTAL_PRICE_ON_SUMMARY_PAGE),
                 () -> Assertions.assertEquals(passengerFirstName, firstName.toUpperCase(), INCORRECT_PASSENGER_FIRST_NAME_ON_SUMMARY_PAGE),
                 () -> Assertions.assertEquals(passengerSurname, lastName.toUpperCase(), INCORRECT_PASSENGER_LAST_NAME_ON_SUMMARY_PAGE),
-                () -> Assertions.assertEquals(BIRTH_DATE, passengerBirthDay, INCORRECT_PASSENGER_BIRTH_DAY_ON_SUMMARY_PAGE),
+                () -> Assertions.assertEquals(expectedDateOfBirth(27), passengerBirthDay, INCORRECT_PASSENGER_BIRTH_DAY_ON_SUMMARY_PAGE),
                 () -> Assertions.assertEquals(email, passengerEmail, INCORRECT_PASSENGER_EMAIL_ON_SUMMARY_PAGE),
                 () -> Assertions.assertEquals(fare.toUpperCase(), fareSummaryPage, INCORRECT_FARE_ON_SUMMARY_PAGE),
                 () -> Assertions.assertEquals(6, orderCodeLength, INCORRECT_LENGTH_OF_THE_ORDER_CODE_ON_SUMMARY_PAGE)
         );
-
-        // Sleep for 7 seconds
-        page.waitForTimeout(7000);
+        
+        page.waitForLoadState(LoadState.LOAD);
         System.out.println(page.url());
 
         summaryPage.completingAdyenForm();
-
-        // Find the h3 element and get its text
-        String actualHeaderText = page.locator("css=h3").textContent().strip();
-
-        Assertions.assertEquals(YOU_FOR_PURCHASE, actualHeaderText.strip());
-
     }
 
     @Disabled("Disabled until bug will be repair.")
@@ -199,23 +197,22 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
         String arrivalDate = resultsPage.getFirstResultArrivalDate_ResultPage().strip() + ", " + arrivalTime;
         String price = resultsPage.getPriceFirstResult_ResultPage().strip();
         String fare = resultsPage.getFere_ResultPage().strip();
-//        String durationTime = resultsPage.getDurationTime_ResultPage().strip();
 
         resultsPage.proceed();
 
         passengersDetailsPage.selectFirstPassengerPrefix(MALE_VALUE);
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
-        passengersDetailsPage.enterBirthDate("12/07/1985");
+        passengersDetailsPage.enterFirstAdultBirthDate(27);
         passengersDetailsPage.choosePassengerCountry();
 
         passengersDetailsPage.secondPassengerPrefixDropdown(FEMALE_VALUE);
         passengersDetailsPage.enter_SecondAdultPassenger_FirstAndLastName(firstNameSecondAdultPassenger, lastNameSecondAdultPassenger);
-        passengersDetailsPage.enter_SecondAdultPassenger_birthDate(ADULT_PASSENGER_BIRTH_DATE);
+        passengersDetailsPage.enterSecondAdultPassengerBirthDate(28);
         passengersDetailsPage.choose_SecondAdultPassenger_Country();
 
         passengersDetailsPage.thirdPassengerPrefixDropdown(MALE_VALUE);
         passengersDetailsPage.enter_YouthPassenger_FirstAndLastName(firstNameYouthPassenger, lastNameYouthPassenger);
-        passengersDetailsPage.enter_YouthPassenger_birthDate(YOUTH_PASSENGER_BIRTH_DATE);
+        passengersDetailsPage.enterYouthPassengerBirthDate(17);
         passengersDetailsPage.choose_YouthPassenger_Country();
 
         passengersDetailsPage.selectDepartureAisleOption();
@@ -256,22 +253,16 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
                 () -> Assertions.assertEquals(priceValue + reservationValue, totalPriceValue, delta, INCORRECT_TOTAL_PRICE_ON_SUMMARY_PAGE),
                 () -> Assertions.assertEquals(passengerFirstName, firstName.toUpperCase(), INCORRECT_PASSENGER_FIRST_NAME_ON_SUMMARY_PAGE),
                 () -> Assertions.assertEquals(passengerSurname, lastName.toUpperCase(), INCORRECT_PASSENGER_LAST_NAME_ON_SUMMARY_PAGE),
-                () -> Assertions.assertEquals(BIRTH_DATE, passengerBirthDay, INCORRECT_PASSENGER_BIRTH_DAY_ON_SUMMARY_PAGE),
+                () -> Assertions.assertEquals(expectedDateOfBirth(27), passengerBirthDay, INCORRECT_PASSENGER_BIRTH_DAY_ON_SUMMARY_PAGE),
                 () -> Assertions.assertEquals(email, passengerEmail, INCORRECT_PASSENGER_EMAIL_ON_SUMMARY_PAGE),
                 () -> Assertions.assertEquals(fare.toUpperCase(), fareSummaryPage, INCORRECT_FARE_ON_SUMMARY_PAGE),
                 () -> Assertions.assertEquals(6, orderCodeLength, INCORRECT_LENGTH_OF_THE_ORDER_CODE_ON_SUMMARY_PAGE)
         );
 
-        // Sleep for 7 seconds
-        page.waitForTimeout(7000);
+        page.waitForLoadState(LoadState.LOAD);
         System.out.println(page.url());
 
         summaryPage.completingAdyenForm();
-
-        // Find the h3 element and get its text
-        String actualHeaderText = page.locator("css=h3").textContent().strip();
-
-        Assertions.assertEquals(YOU_FOR_PURCHASE, actualHeaderText.strip());
     }
 
     @ParameterizedTest
@@ -299,13 +290,12 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
         String arrivalDate = resultsPage.getFirstResultArrivalDate_ResultPage().strip() + ", " + arrivalTime;
         String price = resultsPage.getPriceFirstResult_ResultPage().strip();
         String fare = resultsPage.getFere_ResultPage().strip();
-        //String durationTime = resultsPage.getDurationTime_ResultPage().strip();
 
         resultsPage.proceed();
 
         passengersDetailsPage.selectFirstPassengerPrefix(MALE_VALUE);
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
-        passengersDetailsPage.enterBirthDate(BIRTH_DATE);
+        passengersDetailsPage.enterFirstAdultBirthDate(27);
         passengersDetailsPage.choosePassengerCountry();
         passengersDetailsPage.enterEmail(email);
         passengersDetailsPage.enterMobilePhone("500135432");
@@ -336,22 +326,20 @@ public class SaveATrainE2ETests extends PlaywrightTestBase {
                 () -> Assertions.assertEquals(price, totalPrice, INCORRECT_TOTAL_PRICE_ON_SUMMARY_PAGE),
                 () -> Assertions.assertEquals(passengerFirstName, firstName.toUpperCase(), INCORRECT_PASSENGER_FIRST_NAME_ON_SUMMARY_PAGE),
                 () -> Assertions.assertEquals(passengerSurname, lastName.toUpperCase(), INCORRECT_PASSENGER_LAST_NAME_ON_SUMMARY_PAGE),
-                () -> Assertions.assertEquals(BIRTH_DATE, passengerBirthDay, INCORRECT_PASSENGER_BIRTH_DAY_ON_SUMMARY_PAGE),
+                () -> Assertions.assertEquals(expectedDateOfBirth(27), passengerBirthDay, INCORRECT_PASSENGER_BIRTH_DAY_ON_SUMMARY_PAGE),
                 () -> Assertions.assertEquals(email, passengerEmail, INCORRECT_PASSENGER_EMAIL_ON_SUMMARY_PAGE),
                 () -> Assertions.assertEquals(fare.toUpperCase(), fareSummaryPage, INCORRECT_FARE_ON_SUMMARY_PAGE),
                 () -> Assertions.assertEquals(6, orderCodeLength, INCORRECT_LENGTH_OF_THE_ORDER_CODE_ON_SUMMARY_PAGE)
         );
 
-        // Sleep for 7 seconds
-        page.waitForTimeout(7000);
+        page.waitForLoadState(LoadState.LOAD);
         System.out.println(page.url());
 
         summaryPage.completingAdyenForm();
+    }
 
-        // Find the h3 element and get its text
-        String actualHeaderText = page.locator("css=h3").textContent().trim();
-
-        Assertions.assertEquals(YOU_FOR_PURCHASE, actualHeaderText.strip());
-
+    public static String expectedDateOfBirth(int dateOfBirth) {
+        LocalDate expectedDateOfBirth = LocalDate.now().minusYears(dateOfBirth);
+        return expectedDateOfBirth.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 }

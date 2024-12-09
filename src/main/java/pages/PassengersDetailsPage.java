@@ -5,6 +5,12 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.SelectOption;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * This class represents the page where passenger details are entered.
  */
@@ -33,6 +39,7 @@ public class PassengersDetailsPage {
     public static final String FIRST_PASSENGER_PASSPORT_INPUT_SELECTOR = "(//input[@id='passenger-passport'])[1]";
     public static final String SECOND_PASSENGER_PASSPORT_INPUT_SELECTOR = "(//input[@id='passenger-passport'])[2]";
     public static final String FIRST_YOUTH_PASSENGER_PASSPORT_INPUT_SELECTOR = "(//input[@id='passenger-passport'])[3]";
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private Page page;
 
     public PassengersDetailsPage(Page page) {
@@ -66,16 +73,23 @@ public class PassengersDetailsPage {
         page.fill(FIRST_YOUTH_PASSENGER_LAST_NAME_SELECTOR, youthPassenger_lastName);
     }
 
-    public void enterBirthDate(String birthDate) {
-        page.fill(FIRST_PASSENGER_BIRTH_DATE_SELECTOR, birthDate);
+    public void enterFirstAdultBirthDate(int birthDate) {
+        page.fill(FIRST_PASSENGER_BIRTH_DATE_SELECTOR, fillBirthDate(birthDate));
     }
 
-    public void enter_SecondAdultPassenger_birthDate(String secondAdultPassenger_birthDate) {
-        page.fill(SECOND_PASSENGER_BIRTHDATE_SELECTOR, secondAdultPassenger_birthDate);
+    public void enterSecondAdultPassengerBirthDate(int birthDate) {
+        page.fill(SECOND_PASSENGER_BIRTHDATE_SELECTOR, fillBirthDate(birthDate));
     }
 
-    public void enter_YouthPassenger_birthDate(String youthPassenger_birthDate) {
-        page.fill(FIRST_YOUTH_PASSENGER_BIRTHDATE_SELECTOR, youthPassenger_birthDate);
+    public void enterYouthPassengerBirthDate(int birthDate) {
+        page.fill(FIRST_YOUTH_PASSENGER_BIRTHDATE_SELECTOR, fillBirthDate(birthDate));
+    }
+
+    public String fillBirthDate(int birthDate) {
+        ZoneId zoneId = ZoneId.systemDefault();
+        LocalDate now = LocalDate.now(zoneId);
+        LocalDate dateOfBirth = now.minusYears(birthDate); // Subtract birthDate years
+        return dateOfBirth.format(DATE_FORMATTER);
     }
 
     public void choosePassengerCountry() {

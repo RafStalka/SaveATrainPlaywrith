@@ -15,6 +15,8 @@ import pages.PassengersDetailsPage;
 import pages.ResultsPage;
 import pages.SummaryPage;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -158,7 +160,7 @@ public class NewAttemptForAllTests extends PlaywrightTestBase {
 
             passengersDetailsPage.selectFirstPassengerPrefix(MALE_VALUE);
             passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
-            passengersDetailsPage.enterBirthDate(BIRTH_DATE);
+            passengersDetailsPage.enterYouthPassengerBirthDate(27);
             passengersDetailsPage.choosePassengerCountry();
             passengersDetailsPage.selectDepartureAisleOption();
             passengersDetailsPage.enterEmail(email);
@@ -196,7 +198,7 @@ public class NewAttemptForAllTests extends PlaywrightTestBase {
                     () -> Assertions.assertEquals(priceValue + reservationValue, totalPriceValue, delta, INCORRECT_TOTAL_PRICE_ON_SUMMARY_PAGE),
                     () -> Assertions.assertEquals(passengerFirstName, firstName.toUpperCase(), INCORRECT_PASSENGER_FIRST_NAME_ON_SUMMARY_PAGE),
                     () -> Assertions.assertEquals(passengerSurname, lastName.toUpperCase(), INCORRECT_PASSENGER_LAST_NAME_ON_SUMMARY_PAGE),
-                    () -> Assertions.assertEquals(BIRTH_DATE, passengerBirthDay, INCORRECT_PASSENGER_BIRTH_DAY_ON_SUMMARY_PAGE),
+                    () -> Assertions.assertEquals(expectedDateOfBirth(27), passengerBirthDay, INCORRECT_PASSENGER_BIRTH_DAY_ON_SUMMARY_PAGE),
                     () -> Assertions.assertEquals(email, passengerEmail, INCORRECT_PASSENGER_EMAIL_ON_SUMMARY_PAGE),
                     () -> Assertions.assertEquals(fare.toUpperCase(), fareSummaryPage, INCORRECT_FARE_ON_SUMMARY_PAGE),
                     () -> Assertions.assertEquals(6, orderCodeLength, INCORRECT_LENGTH_OF_THE_ORDER_CODE_ON_SUMMARY_PAGE)
@@ -216,6 +218,12 @@ public class NewAttemptForAllTests extends PlaywrightTestBase {
         } catch (Exception e) {
             System.err.println("Error processing URL " + url + ": " + e.getMessage());
         }
+
+    }
+
+    public static String expectedDateOfBirth(int dateOfBirth) {
+        LocalDate expectedDateOfBirth = LocalDate.now().minusYears(dateOfBirth);
+        return expectedDateOfBirth.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
 }
