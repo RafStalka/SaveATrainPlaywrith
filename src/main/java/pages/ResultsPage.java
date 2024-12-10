@@ -5,8 +5,13 @@ import com.microsoft.playwright.Page;
 public class ResultsPage {
     private static final String RESULT_1_ID_SELECTOR = "id=result-1";
     private static final String PROCEED_BUTTON_SELECTOR = ".proceed-btn";
-    private static final String DEPARTURE_STATION = "id=departure-transfer-station-name-1-1";
-    private static final String ARRIVAL_STATION = "id=arrival-transfer-station-name-1-1";
+
+    private static final String DEPARTURESecondField_STATION = "id=departure-transfer-station-name-1-2";
+    private static final String ARRIVALSecondField_STATION = "id=arrival-transfer-station-name-1-2";
+
+    private static final String DEPARTUREFirstField_STATION = "id=departure-transfer-station-name-1-1";
+    private static final String ARRIVALFirstField_STATION = "id=arrival-transfer-station-name-1-1";
+
     private static final String PRICE_1_ID_SELECTOR = "id=price-1";
     private static final String DEPARTURE_DATE_1_ID_SELECTOR = "id=departure-d-1";
     private static final String DEPARTURE_TIME_1_ID_SELECTOR = "id=departure-t-1";
@@ -43,12 +48,20 @@ public class ResultsPage {
         page.getByText(PROCEED_TEXT).click();
     }
 
-    public String getDepartureStation_ResultPage() {
-        return getTextContent(DEPARTURE_STATION);
+    public String getArrivalStationFirstField_ResultPage() {
+        return getTextContent(ARRIVALFirstField_STATION);
     }
 
-    public String getArrivalStation_ResultPage() {
-        return getTextContent(ARRIVAL_STATION);
+    public String getDepartureStationFirstField_ResultPage() {
+        return getTextContent(DEPARTUREFirstField_STATION);
+    }
+
+    public String getArrivalStationSecondField_ResultPage() {
+        return getTextContent(ARRIVALSecondField_STATION);
+    }
+
+    public String getDepartureStationSecondField_ResultPage() {
+        return getTextContent(DEPARTURESecondField_STATION);
     }
 
     public String getPriceFirstResult_ResultPage() {

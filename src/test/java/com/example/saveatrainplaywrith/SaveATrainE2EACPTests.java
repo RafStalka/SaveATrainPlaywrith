@@ -1,8 +1,7 @@
 package com.example.saveatrainplaywrith;
 
 import com.github.javafaker.Faker;
-import com.microsoft.playwright.Page;
-import com.microsoft.playwright.options.AriaRole;
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.options.LoadState;
 import io.qameta.allure.Description;
 import io.qameta.allure.Owner;
@@ -17,6 +16,7 @@ import pages.SummaryPage;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 import static io.qameta.allure.SeverityLevel.CRITICAL;
 
@@ -84,8 +84,21 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         mainPage.findMyTicketButtonClick();
 
         resultsPage.selectFirstOption();
-        String departure = resultsPage.getDepartureStation_ResultPage().strip();
-        String arrival = resultsPage.getArrivalStation_ResultPage();
+
+        String departureFirst = resultsPage.getDepartureStationFirstField_ResultPage().trim();
+
+        String arrival = null;
+        try {
+            Locator arrivalSecond = page.locator("id=arrival-transfer-station-name-1-2");
+            if (arrivalSecond.isVisible()) {
+                arrival = resultsPage.getArrivalStationSecondField_ResultPage().strip(); // second
+            } else {
+                arrival = resultsPage.getArrivalStationFirstField_ResultPage().strip(); // first
+            }
+        } catch (Exception e) {
+            System.err.println("Timeout while waiting for the element: " + e.getMessage());
+        }
+
         String departureTime = resultsPage.getFirstResultDepartureTime_ResultPage();
         String departureDate = resultsPage.getFirstResultDepartureDate_ResultPage().strip() + ", " + departureTime.strip() + " -";
         String arrivalTime = resultsPage.getFirstResultArrivalTime_ResultPage();
@@ -125,9 +138,15 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         String passengerBirthDay = summaryPage.getPassengerBirthDate().strip();
         String passengerEmail = summaryPage.getPassengerEmail().strip();
 
+        boolean compareDeparture = Objects.equals(departureFirst != null ?
+                departureFirst.trim().toLowerCase() : null , finalDeparture != null ?
+                finalDeparture.trim().toLowerCase() : null);
+        boolean compareArrival = Objects.equals(arrival != null ? arrival.trim().toLowerCase() : null,
+                finalArrival != null ? finalArrival.trim().toLowerCase() : null);
+
         Assertions.assertAll(
-                () -> Assertions.assertTrue(finalDeparture.contains(departure.toUpperCase()), INCORRECT_DEPARTURE_ON_SUMMARY_PAGE),
-                () -> Assertions.assertTrue(finalArrival.contains(arrival.toUpperCase()), INCORRECT_ARRIVAL_ON_SUMMARY_PAGE),
+                () -> Assertions.assertTrue(compareDeparture, INCORRECT_DEPARTURE_ON_SUMMARY_PAGE),
+                () -> Assertions.assertTrue(compareArrival, INCORRECT_ARRIVAL_ON_SUMMARY_PAGE),
                 () -> Assertions.assertEquals(departureDate, finalDepartureDate, INCORRECT_DEPARTURE_DATE_AND_TIME_ON_SUMMARY_PAGE),
                 () -> Assertions.assertEquals(arrivalDate, finalArrivalDate, INCORRECT_ARRIVAL_DATE_AND_TIME_ON_SUMMARY_PAGE),
                 () -> Assertions.assertEquals(price, finalPrice, INCORRECT_PRICE_ON_SUMMARY_PAGE),
@@ -240,8 +259,21 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         mainPage.findMyTicketButtonClick();
 
         resultsPage.selectFirstOption();
-        String departure = resultsPage.getDepartureStation_ResultPage().strip();
-        String arrival = resultsPage.getArrivalStation_ResultPage();
+
+        String departureFirst = resultsPage.getDepartureStationFirstField_ResultPage().trim();
+
+        String arrival = null;
+        try {
+            Locator arrivalSecond = page.locator("id=arrival-transfer-station-name-1-2");
+            if (arrivalSecond.isVisible()) {
+                arrival = resultsPage.getArrivalStationSecondField_ResultPage().strip(); // second
+            } else {
+                arrival = resultsPage.getArrivalStationFirstField_ResultPage().strip(); // first
+            }
+        } catch (Exception e) {
+            System.err.println("Timeout while waiting for the element: " + e.getMessage());
+        }
+
         String departureTime = resultsPage.getFirstResultDepartureTime_ResultPage();
         String departureDate = resultsPage.getFirstResultDepartureDate_ResultPage().strip() + ", " + departureTime;
         String arrivalTime = resultsPage.getFirstResultArrivalTime_ResultPage();
@@ -281,9 +313,15 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         String passengerBirthDay = summaryPage.getPassengerBirthDate().strip();
         String passengerEmail = summaryPage.getPassengerEmail().strip();
 
+        boolean compareDeparture = Objects.equals(departureFirst != null ?
+                departureFirst.trim().toLowerCase() : null , finalDeparture != null ?
+                finalDeparture.trim().toLowerCase() : null);
+        boolean compareArrival = Objects.equals(arrival != null ? arrival.trim().toLowerCase() : null,
+                finalArrival != null ? finalArrival.trim().toLowerCase() : null);
+
         Assertions.assertAll(
-                () -> Assertions.assertTrue(finalDeparture.contains(departure.toUpperCase()), INCORRECT_DEPARTURE_ON_SUMMARY_PAGE),
-                () -> Assertions.assertTrue(finalArrival.contains(arrival.toUpperCase()), INCORRECT_ARRIVAL_ON_SUMMARY_PAGE),
+                () -> Assertions.assertTrue(compareDeparture, INCORRECT_DEPARTURE_ON_SUMMARY_PAGE),
+                () -> Assertions.assertTrue(compareArrival, INCORRECT_ARRIVAL_ON_SUMMARY_PAGE),
                 () -> Assertions.assertEquals(departureDate, finalDepartureDate, INCORRECT_DEPARTURE_DATE_AND_TIME_ON_SUMMARY_PAGE),
                 () -> Assertions.assertEquals(arrivalDate, finalArrivalDate, INCORRECT_ARRIVAL_DATE_AND_TIME_ON_SUMMARY_PAGE),
                 () -> Assertions.assertEquals(price, finalPrice, INCORRECT_PRICE_ON_SUMMARY_PAGE),
