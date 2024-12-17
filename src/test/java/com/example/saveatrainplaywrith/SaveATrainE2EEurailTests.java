@@ -26,8 +26,6 @@ import static io.qameta.allure.SeverityLevel.CRITICAL;
  */
 public class SaveATrainE2EEurailTests extends PlaywrightTestBase {
 
-    public static final String PAYMENT_WAS_SUCCESSFUL = "Your payment was successful";
-    public static final String BIRTH_DATE = "06/09/1985";
     public static final String GLOBAL_PASS = "Global Pass";
     public static final String GMAIL_COM = "@gmail.com";
     public static final String TEST = "test_";
@@ -35,7 +33,6 @@ public class SaveATrainE2EEurailTests extends PlaywrightTestBase {
 
     @BeforeEach
     public void setUp() {
-        // Assuming 'page' is initialized in your base class
         mainPage = new MainPage(page);
         passengersDetailsPage = new PassengersDetailsPage(page);
         resultsPage = new ResultsPage(page);
@@ -66,6 +63,10 @@ public class SaveATrainE2EEurailTests extends PlaywrightTestBase {
 
         Locator genderDropdown = page.locator("#passenger-prefix");
         genderDropdown.selectOption(new SelectOption().setIndex(1));
+
+        page.waitForLoadState(LoadState.LOAD);
+        System.out.println(page.url());
+
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
         passengersDetailsPage.enterFirstAdultBirthDate(27);
         passengersDetailsPage.choosePassengerCountry();

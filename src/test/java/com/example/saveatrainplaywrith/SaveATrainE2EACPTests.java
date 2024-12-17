@@ -6,6 +6,7 @@ import com.microsoft.playwright.options.LoadState;
 import io.qameta.allure.Description;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -284,6 +285,7 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         resultsPage.proceed();
 
         passengersDetailsPage.selectFirstPassengerPrefix(MR);
+        System.out.println(page.url());
         passengersDetailsPage.enterFirstAndLastName(firstName, lastName);
         passengersDetailsPage.enterFirstAdultBirthDate(27);
         passengersDetailsPage.choosePassengerCountry();
@@ -313,27 +315,28 @@ public class SaveATrainE2EACPTests extends PlaywrightTestBase {
         String passengerBirthDay = summaryPage.getPassengerBirthDate().strip();
         String passengerEmail = summaryPage.getPassengerEmail().strip();
 
+        page.waitForLoadState(LoadState.LOAD);
+
         boolean compareDeparture = Objects.equals(departureFirst != null ?
                 departureFirst.trim().toLowerCase() : null , finalDeparture != null ?
                 finalDeparture.trim().toLowerCase() : null);
         boolean compareArrival = Objects.equals(arrival != null ? arrival.trim().toLowerCase() : null,
                 finalArrival != null ? finalArrival.trim().toLowerCase() : null);
 
-        Assertions.assertAll(
-                () -> Assertions.assertTrue(compareDeparture, INCORRECT_DEPARTURE_ON_SUMMARY_PAGE),
-                () -> Assertions.assertTrue(compareArrival, INCORRECT_ARRIVAL_ON_SUMMARY_PAGE),
-                () -> Assertions.assertEquals(departureDate, finalDepartureDate, INCORRECT_DEPARTURE_DATE_AND_TIME_ON_SUMMARY_PAGE),
-                () -> Assertions.assertEquals(arrivalDate, finalArrivalDate, INCORRECT_ARRIVAL_DATE_AND_TIME_ON_SUMMARY_PAGE),
-                () -> Assertions.assertEquals(price, finalPrice, INCORRECT_PRICE_ON_SUMMARY_PAGE),
-                () -> Assertions.assertEquals(ZERO, reservationPrice, INCORRECT_RESERVATION_PRICE_ON_SUMMARY_PAGE),
-                () -> Assertions.assertEquals(price, totalPrice, INCORRECT_TOTAL_PRICE_ON_SUMMARY_PAGE),
-                () -> Assertions.assertEquals(passengerFirstName, firstName.toUpperCase(), INCORRECT_PASSENGER_FIRST_NAME_ON_SUMMARY_PAGE),
-                () -> Assertions.assertEquals(passengerSurname, lastName.toUpperCase(), INCORRECT_PASSENGER_LAST_NAME_ON_SUMMARY_PAGE),
-                () -> Assertions.assertEquals(expectedDateOfBirth(27), passengerBirthDay, INCORRECT_PASSENGER_BIRTH_DAY_ON_SUMMARY_PAGE),
-                () -> Assertions.assertEquals(email, passengerEmail, INCORRECT_PASSENGER_EMAIL_ON_SUMMARY_PAGE),
-                () -> Assertions.assertEquals(fare, fareSummaryPage, INCORRECT_FARE_ON_SUMMARY_PAGE),
-                () -> Assertions.assertEquals(6, orderCodeLength, INCORRECT_LENGTH_OF_THE_ORDER_CODE_ON_SUMMARY_PAGE)
-        );
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(compareDeparture).as(INCORRECT_DEPARTURE_ON_SUMMARY_PAGE).isTrue();
+        softly.assertThat(compareArrival).as(INCORRECT_ARRIVAL_ON_SUMMARY_PAGE).isTrue();
+        softly.assertThat(departureDate).withFailMessage(INCORRECT_DEPARTURE_DATE_AND_TIME_ON_SUMMARY_PAGE).isEqualTo(finalDepartureDate);
+        softly.assertThat(arrivalDate).withFailMessage(INCORRECT_ARRIVAL_DATE_AND_TIME_ON_SUMMARY_PAGE).isEqualTo(finalArrivalDate);
+        softly.assertThat(price).withFailMessage(INCORRECT_PRICE_ON_SUMMARY_PAGE).isEqualTo(finalPrice);
+        softly.assertThat(reservationPrice).withFailMessage(INCORRECT_RESERVATION_PRICE_ON_SUMMARY_PAGE).isEqualTo(ZERO);
+        softly.assertThat(totalPrice).withFailMessage(INCORRECT_TOTAL_PRICE_ON_SUMMARY_PAGE).isEqualTo(price);
+        softly.assertThat(passengerFirstName).withFailMessage(INCORRECT_PASSENGER_FIRST_NAME_ON_SUMMARY_PAGE).isEqualTo(firstName.toUpperCase());
+        softly.assertThat(passengerSurname).withFailMessage(INCORRECT_PASSENGER_LAST_NAME_ON_SUMMARY_PAGE).isEqualTo(lastName.toUpperCase());
+        softly.assertThat(expectedDateOfBirth(27)).withFailMessage(INCORRECT_PASSENGER_BIRTH_DAY_ON_SUMMARY_PAGE).isEqualTo(passengerBirthDay);
+        softly.assertThat(email).withFailMessage(INCORRECT_PASSENGER_EMAIL_ON_SUMMARY_PAGE).isEqualTo(passengerEmail);
+        softly.assertThat(fare.toUpperCase()).withFailMessage(INCORRECT_FARE_ON_SUMMARY_PAGE).isEqualTo(fareSummaryPage);
+        softly.assertThat(6).withFailMessage(INCORRECT_LENGTH_OF_THE_ORDER_CODE_ON_SUMMARY_PAGE).isEqualTo(orderCodeLength);
 
         System.out.println(page.url());
         summaryPage.completingAdyenForm();

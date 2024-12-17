@@ -1,0 +1,651 @@
+# SAT. Round Trip
+
+###
+# @name 1. Vendor stations
+# ### Vendor station list
+#   Get the list of all train stations.  
+#   Pick origin and destination stations from the list. Make sure that "searchable" attribute is set to "true".
+GET {{base_url}}/vendor_stations
+X-Agent-Email: {{X-Agent-Email}}
+X-Agent-Token: {{X-Agent-Token}}
+Content-Type: application/json
+
+<> ./SAT. Round Trip_responses/success_example.200.json
+// {{Staging_URL}}/vendor_stations
+
+###
+# @name 1.1 Station search names
+# ### Vendor station list
+#   Get the list of all train stations.  
+#   Pick origin and destination stations from the list. Make sure that "searchable" attribute is set to "true".
+GET {{base_url}}/station_search_names
+X-Agent-Email: {{X-Agent-Email}}
+X-Agent-Token: {{X-Agent-Token}}
+Content-Type: application/json
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+  %}
+
+<> ./SAT. Round Trip_responses/success_example.200.json
+// {{Staging_URL}}/vendor_stations
+
+###
+# @name 2. Outbound search
+# ### Outbound search
+#   Search for outbound routes, providing origin and destination stations (along with other params) in the request body. 
+#  
+#   *Make sure to specify future date for the ticket search.*  
+#   In the response you'll get the search identifier and the list of results. Pick one and use it's identifier (along with the search id) for the next step.
+POST {{base_url}}/searches
+X-Agent-Email: {{X-Agent-Email}}
+X-Agent-Token: {{X-Agent-Token}}
+Content-Type: application/json
+
+{
+    "search": {
+        "departure_datetime": "{{departure-datetime}}",
+        "return_departure_datetime": "{{return_departure_datetime}}",
+        "searches_passengers_attributes": {
+            "0": {
+                "age": 30,
+                "passenger_type_attributes": {
+                    "type": "Search::PassengerType::Adult"
+                }
+            }
+        },
+        "route_attributes": {
+            "origin_station_attributes": {
+                "uid": "{{origin_station_uid}}"
+            },
+            "destination_station_attributes": {
+                "uid": "{{destination_station_uid}}"
+            }
+        }
+    }
+}
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    // const jsonData = pm.response.json();
+
+    // pm.test("Outbound search has results", function () {
+    //     pm.expect(jsonData.results).to.be.not.empty;
+    // });
+
+    // pm.environment.set("search_id", jsonData.identifier);
+
+    // pm.environment.set("result_id", jsonData.results[0].id);
+%}
+
+<> ./SAT. Round Trip_responses/success_example.200_1.json
+// {{Staging_URL}}/searches
+
+###
+# @name 2. Outbound search (2 pass)
+# ### Outbound search
+#   Search for outbound routes, providing origin and destination stations (along with other params) in the request body. 
+#  
+#   *Make sure to specify future date for the ticket search.*  
+#   In the response you'll get the search identifier and the list of results. Pick one and use it's identifier (along with the search id) for the next step.
+POST {{base_url}}/searches
+X-Agent-Email: {{X-Agent-Email}}
+X-Agent-Token: {{X-Agent-Token}}
+Content-Type: application/json
+
+{
+  "search": {
+    "departure_datetime": "{{departure-datetime}}",
+    "return_departure_datetime": "{{return_departure_datetime}}",
+    "searches_passengers_attributes": {
+      "0": {
+        "age": 21,
+        "passenger_type_attributes": {
+          "type": "Search::PassengerType::Adult"
+        }
+      },
+      "1": {
+        "age": 12,
+        "passenger_type_attributes": {
+          "type": "Search::PassengerType::Youth"
+        }
+      }
+    },
+    "route_attributes": {
+      "origin_station_attributes": {
+        "uid": "{{origin_station_uid}}"
+      },
+      "destination_station_attributes": {
+        "uid": "{{destination_station_uid}}"
+      }
+    }
+  }
+}
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    // const jsonData = pm.response.json();
+
+    // pm.test("Outbound search has results", function () {
+    //     pm.expect(jsonData.results).to.be.not.empty;
+    // });
+
+    // pm.environment.set("search_id", jsonData.identifier);
+
+    // pm.environment.set("result_id", jsonData.results[0].id);
+%}
+
+<> ./SAT. Round Trip_responses/success_example.200_2.json
+// {{Staging_URL}}/searches
+
+###
+# @name 3. Outbound Subroutes (transfers and fares)
+# ### Outbound subroutes
+#   Search the associated subroutes.  
+#   In the response you'll get the list of available transfers and fares for the trip.   
+#   Pick the tranfer id and fare id to use in the next step.
+GET {{base_url}}/searches/{{search_id}}/results/{{result_id}}/sub_routes
+X-Agent-Email: {{X-Agent-Email}}
+X-Agent-Token: {{X-Agent-Token}}
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    // const jsonData = pm.response.json();
+
+    // pm.environment.set("transfer_id", jsonData.transfers[0].id);
+
+    // pm.environment.set("fare_id", jsonData.transfers[0].fares[0].id);
+%}
+
+<> ./SAT. Round Trip_responses/success.200.json
+// {{Staging_URL}}/searches/{{search_id}}/results/{{result_id}}/sub_routes
+
+###
+# @name 4. Get tariff details
+# ### Get tariff details
+#   Get information about the chosen ticket class.
+GET {{base_url}}/searches/{{search_id}}/results/{{result_id}}/tariff_conditions/{{fare_id}}
+X-AGENT-EMAIL: {{X-Agent-Email}}
+X-AGENT-TOKEN: {{X-Agent-Token}}
+HTTP_ACCEPT: application/json
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+<> ./SAT. Round Trip_responses/success.200_1.json
+// https://satvendorstest.saveatrain.com/api/searches/{{search_id}}/results/{{result_id}}/tariff_conditions/{{fare_id}}
+
+###
+# @name 5. Confirm Selection
+# ### Confirm selection
+#   Send a confirmation for the chosen outbound trip.
+POST {{base_url}}/searches/{{search_id}}/confirm_selection
+X-Agent-Email: {{X-Agent-Email}}
+X-Agent-Token: {{X-Agent-Token}}
+Content-Type: application/json
+
+{
+  "select_results_attributes": {
+    "search_identifier": "{{search_id}}",
+    "result_id": {{result_id}},
+    "transfers_attributes": {
+      "0": {
+        "id": {{transfer_id}},
+        "fare_id": {{fare_id}}
+      }
+    }
+  }
+}
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+<> ./SAT. Round Trip_responses/success.200_2.json
+// {{Staging_URL}}/searches/{{search_id}}/confirm_selection
+
+###
+# @name 6. Inbound Search
+# ### Inbound search
+#   Search for a return trip route.
+POST {{base_url}}/searches/{{search_id}}/inbound_search
+X-Agent-Email: {{X-Agent-Email}}
+X-Agent-Token: {{X-Agent-Token}}
+Content-Type: application/json
+
+{
+  "select_results_attributes": {
+    "search_identifier": "{{search_id}}",
+    "result_id": {{result_id}},
+    "transfers_attributes": {
+      "0": {
+        "id": {{transfer_id}},
+        "fare_id": {{fare_id}}
+      }
+    }
+  }
+}
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    // const jsonData = pm.response.json();
+
+    // pm.environment.set("inbound_result_id", jsonData.inbound_results[0].id);
+%}
+
+<> ./SAT. Round Trip_responses/success.200_3.json
+// {{Staging_URL}}/searches/{{search_id}}/inbound_search
+<> ./SAT. Round Trip_responses/6._inbound_search_2024.200.json
+// {{base_url}}/searches/{{search_id}}/inbound_search
+
+###
+# @name 7. Inbound Subroutes (transfers and fares)
+# ### Inbound subroutes
+#   Search the associated subroutes.
+GET {{base_url}}/searches/{{search_id}}/results/{{inbound_result_id}}/sub_routes
+X-Agent-Email: {{X-Agent-Email}}
+X-Agent-Token: {{X-Agent-Token}}
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    // const jsonData = pm.response.json();
+
+    // pm.environment.set("inbound_transfer_id", jsonData.transfers[0].id);
+
+    // pm.environment.set("inbound_fare_id", jsonData.transfers[0].fares[0].id);
+%}
+
+<> ./SAT. Round Trip_responses/success.200_4.json
+// {{Staging_URL}}/searches/{{search_id}}/results/{{inbound_result_id}}/sub_routes
+
+###
+# @name 8. Get tariff details for inbound
+# ### Get tariff details
+#   Get information about the chosen ticket class.
+GET {{base_url}}/searches/{{search_id}}/results/{{inbound_result_id}}/tariff_conditions/{{inbound_fare_id}}
+X-AGENT-EMAIL: {{X-Agent-Email}}
+X-AGENT-TOKEN: {{X-Agent-Token}}
+HTTP_ACCEPT: application/json
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+<> ./SAT. Round Trip_responses/success.200_5.json
+// https://satvendorstest.saveatrain.com/api/searches/{{search_id}}/results/{{inbound_result_id}}/tariff_conditions/{{inbound_fare_id}}
+
+###
+# @name 9. Confirm inbound
+# ### Confirm inbound
+#   Send a confirmation for the chosen intbound trip.
+POST {{base_url}}/searches/{{search_id}}/confirm_selection
+X-Agent-Email: {{X-Agent-Email}}
+X-Agent-Token: {{X-Agent-Token}}
+Content-Type: application/json
+
+{
+  "select_results_attributes": {
+    "search_identifier": "{{search_id}}",
+    "result_id": {{inbound_result_id}},
+    "transfers_attributes": {
+      "0": {
+        "id": {{inbound_transfer_id}},
+        "fare_id": {{inbound_fare_id}}
+      }
+    }
+  }
+}
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+<> ./SAT. Round Trip_responses/success.200_6.json
+// {{Staging_URL}}/searches/{{search_id}}/confirm_selection
+
+###
+# @name 10. Make Booking
+# ### Make a booking
+#   Send a booking request.
+POST {{base_url}}/bookings
+HTTP_ACCEPT: application/json
+X-AGENT-EMAIL: {{X-Agent-Email}}
+X-AGENT-TOKEN: {{X-Agent-Token}}
+Content-Type: application/json
+
+{
+    "booking": {
+        "search_identifier": "{{search_id}}",
+        "order_customer_attributes": {
+            "email": "test@saveatrain.com",
+            "fname": "testq",
+            "lname": "test",
+            "gender": "M",
+            "mobile": "420776251258"
+        },
+        "passengers_attributes": {
+            "0": {
+                "title": "Mr",
+                "fname": "test",
+                "lname": "testq",
+                "birthdate": "1986-05-19",
+                "country": "Republic Of Central Africa",
+                "passenger_type_attributes": {
+                    "type": "Search::PassengerType::Adult",
+                    "age": 34
+                },
+                "document": {
+                    "type": "1",
+                    "number": "154729298",
+                    "citizenship": "RU"
+                }
+            }
+        },
+        "seat_preference_attributes": {
+            "seat_preference_outbound": null,
+            "seat_preference_inbound": null
+        }
+    }
+}
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+<> ./SAT. Round Trip_responses/success.200_7.json
+// https://satvendorstest.saveatrain.com/api/bookings
+
+###
+# @name 10. Make Booking (2 pass)
+# ### Make a booking
+#   Send a booking request.
+POST {{base_url}}/bookings
+HTTP_ACCEPT: application/json
+X-AGENT-EMAIL: {{X-Agent-Email}}
+X-AGENT-TOKEN: {{X-Agent-Token}}
+Content-Type: application/json
+
+{
+    "booking": {
+        "search_identifier": "{{search_id}}",
+        "order_customer_attributes": {
+            "email": "test@saveatrain.com",
+            "fname": "test",
+            "lname": "tester",
+            "gender": "M",
+            "mobile": "420776251258"
+        },
+        "passengers_attributes": {
+            "0": {
+                "title": "Mr",
+                "fname": "test",
+                "lname": "tester",
+                "birthdate": "2001-05-19",
+                "country": "Germany",
+                "passenger_type_attributes": {
+                    "type": "Search::PassengerType::Adult",
+                    "age": 21
+                },
+                "document": {
+                    "type": "1",
+                    "number": "154729298",
+                    "citizenship": "RU"
+                }
+            },
+            "1": {
+                "title": "Mr",
+                "fname": "tessy",
+                "lname": "testsson",
+                "birthdate": "2010-05-19",
+                "country": "Belgium",
+                "passenger_type_attributes": {
+                    "type": "Search::PassengerType::Youth",
+                    "age": 12
+                },
+                "document": {
+                    "type": "1",
+                    "number": "154729299",
+                    "citizenship": "RU"
+                }
+            }
+        },
+        "seat_preference_attributes": {
+            "seat_preference_outbound": null,
+            "seat_preference_inbound": "ALLOWED_SEAT_LOCATION.C"
+        }
+    }
+}
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+<> ./SAT. Round Trip_responses/success.200_8.json
+// https://satvendorstest.saveatrain.com/api/bookings
+
+###
+# @name 11. Confirm Booking
+# ### Confirm booking
+#   Send a booking confirmation request for the chosen outbound trip.
+POST {{base_url}}/bookings/confirm
+HTTP_ACCEPT: application/json
+X-AGENT-EMAIL: {{X-Agent-Email}}
+X-AGENT-TOKEN: {{X-Agent-Token}}
+Content-Type: application/json
+
+    {
+    "booking": {
+        "search_identifier": "{{search_id}}"
+    }
+}
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+<> ./SAT. Round Trip_responses/success.200_9.json
+// https://satvendorstest.saveatrain.com/api/bookings/confirm
+
+###
+# @name 12. Ticket PDF
+# ### Ticket PDF
+#   Get a booking confirmation code and the link to a generated ticket PDF.
+GET {{base_url}}/order_images/{{search_id}}
+HTTP_ACCEPT: application/json
+X-AGENT-EMAIL: {{X-Agent-Email}}
+X-AGENT-TOKEN: {{X-Agent-Token}}
+Content-Type: application/json
+
+{
+    "search_identifier": "{{search_id}}"
+}
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+<> ./SAT. Round Trip_responses/success.200_10.json
+// https://satvendorstest.saveatrain.com/api/order_images/{{search_id}}
+
+###
+# @name Cancellation
+POST {{base_url}}/bookings/cancellation
+HTTP_ACCEPT: application/json
+X-AGENT-EMAIL: {{X-Agent-Email}}
+X-AGENT-TOKEN: {{X-Agent-Token}}
+Content-Type: application/json
+
+{
+  "booking": {
+    "order_id": "h91i2b"
+  }
+}
+
+###
+# @name Confirm Cancellation
+POST {{base_url}}/bookings/confirm_cancellation
+HTTP_ACCEPT: application/json
+X-AGENT-EMAIL: {{X-Agent-Email}}
+X-AGENT-TOKEN: {{X-Agent-Token}}
+Content-Type: application/json
+
+{
+  "booking": {
+    "order_id": "h91i2b"
+  }
+}
+
+###
+# @name Cancellation 30 minutes
+POST {{base_url}}/admin/order_cancel
+HTTP_ACCEPT: application/json
+X-USER-EMAIL: idan@saveatrain.com
+X-USER-TOKEN: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpbnN0YW5zZV9jbGFzcyI6IlVzZXIiLCJpbnN0YW5jZV9pZCI6MTE3NSwiZXhwaXJhdGlvbl90aW1lIjoiMjAyNC0wMi0yMCAxNjowMzoyNSBVVEMifQ.4qB_zoHh6phNPzHMbrON8AN-cdHiROXcigX3v2tlFaY
+Content-Type: application/json
+
+{
+  "booking": {
+    "order_id": "m6dnc1"
+  }
+}
+
+###
+# @name ManageBookings
+POST {{base_url}}/manage_bookings
+HTTP_ACCEPT: application/json
+X-AGENT-EMAIL: {{X-Agent-Email}}
+X-AGENT-TOKEN: {{X-Agent-Token}}
+Content-Type: application/json
+
+{
+  "id": "Gfk0Fh",
+  "email": "test@saveatrain.com"
+}
+
+###
+# @name Payment
+POST {{base_url}}/single_use_virtual_card_charge
+X-AGENT-EMAIL: {{X-Agent-Email}}
+X-AGENT-TOKEN: {{X-Agent-Token}}
+Content-Type: application/json
+
+{
+  "search_identifier": "{{search_id}}",
+  "charge": {
+    "amount": 5000
+  },
+  "payment_details": {
+    "holder_name": "John Doe",
+    "number": "5101180000000007",
+    "expiry_month": "03",
+    "expiry_year": "2030",
+    "cvc": "737"
+  }
+}
+
+###
+# @name New Request
+POST {{base_url}}/eurail_passes/send_confirmation_email
+Content-Type: application/json
+
+{
+  "customer_email": "qwp.kpv@gmail.com",
+  "customer_name": "John",
+  "order_number": "12345",
+  "passengers": {
+    "1": {
+      "name": "pass1",
+      "pass_number": "12345"
+    },
+    "2": {
+      "name": "pass2",
+      "pass_number": "543121"
+    }
+  }
+}
+
+###
+# @name Origin-Destination
+POST {{base_url}}/searches/origin_and_destination_search?
+    X-AGENT-EMAIL={{X-Agent-Email}}&
+    X-AGENT-TOKEN={{X-Agent-Token}}
+X-AGENT-EMAIL: {{X-Agent-Email}}
+X-AGENT-TOKEN: {{X-Agent-Token}}
+Content-Type: application/json
+
+{
+  "origin": "Rome",
+  "destination": "Milan",
+  "locale": "ru"
+}
+
+###
+# @name client_backend_eurail_refund
+POST {{base_url}}/eurail_passes/refund
+Content-Type: application/json
+
+{
+  "refund": {
+    "search_identifier": "5hEB7R",
+    "items": [
+      "32c2e2e0-831c-4bd5-a921-28e10d0639f3"
+    ]
+  }
+}
+
+###
+# @name New Request
+POST {{base_url}}/passes/refunds
+X-AGENT-EMAIL: {{X-Agent-Email}}
+X-AGENT-TOKEN: {{X-Agent-Token}}
+Content-Type: application/json
+
+{
+  "search_identifier": "Se78uX",
+  "items": [
+    "f6b4c185-3733-42f2-94e7-e13a5cd8e9f1"
+  ]
+}
+
+###
+# @name OfferClassMapper
+GET {{base_url}}/fare_class_mapper?
+    Fare=Economy, Business Class
+X-AGENT-EMAIL: {{X-Agent-Email}}
+X-AGENT-TOKEN: {{X-Agent-Token}}
+
+###

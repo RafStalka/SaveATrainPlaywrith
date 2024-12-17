@@ -28,7 +28,6 @@ import static io.qameta.allure.SeverityLevel.CRITICAL;
 
 public class NewAttemptForAllTests extends PlaywrightTestBase {
 
-    public static final String BIRTH_DATE = "06/09/1985";
     public static final String TEST = "test_";
     public static final String GMAIL_COM = "@gmail.com";
     public static final String MALE_VALUE = "Mr";
@@ -46,10 +45,6 @@ public class NewAttemptForAllTests extends PlaywrightTestBase {
     public static final String INCORRECT_PASSENGER_EMAIL_ON_SUMMARY_PAGE = "Incorrect passenger email on summary page.";
     public static final String INCORRECT_FARE_ON_SUMMARY_PAGE = "Incorrect fare on summary page.";
     public static final String INCORRECT_LENGTH_OF_THE_ORDER_CODE_ON_SUMMARY_PAGE = "Incorrect length of the order code on summary page.";
-    public static final String YOUTH_AGE = "17";
-    public static final String FEMALE_VALUE = "Mrs";
-    public static final String ADULT_PASSENGER_BIRTH_DATE = "22/09/1987";
-    public static final String YOUTH_PASSENGER_BIRTH_DATE = "01/01/2007";
 
     public static final String BASE_URL = "https://sat-client-staging.saveatrain.com";
 

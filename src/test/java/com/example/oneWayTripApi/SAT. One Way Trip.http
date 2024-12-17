@@ -1,0 +1,327 @@
+###
+# SAT. One Way Trip
+
+###
+# @name _1. Vendor stations
+# ### Vendor station list
+#   Get the list of all train stations.  
+#   Pick origin and destination stations from the list. Make sure that "searchable" attribute is set to "true".
+GET {{base_url}}/vendor_stations
+X-Agent-Email: {{X-Agent-Email}}
+X-Agent-Token: {{X-Agent-Token}}
+# @timeout 600
+
+> {%
+
+    client.test("Status code is 200", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    // pm.sendRequest("https://postman-echo.com/get", function (err, response) {
+    // pm.variables.get("variable_key");
+    //     console.log(response.json());
+    // });
+%}
+
+<> ./SAT. One Way Trip_responses/success_example.200.json
+// {{Staging_URL}}/vendor_stations
+
+###
+# @name _1. Reduction Codes
+# ### Vendor station list
+#   Get the list of all train stations.  
+#   Pick origin and destination stations from the list. Make sure that "searchable" attribute is set to "true".
+GET {{base_url}}/reduction_codes
+X-Agent-Email: {{X-Agent-Email}}
+X-Agent-Token: {{X-Agent-Token}}
+
+> {%
+    // pm.sendRequest("https://postman-echo.com/get", function (err, response) {
+    // pm.variables.get("variable_key");
+    //     console.log(response.json());
+    // });
+
+    client.test("Status code is 200", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+<> ./SAT. One Way Trip_responses/success_example.200.json
+// {{Staging_URL}}/vendor_stations
+
+###
+# @name 2. Outbound search
+# ### Outbound search
+#   Search for outbound routes, providing origin and destination stations (along with other params) in the request body. 
+#  
+#   *Make sure to specify future date for the ticket search.*  
+#   In the response you'll get the search identifier and the list of results. Pick one and use it's identifier (along with the search id) for the next step.
+POST {{base_url}}/searches
+X-Agent-Email: {{X-Agent-Email}}
+X-Agent-Token: {{X-Agent-Token}}
+Content-Type: application/json
+
+{
+    "search": {
+        "departure_datetime": "{{departure-datetime}}",
+        "searches_passengers_attributes": {
+            "0": {
+                "age": 41,
+                "passenger_type_attributes": {
+                    "type": "Search::PassengerType::Adult"
+                }
+            }
+        },
+        "route_attributes": {
+            "origin_station_attributes": {
+                "uid": "{{origin_station_uid}}"
+            },
+            "destination_station_attributes": {
+                "uid": "{{destination_station_uid}}"
+            }
+        }
+    }
+}
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    // pm.test("Outbound search has results", function () {
+    //     pm.expect(jsonData.results).to.be.not.empty;
+    // });
+
+    // pm.environment.set("search_id", jsonData.identifier);
+
+    // pm.environment.set("result_id", jsonData.results[0].id);
+%}
+
+<> ./SAT. One Way Trip_responses/success_example.200_1.json
+// {{Staging_URL}}/searches
+
+###
+# @name 2a. Earlier Later Outbound search
+# ### Confirm booking
+#   Send a booking confirmation request for the chosen outbound trip.
+POST {{base_url}}/searches/new_outbound_results
+HTTP_ACCEPT: application/json
+X-AGENT-EMAIL: {{X-Agent-Email}}
+X-AGENT-TOKEN: {{X-Agent-Token}}
+Content-Type: application/json
+
+{
+    "identifier": "{{search_id}}",
+    "is_earlier": true
+}
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+<> ./SAT. One Way Trip_responses/success_example.200_2.json
+// https://satvendorstest.saveatrain.com/api/bookings/confirm
+
+###
+# @name 3. Outbound subroutes (transfers and fares)
+# ### Outbound subroutes
+#   Search the associated subroutes.  
+#   In the response you'll get the list of available transfers and fares for the trip.   
+#   Pick the tranfer id and fare id to use in the next step.
+GET {{base_url}}/searches/{{search_id}}/results/{{result_id}}/sub_routes
+X-Agent-Email: {{X-Agent-Email}}
+X-Agent-Token: {{X-Agent-Token}}
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    // const jsonData = pm.response.json();
+
+    // pm.environment.set("transfer_id", jsonData.transfers[0].id);
+
+    // pm.environment.set("fare_id", jsonData.transfers[0].fares[0].id);
+%}
+
+<> ./SAT. One Way Trip_responses/success_example.200_3.json
+// {{Staging_URL}}/searches/{{search_id}}/results/{{result_id}}/sub_routes
+
+###
+# @name 4. Confirm selection
+# ### Confirm selection
+#   Send a confirmation for the chosen outbound trip.
+POST {{base_url}}/searches/{{search_id}}/confirm_selection
+X-Agent-Email: {{X-Agent-Email}}
+X-Agent-Token: {{X-Agent-Token}}
+Content-Type: application/json
+
+{
+  "select_results_attributes": {
+    "search_identifier": "{{search_id}}",
+    "result_id": {{result_id}},
+    "transfers_attributes": {
+      "0": {
+        "id": {{transfer_id}},
+        "fare_id": {{fare_id}}
+      }
+    }
+  }
+}
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+<> ./SAT. One Way Trip_responses/success_example.200_4.json
+// {{Staging_URL}}/searches/{{search_id}}/confirm_selection
+
+###
+# @name 5. Get tariff details
+# ### Get tariff details
+#   Get information about the chosen ticket class.
+GET {{base_url}}/searches/{{search_id}}/results/{{result_id}}/tariff_conditions/{{fare_id}}
+X-AGENT-EMAIL: {{X-Agent-Email}}
+X-AGENT-TOKEN: {{X-Agent-Token}}
+HTTP_ACCEPT: application/json
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+<> ./SAT. One Way Trip_responses/success_example.200_5.json
+// https://satvendorstest.saveatrain.com/api/searches/{{search_id}}/results/{{result_id}}/tariff_conditions/{{fare_id}}
+<> ./SAT. One Way Trip_responses/5._get_tariff_details_2024.200.json
+// {{base_url}}/searches/{{search_id}}/results/{{result_id}}/tariff_conditions/{{fare_id}}
+
+###
+# @name 6. Create booking
+# ### Make a booking
+#   Send a booking request.
+POST {{base_url}}/bookings
+HTTP_ACCEPT: application/json
+X-AGENT-EMAIL: {{X-Agent-Email}}
+X-AGENT-TOKEN: {{X-Agent-Token}}
+Content-Type: application/json
+
+{
+    "booking": {
+        "search_identifier": "{{search_id}}",
+        "order_customer_attributes": {
+            "email": "ror@saveatrain.com",
+            "fname": "ror",
+            "lname": "dev",
+            "gender": "M",
+            "mobile": "93242412"
+        },
+        "passengers_attributes": {
+            "0": {
+                "title": "Mr",
+                "fname": "ror",
+                "lname": "dev",
+                "birthdate": "1980-12-25",
+                "country": "Germany",
+                "gender": "M",
+                "id_number": "123",
+                "id_type": 123,
+                "id_country": "PL",
+                "id_expiry": "",
+                "passenger_type_attributes": {
+                    "age": 29,
+                    "type": "Search::PassengerType::Adult"
+                }
+            }
+        },
+        "seat_preference_attributes": {
+            "seat_preference_outbound": null,
+            "seat_preference_inbound": null
+        }
+    }
+}
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+<> ./SAT. One Way Trip_responses/success_example.200_6.json
+// https://satvendorstest.saveatrain.com/api/bookings
+
+###
+# @name 7. Confirm booking
+# ### Confirm booking
+#   Send a booking confirmation request for the chosen outbound trip.
+POST {{base_url}}/bookings/confirm/
+HTTP_ACCEPT: application/json
+X-AGENT-EMAIL: {{X-Agent-Email}}
+X-AGENT-TOKEN: {{X-Agent-Token}}
+Content-Type: application/json
+
+{
+    "booking": {
+        "search_identifier": "{{search_id}}"
+    }
+}
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+<> ./SAT. One Way Trip_responses/success_example.200_7.json
+// https://satvendorstest.saveatrain.com/api/bookings/confirm
+
+###
+# @name 8. Ticket PDF
+# ### Ticket PDF
+#   Get a booking confirmation code and the link to a generated ticket PDF.
+GET {{base_url}}/order_images/{{search_id}}
+HTTP_ACCEPT: application/json
+X-AGENT-EMAIL: {{X-Agent-Email}}
+X-AGENT-TOKEN: {{X-Agent-Token}}
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+<> ./SAT. One Way Trip_responses/success_example.200_8.json
+// https://satvendorstest.saveatrain.com/api/order_images/{{search_id}}
+
+###
+# @name Virtual Card Charge
+POST {{base_url}}/single_use_virtual_card_charge
+HTTP_ACCEPT: application/json
+X-AGENT-EMAIL: {{X-Agent-Email}}
+X-AGENT-TOKEN: {{X-Agent-Token}}
+Content-Type: application/json
+
+{
+  "search_identifier": "kIDUCr",
+  "charge": {
+    "amount": 27.79
+  },
+  "payment_details": {
+    "holder_name": "John Doe",
+    "number": "6771798021000008",
+    "expiry_month": "03",
+    "expiry_year": "2030",
+    "cvc": "737"
+  }
+}
+
+> {%
+    client.test("Status code is 200", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+###
